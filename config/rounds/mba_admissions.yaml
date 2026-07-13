@@ -1,0 +1,9 @@
+# MBA admissions interview. Stub profile: valid config, full bank later.
+profile_id: mba_admissions
+time_budget_s: 180
+we_ratio_threshold: 0.6
+emotional_probe_weight: 0.3
+patience_ms: 600
+length_band_s: [100, 180]
+depth_style: BREADTH
+probe_bias: {}

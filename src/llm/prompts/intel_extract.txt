@@ -1,0 +1,15 @@
+Extract interview questions from this pasted text (a forum thread, interview report, or notes the candidate found).
+
+Pasted text:
+---
+{pasted_text}
+---
+
+Return strict JSON only:
+{"questions": [{"text": "the question, cleaned up into direct interviewer phrasing", "evidence": "verbatim span from the pasted text this came from"}]}
+
+Rules:
+- Only questions actually reported or clearly implied in the text. Do not invent plausible questions.
+- evidence must be a verbatim contiguous span from the pasted text. Items without verbatim evidence will be discarded.
+- Behavioral questions only; skip technical or case questions if the text mixes them in.
+- Deduplicate near-identical questions.

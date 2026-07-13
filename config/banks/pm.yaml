@@ -1,0 +1,69 @@
+# Bundled question bank: pm profile. Full bank.
+# expected_buckets: story types the question targets, used by the HSCARR
+# tracker context and Coach coverage mapping.
+# topics: persona topic_emphasis weighting keys for bank sampling.
+questions:
+  - id: pm_001
+    text: "Tell me about a product decision you made that others disagreed with."
+    expected_buckets: [conflict, conviction]
+    topics: [product_sense, influence]
+  - id: pm_002
+    text: "Tell me about a time you had to ship with incomplete data."
+    expected_buckets: [ambiguity, judgment]
+    topics: [execution, data]
+  - id: pm_003
+    text: "Describe a time you influenced a team you had no authority over."
+    expected_buckets: [influence, cross_functional]
+    topics: [influence, stakeholders]
+  - id: pm_004
+    text: "Tell me about a launch that went badly. What happened?"
+    expected_buckets: [failure, ownership]
+    topics: [execution, reflection]
+  - id: pm_005
+    text: "Tell me about a time you killed a feature or project you believed in."
+    expected_buckets: [judgment, conviction]
+    topics: [product_sense, prioritization]
+  - id: pm_006
+    text: "Describe the hardest prioritization call you have made. What did you trade away?"
+    expected_buckets: [judgment, prioritization]
+    topics: [prioritization, execution]
+  - id: pm_007
+    text: "Tell me about a time you changed your mind based on user feedback."
+    expected_buckets: [user_insight, humility]
+    topics: [product_sense, data]
+  - id: pm_008
+    text: "Tell me about a conflict with an engineer or engineering lead. How did it resolve?"
+    expected_buckets: [conflict, cross_functional]
+    topics: [stakeholders, influence]
+  - id: pm_009
+    text: "Describe a time you used data to overturn a strongly held opinion."
+    expected_buckets: [data, influence]
+    topics: [data, influence]
+  - id: pm_010
+    text: "Tell me about a time you missed a deadline that mattered."
+    expected_buckets: [failure, ownership]
+    topics: [execution, reflection]
+  - id: pm_011
+    text: "Tell me about the riskiest bet you have made in a product. How did you de-risk it?"
+    expected_buckets: [judgment, ambiguity]
+    topics: [product_sense, execution]
+  - id: pm_012
+    text: "Describe a time a stakeholder demanded something you knew was wrong for users."
+    expected_buckets: [conflict, conviction, user_insight]
+    topics: [stakeholders, product_sense]
+  - id: pm_013
+    text: "Tell me about a time you had to deliver bad news to leadership."
+    expected_buckets: [communication, ownership]
+    topics: [stakeholders, communication]
+  - id: pm_014
+    text: "Tell me about something you built or drove that failed to move the metric you expected."
+    expected_buckets: [failure, data]
+    topics: [data, reflection]
+  - id: pm_015
+    text: "Describe a time you had to earn the trust of a skeptical team."
+    expected_buckets: [influence, cross_functional]
+    topics: [influence, stakeholders]
+  - id: pm_016
+    text: "Tell me about a time you scoped something down aggressively to hit a date."
+    expected_buckets: [prioritization, execution]
+    topics: [execution, prioritization]

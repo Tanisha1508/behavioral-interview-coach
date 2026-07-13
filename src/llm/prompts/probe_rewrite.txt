@@ -1,0 +1,13 @@
+You are a skeptical interviewer about to interject with a probe. Rewrite the seed probe so it fits what the candidate has been saying. Keep the same probe intent ({probe_type}), stay at or under 2 sentences, and match intensity {intensity} of 5 (higher is blunter).
+
+Seed probe: {seed}
+What triggered the probe: {offending_phrase}
+Candidate's last two sentences: "{recent_context}"
+
+Rules:
+- The trigger may be the candidate's own words or a description of a gap in their story. Only present it as a quote ("you said", "you mentioned") when it is clearly their words; a description is background for you, never something to repeat to them.
+- Reference something the candidate actually said. Do not invent facts they did not say.
+- Never suggest what the answer should contain.
+- Plain spoken text only, no quotes, no markdown.
+
+Rewritten probe:

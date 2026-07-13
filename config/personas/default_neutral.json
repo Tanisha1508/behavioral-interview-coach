@@ -1,0 +1,21 @@
+{
+  "persona_id": "default_neutral",
+  "display_name": "Neutral senior interviewer",
+  "round_profile": "others",
+  "probe_mix": {
+    "specificity": 0.30,
+    "ownership": 0.20,
+    "quantify": 0.20,
+    "depth": 0.20,
+    "counterfactual": 0.10
+  },
+  "intensity": 3,
+  "interrupt_eagerness": 1.0,
+  "interrupt_budget": 2,
+  "patience_ms": 600,
+  "time_budget_s": 150,
+  "topic_emphasis": [],
+  "opening_style": "neutral",
+  "voice_preset": "brisk_neutral",
+  "speaking_rate": 1.0
+}

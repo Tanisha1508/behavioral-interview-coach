@@ -1,0 +1,76 @@
+# Grading rubric: 6 dimensions, 3 levels each, plus auto-rules that pull
+# judgment calls out of the LLM (spec 5.4, 6). The grader embeds this file
+# into its prompt and the auto-rules are also enforced in code.
+
+dimensions:
+  structure:
+    name: Structure
+    question: Could a listener follow the story and know how it ended? The arc (hook, situation, complication, action, resolution, reflection) is a guide for what belongs, not a required sequence.
+    levels:
+      Solid: The listener always knew the context, what the candidate faced, what they did, and how it ended. Any order that flows naturally counts; never penalize an answer for deviating from the canonical sequence.
+      NeedsWork: Followable, but a load-bearing part (what the candidate did, or how it ended) stayed thin, or the setup crowded out the rest.
+      Gap: No discernible story. What the candidate did or how it ended is missing entirely, or the answer never left the setup.
+  specificity:
+    name: Specificity
+    question: Concrete nouns, names, artifacts, quoted dialogue instead of generic claims?
+    levels:
+      Solid: Claims are grounded with names, artifacts, numbers, or actual quoted dialogue. A skeptic could verify the story.
+      NeedsWork: Some concrete detail, but at least one load-bearing claim stayed generic.
+      Gap: Answer runs on generic claims (aligned stakeholders, drove consensus) with no concrete anchor, or a probe for specifics was deflected.
+  i_vs_we:
+    name: I vs We
+    question: Is the candidate's personal contribution distinguishable from the team's?
+    levels:
+      Solid: Personal actions are clearly owned in first person. Team credit given without hiding in it.
+      NeedsWork: Mixed. Ownership emerges only after probing.
+      Gap: Contribution indistinguishable from the team's throughout, or we-ratio stayed above the round threshold after an ownership probe.
+  quantification:
+    name: Quantification
+    question: >-
+      Where the story has measurable stakes, are impact and scale carried by
+      numbers? Stakes count as measurable ONLY when the outcome would
+      obviously live in a tracked number the candidate had access to
+      (revenue, users, adoption, latency, error rate, time or money saved,
+      team size). Better user experience, readability, clearer
+      communication, a resolved conflict, a convinced stakeholder are all
+      qualitative outcomes, not measurable stakes, and must never be
+      reasoned into measurable ones.
+    levels:
+      Solid: Scale and outcome are quantified (users, revenue, latency, percent, team size, time). Numbers spoken as words (six, forty, half) count exactly like digits. A story with qualitative stakes earns Solid through a concrete stated outcome (what changed and how you knew); no number is required of it.
+      NeedsWork: The stakes are measurable under the strict definition above and the numbers given are thin or vague (a lot, significantly).
+      Gap: Measurable stakes under the strict definition with no numeric evidence in action or resolution, including after a quantify probe. Never assign Gap or NeedsWork only because the topic resists quantification; when unsure whether stakes are measurable, treat them as qualitative.
+  length:
+    name: Length
+    question: Did the answer land inside the round's target band?
+    levels:
+      Solid: Inside the round's length band.
+      NeedsWork: Within 25 percent outside the band on either side.
+      Gap: More than 25 percent outside the band, or the engine had to force a wrap.
+  reflection:
+    name: Reflection
+    question: Did the answer close with genuine learning or growth?
+    levels:
+      Solid: Specific lesson tied to the story, ideally with evidence of applying it since.
+      NeedsWork: Reflection present but generic (I learned communication matters).
+      Gap: No reflection at all, or reflection contradicts the story told.
+
+auto_rules:
+  - id: generic_claim_forces_specificity
+    rule: Any phrase from the generic-claim list left unresolved by concrete detail forces Specificity to at most NeedsWork.
+    generic_claims:
+      - aligned stakeholders
+      - drove consensus
+      - worked closely
+      - took ownership
+      - communicated effectively
+      - collaborated cross-functionally
+  - id: we_ratio_after_probe_forces_gap
+    rule: we_ratio above the round threshold, unresolved after an OWNERSHIP probe fired, forces I vs We to Gap.
+  - id: length_scored_by_band_distance
+    rule: Length level is computed from answer duration vs round.length_band_s (Solid inside band, NeedsWork within 25 percent outside, Gap beyond), not judged by the LLM.
+  - id: double_deflection_forces_specificity_gap
+    rule: Two deflections on the same probe force Specificity to Gap (engine grader_note).
+
+spoken_summary:
+  lines: 1
+  shape: "One sentence: the single highest-leverage fix for the retry, tied to a phrase or fact this candidate actually said. Do not recap strengths, do not mention a second dimension, do not restate what the card already shows; the candidate reads the card themselves. Advice that could apply to any answer is not acceptable."

@@ -1,0 +1,42 @@
+# Global settings: plugin selection and engine thresholds.
+# Swapping managed <-> local STT/TTS is a change here, never a code change.
+
+stt:
+  provider: deepgram        # deepgram | local_whisper
+  local_model: small.en     # used when provider == local_whisper
+tts:
+  provider: elevenlabs      # elevenlabs | local_kokoro
+vad:
+  provider: silero          # bundled with livekit-agents
+
+llm:
+  primary: gemini
+  primary_model: gemini-2.5-flash
+  lite_model: gemini-3.1-flash-lite   # own free-tier quota pool; absorbs
+                                      # flash exhaustion before Groq
+  failover: groq
+  failover_model: llama-3.3-70b-versatile
+  daily_call_cap: 100       # observed 2026-07-09: gemini-2.5-flash free tier
+                            # 429s after ~20 calls in a burst but recovers
+                            # within the same day (rolling window, not a hard
+                            # daily cap). At the ledger cap, calls route
+                            # straight to the Groq failover.
+  temperature: 0.4
+
+engine:
+  max_followups: 2              # follow-up cap in probing mode (wizard
+                                # "Interview mode"). listen mode always asks
+                                # zero and goes straight to feedback.
+  partial_interval_ms: 2000     # analyzer cadence on partial transcripts
+  min_interrupt_clock_ms: 25000 # never interrupt before this (hard rule)
+  interrupt_cooldown_ms: 40000  # never twice within this window (hard rule)
+  silence_stall_ms: 4000        # mid-answer silence before NUDGE is eligible
+  default_interrupt_budget: 2
+  base_confidence: 0.6          # gate threshold before persona eagerness multiplier
+
+paths:
+  rounds_dir: config/rounds
+  banks_dir: config/banks
+  personas_dir: config/personas
+  rubric: config/rubric.yaml
+  data_dir: data

@@ -1,0 +1,10 @@
+# Stub bank: others (generic behavioral). Valid format, full bank later.
+questions:
+  - id: ot_001
+    text: "Tell me about a time you had to deliver under a deadline that seemed impossible."
+    expected_buckets: [execution, resilience]
+    topics: [execution]
+  - id: ot_002
+    text: "Describe a disagreement with your manager and how you handled it."
+    expected_buckets: [conflict, communication]
+    topics: [communication]

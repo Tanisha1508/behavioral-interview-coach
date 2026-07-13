@@ -1,0 +1,11 @@
+# Consulting PEI-style round. Fully bundled profile.
+# One story chained deep, personal role and feelings probed, reflective
+# pauses tolerated. All of that is parameter values here, not code.
+profile_id: consulting
+time_budget_s: 210
+we_ratio_threshold: 0.45
+emotional_probe_weight: 0.5
+patience_ms: 900
+length_band_s: [120, 210]
+depth_style: ONE_STORY_DEEP
+probe_bias: {}

@@ -1,0 +1,9 @@
+# Generic behavioral round. Stub profile: valid config, full bank later.
+profile_id: others
+time_budget_s: 150
+we_ratio_threshold: 0.6
+emotional_probe_weight: 0.0
+patience_ms: 600
+length_band_s: [90, 150]
+depth_style: BREADTH
+probe_bias: {}

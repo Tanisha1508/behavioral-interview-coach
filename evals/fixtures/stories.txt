@@ -1,0 +1,22 @@
+MY STORY BANK (prep doc)
+
+Story 1: The checkout rescue
+FreshCart checkout redesign. Cart abandonment stuck at 31% for three quarters.
+I ran funnel analysis nights for two weeks, found the address form was killing
+mobile users, fought design for a one-page flow, shipped in 6 weeks.
+Abandonment fell to 22%. Use for: data-driven decisions, conviction, execution.
+
+Story 2: Killing my own project
+The loyalty-points program was my own proposal from 2024. A/B showed negative
+LTV at 90 days. I recommended killing it in the same review where founders
+expected a scale-up plan, and moved the 6 engineers to fulfillment.
+Use for: intellectual honesty, prioritization, failure.
+
+Story 3: The triage-bot standoff
+Six weeks of clinical ops refusing the triage bot at TeleWell. I sat in the
+nurses' station for two days, found the real fear was liability not workflow,
+got legal to draft an escalation protocol, and scoped v1 to symptoms only.
+Use for: conflict, stakeholder management, empathy.
+
+(Note to self: I have nothing prepared about managing up to executives, and
+nothing about operating under regulatory or high-stakes-loss pressure.)

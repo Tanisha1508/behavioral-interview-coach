@@ -1,0 +1,14 @@
+# Runtime deps for the hosted agent worker only (Dockerfile). The full
+# requirements.txt keeps the local dev extras: evals (ragas/langchain) and the
+# local fallback STT/TTS nodes (faster-whisper, kokoro-onnx), none of which the
+# hosted worker uses. groq/orpheus TTS plugin was removed 2026-07-12; the groq
+# package stays for LLM failover.
+# ~=1.6 matches the version the local venv runs and tests against (1.6.4).
+# LiveKit Cloud's build check reads the spec literally and rejects ~=1.0.
+livekit-agents[deepgram,elevenlabs,silero,google,turn-detector]~=1.6
+google-genai
+groq
+pydantic>=2
+PyYAML
+python-dotenv
+rich

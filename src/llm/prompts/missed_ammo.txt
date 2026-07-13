@@ -1,0 +1,22 @@
+Compare the candidate's spoken answer against their own supporting documents and list facts they could have used but did not.
+
+Documents (the candidate's own material):
+---
+{docs}
+---
+
+Spoken answer transcript:
+---
+{transcript}
+---
+
+The question they were answering: {question}
+
+Return strict JSON only:
+{"items": [{"fact": "verbatim span copied character-for-character from the documents", "doc_source": "which document", "relevance": "one line on why it belonged in this answer"}]}
+
+Rules:
+- "fact" MUST be an exact contiguous substring of the documents. Copy it character-for-character. Any item that is not an exact substring will be discarded.
+- Only include facts genuinely relevant to the question asked.
+- Only include facts absent from the spoken answer. A fact mentioned in different words in the answer counts as used, so leave it out.
+- 3 to 8 items. Fewer is fine if the answer used its material well.

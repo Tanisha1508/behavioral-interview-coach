@@ -1,0 +1,6 @@
+[   0.0s] INTERVIEWER: Tell me about a product decision you made that others disagreed with.
+[   4.5s] CANDIDATE: yeah so this was at my last company, we were working on the mobile app and there was a big debate about whether to rebuild the onboarding flow. a lot of people had opinions on it and it went back and forth for a while.
+[  32.0s] CANDIDATE: the design team wanted a full redesign and some of the engineers thought we should just patch the existing flow. i worked closely with both sides and we eventually got everyone on the same page about doing something in the middle.
+[  61.0s] CANDIDATE: so we ended up shipping a simplified version of the redesign. i took ownership of the rollout piece and we watched the numbers afterwards and the metrics improved, activation went up around 8 percent i think.
+[  93.0s] CANDIDATE: there was some pushback after launch from the sales team because a screen they used for demos had changed, and we had a few conversations about that and smoothed it over.
+[ 122.0s] CANDIDATE: and yeah overall it worked out. i learned that communication is really important and that you have to bring people along with you when you make changes.

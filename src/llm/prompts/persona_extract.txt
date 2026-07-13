@@ -1,0 +1,19 @@
+Extract interviewer persona tags from the pasted bio below. Return strict JSON only, nothing else.
+
+Rules, applied exactly:
+- Every non-UNKNOWN tag value MUST be justified by a verbatim phrase copied character-for-character from the bio into signals_found. If you cannot point to a verbatim phrase, the tag is UNKNOWN.
+- Never infer from absence. A bio that does not mention seniority has seniority UNKNOWN.
+- domain_tags are topical only (examples: voice, infra, growth, marketplace, healthcare). They never describe personality or intensity.
+- signals_found is a list of objects: {"tag": "<field>=<value>", "phrase": "<verbatim phrase from the bio>"}.
+
+Allowed values:
+- firm_type: MBB | BIG_TECH | STARTUP | FINANCE | OTHER | UNKNOWN
+- function: CONSULTING_PARTNER | CONSUMER_PM | TECHNICAL_PM | PLATFORM_PM | ENG_LEADER | RECRUITER | UNKNOWN
+- seniority: PARTNER_DIRECTOR | SENIOR | MID | UNKNOWN
+
+Bio:
+---
+{bio_text}
+---
+
+JSON schema: {"firm_type": str, "function": str, "seniority": str, "domain_tags": [str], "signals_found": [{"tag": str, "phrase": str}]}

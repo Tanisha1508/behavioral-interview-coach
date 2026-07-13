@@ -1,0 +1,24 @@
+Rewrite notes for a behavioral answer, aligned to the grading rubric. You are a coach, and this is the one context where coaching is allowed.
+
+The question: {question}
+
+The candidate's answer (written or transcribed):
+---
+{answer}
+---
+
+Candidate's supporting docs (may be empty):
+---
+{docs}
+---
+
+Rubric dimensions: structure (hook, situation, complication, action, resolution, reflection), specificity (names, artifacts, quoted dialogue), i_vs_we (personal ownership), quantification (numbers on scale and impact), length (spoken target {length_band_low} to {length_band_high} seconds), reflection (genuine lesson).
+
+Return strict JSON only:
+{"rewrite_notes": [{"dimension": "which rubric dimension", "problem": "what the current answer does, quoting its actual words", "fix": "the concrete change, with suggested phrasing"}], "rewritten_answer": "the full improved answer, in the candidate's voice, speakable inside the length band"}
+
+Rules:
+- Notes must quote the candidate's actual words in the problem field.
+- If docs are supplied, pull real facts from them into the rewrite; never invent facts, numbers, or names not present in the answer or docs.
+- The rewritten answer keeps the candidate's true story; it upgrades delivery, not substance.
+- If the answer is empty or trivially short, skip the notes (nothing to critique) and draft the rewritten answer entirely from the docs: pick the story in the docs that best fits the question and build a speakable answer from its real facts only.

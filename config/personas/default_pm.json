@@ -1,0 +1,21 @@
+{
+  "persona_id": "default_pm",
+  "display_name": "Consumer PM interviewer",
+  "round_profile": "pm",
+  "probe_mix": {
+    "specificity": 0.35,
+    "ownership": 0.15,
+    "quantify": 0.15,
+    "depth": 0.30,
+    "counterfactual": 0.05
+  },
+  "intensity": 3,
+  "interrupt_eagerness": 1.0,
+  "interrupt_budget": 2,
+  "patience_ms": 600,
+  "time_budget_s": 150,
+  "topic_emphasis": ["user_insight", "product_sense"],
+  "opening_style": "friendly_direct",
+  "voice_preset": "brisk_neutral",
+  "speaking_rate": 1.0
+}

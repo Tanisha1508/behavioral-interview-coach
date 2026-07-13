@@ -1,0 +1,21 @@
+{
+  "persona_id": "consulting_partner",
+  "display_name": "Senior consulting partner",
+  "round_profile": "consulting",
+  "probe_mix": {
+    "specificity": 0.30,
+    "ownership": 0.25,
+    "emotional": 0.25,
+    "counterfactual": 0.10,
+    "depth": 0.10
+  },
+  "intensity": 4,
+  "interrupt_eagerness": 1.3,
+  "interrupt_budget": 3,
+  "patience_ms": 900,
+  "time_budget_s": 210,
+  "topic_emphasis": ["personal_impact", "inclusive_leadership", "entrepreneurial_drive"],
+  "opening_style": "warm_then_sharp",
+  "voice_preset": "measured_low",
+  "speaking_rate": 0.95
+}

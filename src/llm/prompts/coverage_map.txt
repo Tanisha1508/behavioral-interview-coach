@@ -1,0 +1,18 @@
+Map the candidate's prepared stories against a question set and flag gaps.
+
+Stories document (the candidate's prepared material):
+---
+{stories}
+---
+
+Question set:
+{questions}
+
+Return strict JSON only:
+{"coverage": [{"question": "question text exactly as given", "covered_by": "verbatim span from the stories document identifying the covering story, or empty string if none", "strength": "STRONG|PARTIAL|GAP", "note": "one line: why this story fits, or what is missing"}]}
+
+Rules:
+- covered_by must be a verbatim contiguous span copied from the stories document (a title line or opening phrase of the story). Empty string when strength is GAP.
+- STRONG: a prepared story directly answers it. PARTIAL: a story could stretch to it with reframing. GAP: nothing in the document works.
+- Judge coverage on substance, not keywords. A story about a failed launch can cover a conflict question only if it actually contains conflict.
+- One entry per question, same order as given.

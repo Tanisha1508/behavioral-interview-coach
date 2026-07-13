@@ -1,0 +1,21 @@
+Generate a tailored behavioral question pack from this candidate's resume and the job description they are targeting. Round format: {profile_id}.
+
+Resume:
+---
+{resume}
+---
+
+Job description:
+---
+{jd}
+---
+
+Return strict JSON only:
+{"questions": [{"text": "the question", "bucket": "story bucket it targets (conflict, failure, influence, ambiguity, ownership, data, prioritization, user_insight, leadership, resilience)", "resume_line": "verbatim contiguous span from the resume this question digs into", "why_likely": "one line: why this JD makes this question likely"}]}
+
+Rules:
+- 8 to 12 questions.
+- Every question must target something real: resume_line must be copied character-for-character from the resume. Items that are not exact substrings will be discarded.
+- Questions probe risk areas: gaps between resume claims and JD demands, big claims with no visible evidence, transitions, and the competencies this JD repeats.
+- Behavioral questions only (tell me about a time...). No technical puzzles, no case math.
+- Phrase them the way a {profile_id} round interviewer would.

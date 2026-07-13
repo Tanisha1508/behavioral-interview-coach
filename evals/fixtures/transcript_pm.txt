@@ -1,0 +1,8 @@
+[   0.0s] INTERVIEWER: Tell me about a product decision you made that others disagreed with.
+[   4.2s] CANDIDATE: sure. at the time i was the pm on the notifications platform at a fintech app with about 800 thousand daily actives. the situation was that growth wanted to double push volume before the holidays because it had lifted transactions 6 percent the year before.
+[  28.9s] CANDIDATE: the problem was our unsubscribe rate had already crept from 1.2 to 1.9 percent that quarter, and i believed doubling volume would burn the channel permanently. growth strongly disagreed and their vp had already socialized the plan upstairs.
+[  52.3s] CANDIDATE: so what i did was pull the cohort data myself and i found users who got more than 5 pushes a week churned off notifications at 3 times the baseline. i built a capped frequency proposal and i aligned stakeholders across both teams on it.
+[  74.1s] INTERVIEWER: You said you aligned stakeholders. What exactly did you say to get growth on board?
+[  79.8s] CANDIDATE: i showed their own campaign data back to them. i told their vp directly that his holiday lift number came almost entirely from the first 2 pushes per user, and everything past that was pure list burn. i offered a deal where they kept the 2 best slots and we tested a third slot behind a holdout.
+[ 105.5s] CANDIDATE: as a result we shipped the frequency cap in november. transaction lift came in at 5 percent, basically flat against their plan, and unsubscribes dropped back to 1.3 percent by january.
+[ 121.0s] CANDIDATE: what i learned is that data beats opinions, and i try to bring the data early now.

@@ -1,0 +1,10 @@
+# Stub bank: mba_admissions. Valid format, full bank in a later session.
+questions:
+  - id: mba_001
+    text: "Why an MBA, and why now?"
+    expected_buckets: [motivation, goals]
+    topics: [goals]
+  - id: mba_002
+    text: "Tell me about a time you led without formal authority."
+    expected_buckets: [leadership, influence]
+    topics: [leadership]

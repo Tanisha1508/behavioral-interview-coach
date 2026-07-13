@@ -1,0 +1,52 @@
+# Bundled question bank: consulting profile. Full bank.
+# PEI-style dimensions: personal impact, inclusive leadership,
+# entrepreneurial drive, courageous change.
+questions:
+  - id: co_001
+    text: "Tell me about a time you changed someone's mind who strongly disagreed with you."
+    expected_buckets: [personal_impact, influence]
+    topics: [personal_impact, influence]
+  - id: co_002
+    text: "Describe a time you led a team through a situation where people were pulling in different directions."
+    expected_buckets: [inclusive_leadership, conflict]
+    topics: [inclusive_leadership, teamwork]
+  - id: co_003
+    text: "Tell me about the biggest goal you have set for yourself and pursued."
+    expected_buckets: [entrepreneurial_drive, ambition]
+    topics: [entrepreneurial_drive]
+  - id: co_004
+    text: "Tell me about a time you had to win over a difficult person to get something done."
+    expected_buckets: [personal_impact, influence]
+    topics: [personal_impact, stakeholders]
+  - id: co_005
+    text: "Describe a situation where you took charge when it was not your job to."
+    expected_buckets: [entrepreneurial_drive, ownership]
+    topics: [entrepreneurial_drive, leadership]
+  - id: co_006
+    text: "Tell me about a time you worked with someone whose style clashed with yours."
+    expected_buckets: [inclusive_leadership, conflict]
+    topics: [inclusive_leadership, teamwork]
+  - id: co_007
+    text: "Tell me about a time you failed at something that mattered to you. What did you do next?"
+    expected_buckets: [resilience, reflection]
+    topics: [entrepreneurial_drive, reflection]
+  - id: co_008
+    text: "Describe a moment when you had to push an idea against real resistance from senior people."
+    expected_buckets: [courageous_change, influence]
+    topics: [personal_impact, courage]
+  - id: co_009
+    text: "Tell me about a time you helped someone on your team who was struggling."
+    expected_buckets: [inclusive_leadership, empathy]
+    topics: [inclusive_leadership, teamwork]
+  - id: co_010
+    text: "Tell me about a time you took a significant personal risk to achieve something."
+    expected_buckets: [entrepreneurial_drive, courage]
+    topics: [entrepreneurial_drive, courage]
+  - id: co_011
+    text: "Describe a situation where your first approach failed and you had to change course under pressure."
+    expected_buckets: [resilience, judgment]
+    topics: [courage, reflection]
+  - id: co_012
+    text: "Tell me about a relationship you had to repair to move work forward."
+    expected_buckets: [personal_impact, empathy]
+    topics: [personal_impact, teamwork]

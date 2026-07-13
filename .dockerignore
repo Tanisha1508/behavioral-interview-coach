@@ -1,0 +1,16 @@
+# Secrets never enter the image; they are set as agent secrets on LiveKit Cloud.
+.env
+.env.*
+web/.env.local
+
+.venv
+__pycache__
+*.pyc
+web
+docs
+evals
+tests
+data
+supabase
+*.md
+.claude

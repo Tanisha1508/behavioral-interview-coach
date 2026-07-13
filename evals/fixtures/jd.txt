@@ -1,0 +1,17 @@
+Senior Product Manager, Marketplace Trust — Hopscotch (online resale marketplace)
+
+Hopscotch connects 9M buyers with independent sellers. The Trust team owns
+fraud prevention, seller quality, and dispute resolution.
+
+What you will do:
+- Own the buyer-protection and dispute-resolution product surface end to end
+- Balance seller growth against fraud loss; make calls under ambiguous data
+- Work daily with risk engineering, ops, legal, and customer support
+- Present tradeoffs to executives; defend decisions with data
+- Ship fast in a domain where mistakes cost real money and user trust
+
+What we look for:
+- 4+ years PM experience owning a revenue-critical or risk-critical surface
+- Evidence of hard prioritization calls and sunsetting underperforming bets
+- Strong cross-functional conflict management; ops and engineering fluency
+- Comfort with metrics design: fraud rate, dispute SLA, seller NPS

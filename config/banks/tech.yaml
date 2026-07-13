@@ -1,0 +1,10 @@
+# Stub bank: tech. Valid format, full bank in a later session.
+questions:
+  - id: te_001
+    text: "Tell me about the most difficult technical tradeoff you have had to make."
+    expected_buckets: [judgment, tradeoffs]
+    topics: [execution, tradeoffs]
+  - id: te_002
+    text: "Describe a production incident you owned. What did you change afterward?"
+    expected_buckets: [ownership, failure]
+    topics: [execution, reflection]

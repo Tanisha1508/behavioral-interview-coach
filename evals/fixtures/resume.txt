@@ -1,0 +1,21 @@
+Maya Krishnan
+Product Manager, Bengaluru / Chicago
+
+EXPERIENCE
+
+Senior Product Manager, FreshCart (grocery delivery), 2023-2026
+- Led checkout redesign that cut cart abandonment from 31% to 22% across 2.1M monthly users
+- Shipped dark-store picking app used by 4,800 pickers; cut mispicks 38%
+- Killed the loyalty-points program after A/B tests showed negative LTV impact; reallocated 6 engineers
+- Drove weekly bets review with founders; owned the checkout and fulfillment roadmap
+
+Product Manager, TeleWell (telehealth), 2021-2023
+- Launched insurance-eligibility checker integrating 14 payer APIs; reduced claim denials 19%
+- Ran the migration off a legacy scheduling vendor with zero appointment loss across 900 clinics
+- Mediated a 6-week standoff between clinical ops and engineering over triage-bot scope
+
+Software Engineer, Infosys, 2018-2021
+- Built billing reconciliation pipelines for a European telecom account
+
+EDUCATION
+BTech, NIT Trichy, 2018. Booth MBA incoming, 2026.
