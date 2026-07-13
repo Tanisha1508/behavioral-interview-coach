@@ -564,9 +564,9 @@ at once, per the user's batching request.
 - Interrupt fix (agent-only, TEST-LOG round 2026-07-14 finding 7): Interrupt
   now routes through the runner (note_interrupt), silences the rest of the
   spoken feedback instead of playing on, and honors the next short "end" in
-  any state. 130 tests pass (3 new). Redeploying the agent; web unchanged.
-- NOT yet committed/pushed: whole batch (onboarding + background/goal +
-  interrupt fix) waits for the user's re-test to pass, then one commit.
+  any state. 130 tests pass (3 new). Redeployed the agent; web unchanged.
+- Committed with the rest of the session in 88a4514 (see the closing note
+  below).
 
 ## 2026-07-14 (later still): score-card reopen + animated owl session UI
 
@@ -583,6 +583,14 @@ at once, per the user's batching request.
   renders SpeakingOwl instead of the bar/wave/etc.; the audioVisualizer* props
   are kept for API compatibility but unused. Style approved via an artifact
   mockup first (subtle & tasteful). Respects prefers-reduced-motion. Web tsc +
-  lint clean; deploying.
-- Still uncommitted: the whole session's batch goes up as one commit after the
-  owl is live-verified by the user.
+  lint clean; deployed.
+
+## 2026-07-14 (close): session batch committed and pushed
+
+All of the above (onboarding wizard + profile page + slimmed New Session form,
+background/goal into generation + coach, interrupt fix, score-card reopen,
+animated owl session UI, and the owl "thinking" during scoring) was verified
+live by the user and committed as a single commit 88a4514, pushed to
+origin/main (311af70..88a4514). 130 Python tests pass; web tsc + lint clean.
+Agent version 8NG4qbvy9h8R and the Vercel production web are the live build.
+TEST-LOG round 2026-07-14 findings 7, 8, 9 are FIXED+VERIFIED.

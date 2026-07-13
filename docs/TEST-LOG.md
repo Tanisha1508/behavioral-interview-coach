@@ -130,7 +130,7 @@ captured live via `lk agent logs` during the runs.
   on screen, so nothing visible is lost (src/agent.py).
 - Tests: 3 added in tests/test_agent_runner.py (interrupt+end ends;
   one-shot; feedback silenced but verdict opened). 130 tests pass.
-- Status: FIX BUILT (awaiting user re-test on hosted).
+- Status: FIXED+VERIFIED (user re-test 2026-07-14).
 
 ### 8. No way to reopen the score card after closing it
 
@@ -144,7 +144,7 @@ captured live via `lk agent logs` during the runs.
   card (with its rewrite) until the next question clears it. Interrupt +
   finding 7 unaffected (web/hooks/useInterviewState.ts,
   web/components/app/view-controller.tsx). Web-only change.
-- Status: FIX BUILT (awaiting user re-test on hosted).
+- Status: FIXED+VERIFIED (user re-test 2026-07-14).
 
 ### 9. Owl showed "listening" while it was scoring
 
@@ -156,7 +156,7 @@ captured live via `lk agent logs` during the runs.
   grading starts, "idle" at every exit); SpeakingOwl listens for it and
   overrides idle/listening with thinking (speaking still wins). Both sides
   deployed (src/agent.py, web/components/app/speaking-owl.tsx).
-- Status: FIX BUILT (awaiting user re-test).
+- Status: FIXED+VERIFIED (user re-test 2026-07-14).
 
 ### Watch items from this round
 
