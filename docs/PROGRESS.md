@@ -380,3 +380,24 @@ Configuration needs the vercel.app domain as Site URL / redirect URL.
 - Deploying to Vercel production. Remaining polish candidates for a third
   slice if wanted: session-screen banner styling, mobile header (hidden
   below md), coach panel visual pass.
+
+## 2026-07-13 (later): item 13 third slice, app shell (user feedback)
+
+- User feedback on the deployed landing: after sign-in the marketing hero
+  must go away; signed-in screens need a proper app shell with a left
+  panel (home, history, account), main area focused on the session.
+- New web/components/app/side-nav.tsx: fixed desktop sidebar (owl
+  wordmark, New session / History nav with active states, account block
+  with Google avatar/name/email, sign out, LiveKit credit) and a slim
+  mobile top bar. Session views still render without it: a live
+  interview keeps the full screen.
+- Setup form now has three states: auth resolving (blank, no flash),
+  signed out (marketing hero + SignInCard + credit, no form), signed in
+  (SideNav + "New practice session" heading + compact form card, no
+  hero, no account strip). History page wraps in the same shell.
+- Global fixed header removed from layout.tsx (each view carries its own
+  identity now; header was overlapping the sidebar).
+- Verified in browser signed in on localhost: sidebar + focused form,
+  history in shell with active nav, saved-docs prefill toast still fires.
+- Also this slice: sign-in gate itself (form only after sign-in) was
+  added on user feedback earlier today, deployed and verified hosted.

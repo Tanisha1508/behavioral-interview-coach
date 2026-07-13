@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { OwlMascot } from '@/components/app/owl-mascot';
+import { SideNav } from '@/components/app/side-nav';
 import { useUser } from '@/hooks/useUser';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 
@@ -223,81 +224,90 @@ export default function HistoryPage() {
   }, [user, supabase]);
 
   return (
-    <main className="mx-auto min-h-svh w-full max-w-2xl px-4 pt-20 pb-16">
-      <div className="flex items-end justify-between gap-4">
-        <div>
-          <p className="text-primary text-xs font-bold tracking-widest uppercase">Your account</p>
-          <h1 className="text-foreground pt-1 text-2xl font-semibold tracking-tight">
-            Practice history
-          </h1>
-        </div>
-        <Link
-          href="/"
-          className="text-muted-foreground hover:text-foreground pb-1 text-sm underline underline-offset-4"
-        >
-          Back to practice
-        </Link>
-      </div>
-
-      {!isSupabaseConfigured || (!loading && !user) ? (
-        <div className="border-border/60 bg-card mt-6 flex items-center gap-4 rounded-xl border p-5">
-          <OwlMascot size={56} className="shrink-0" />
-          <p className="text-muted-foreground text-sm">
-            History needs an account. Go back and sign in with Google, then finish a session: every
-            graded answer lands here.
-          </p>
-        </div>
-      ) : loading || sessions === null ? (
-        <p className="text-muted-foreground mt-6 text-sm">Loading your history…</p>
-      ) : (
-        <>
-          {error && <p className="text-destructive mt-6 text-sm">{error}</p>}
-          <section className="mt-6">
-            <h2 className="text-foreground text-sm font-semibold">Sessions</h2>
-            {sessions.length === 0 ? (
-              <div className="border-border/60 bg-card mt-2 flex items-center gap-4 rounded-xl border p-5">
-                <OwlMascot size={56} className="shrink-0" />
-                <p className="text-muted-foreground text-sm">
-                  No sessions yet. Run a drill or simulation while signed in and it will appear here
-                  with its scores.
-                </p>
-              </div>
-            ) : (
-              <div className="mt-2 flex flex-col gap-2">
-                {sessions.map((s) => (
-                  <SessionCard key={s.id} session={s} />
-                ))}
-              </div>
-            )}
-          </section>
-
-          <section className="mt-8">
-            <h2 className="text-foreground text-sm font-semibold">Saved items</h2>
-            {(saved?.length ?? 0) === 0 ? (
-              <p className="text-muted-foreground border-border/60 bg-card mt-2 rounded-xl border p-5 text-sm">
-                Nothing saved yet. On a score card, save a rewrite you like; in a coach session,
-                save the gaps it flags.
+    <>
+      {user && <SideNav />}
+      <main className={user ? 'min-h-svh pt-16 md:pt-0 md:pl-60' : 'min-h-svh'}>
+        <div className="mx-auto w-full max-w-2xl px-4 py-8 md:py-12">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="text-primary text-xs font-bold tracking-widest uppercase">
+                Your account
               </p>
-            ) : (
-              <div className="mt-2 flex flex-col gap-2">
-                {saved!.map((item) => (
-                  <div key={item.id} className="border-border/60 bg-card rounded-xl border p-4">
-                    <p className="text-primary text-[10px] font-bold tracking-widest uppercase">
-                      {KIND_LABEL[item.kind] ?? item.kind} · {fmtDate(item.created_at)}
-                    </p>
-                    {item.title && (
-                      <p className="text-foreground pt-1 text-sm font-medium">{item.title}</p>
-                    )}
-                    <p className="text-foreground/90 pt-1 text-xs leading-5 whitespace-pre-wrap">
-                      {item.content}
+              <h1 className="text-foreground pt-1 text-2xl font-semibold tracking-tight">
+                Practice history
+              </h1>
+            </div>
+            {!user && (
+              <Link
+                href="/"
+                className="text-muted-foreground hover:text-foreground pb-1 text-sm underline underline-offset-4"
+              >
+                Back to practice
+              </Link>
+            )}
+          </div>
+
+          {!isSupabaseConfigured || (!loading && !user) ? (
+            <div className="border-border/60 bg-card mt-6 flex items-center gap-4 rounded-xl border p-5">
+              <OwlMascot size={56} className="shrink-0" />
+              <p className="text-muted-foreground text-sm">
+                History needs an account. Go back and sign in with Google, then finish a session:
+                every graded answer lands here.
+              </p>
+            </div>
+          ) : loading || sessions === null ? (
+            <p className="text-muted-foreground mt-6 text-sm">Loading your history…</p>
+          ) : (
+            <>
+              {error && <p className="text-destructive mt-6 text-sm">{error}</p>}
+              <section className="mt-6">
+                <h2 className="text-foreground text-sm font-semibold">Sessions</h2>
+                {sessions.length === 0 ? (
+                  <div className="border-border/60 bg-card mt-2 flex items-center gap-4 rounded-xl border p-5">
+                    <OwlMascot size={56} className="shrink-0" />
+                    <p className="text-muted-foreground text-sm">
+                      No sessions yet. Run a drill or simulation while signed in and it will appear
+                      here with its scores.
                     </p>
                   </div>
-                ))}
-              </div>
-            )}
-          </section>
-        </>
-      )}
-    </main>
+                ) : (
+                  <div className="mt-2 flex flex-col gap-2">
+                    {sessions.map((s) => (
+                      <SessionCard key={s.id} session={s} />
+                    ))}
+                  </div>
+                )}
+              </section>
+
+              <section className="mt-8">
+                <h2 className="text-foreground text-sm font-semibold">Saved items</h2>
+                {(saved?.length ?? 0) === 0 ? (
+                  <p className="text-muted-foreground border-border/60 bg-card mt-2 rounded-xl border p-5 text-sm">
+                    Nothing saved yet. On a score card, save a rewrite you like; in a coach session,
+                    save the gaps it flags.
+                  </p>
+                ) : (
+                  <div className="mt-2 flex flex-col gap-2">
+                    {saved!.map((item) => (
+                      <div key={item.id} className="border-border/60 bg-card rounded-xl border p-4">
+                        <p className="text-primary text-[10px] font-bold tracking-widest uppercase">
+                          {KIND_LABEL[item.kind] ?? item.kind} · {fmtDate(item.created_at)}
+                        </p>
+                        {item.title && (
+                          <p className="text-foreground pt-1 text-sm font-medium">{item.title}</p>
+                        )}
+                        <p className="text-foreground/90 pt-1 text-xs leading-5 whitespace-pre-wrap">
+                          {item.content}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+            </>
+          )}
+        </div>
+      </main>
+    </>
   );
 }
