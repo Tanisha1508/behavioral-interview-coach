@@ -50,7 +50,7 @@ async function rpcWithRetry(
   destinationIdentity: string,
   method: string,
   payload: string,
-  tries = 4
+  tries = 10
 ): Promise<void> {
   for (let i = 0; i < tries; i++) {
     try {
@@ -58,20 +58,51 @@ async function rpcWithRetry(
       return;
     } catch (err) {
       // The agent may not have registered its RPC handlers yet right
-      // after joining; back off briefly and retry.
+      // after joining; on a cold worker start registration can lag the
+      // join by several seconds, and a ~2s retry window lost the whole
+      // setup form (live 2026-07-13, TEST-LOG finding 1). Keep trying
+      // for ~10s before giving up.
       if (i === tries - 1) throw err;
-      await new Promise((r) => setTimeout(r, 600));
+      await new Promise((r) => setTimeout(r, 1000));
     }
   }
 }
 
-/** Send the interview setup to the agent after the room connects. */
-export async function sendSetup(room: Room, setup: InterviewSetup): Promise<void> {
+// LiveKit rejects RPC payloads over 15KiB. The form's 12000-char cap only
+// guarantees that for ASCII; bullets and smart quotes from pasted PDFs are
+// 2-3 UTF-8 bytes each, so measure the encoded payload and trim by bytes.
+const MAX_RPC_PAYLOAD_BYTES = 15_000;
+
+function fitPayload(name: string, text: string): string {
+  const bytes = (t: string) => new TextEncoder().encode(JSON.stringify({ name, text: t })).length;
+  if (bytes(text) <= MAX_RPC_PAYLOAD_BYTES) return JSON.stringify({ name, text });
+  let lo = 0;
+  let hi = text.length;
+  while (lo < hi) {
+    const mid = Math.ceil((lo + hi) / 2);
+    if (bytes(text.slice(0, mid)) <= MAX_RPC_PAYLOAD_BYTES) lo = mid;
+    else hi = mid - 1;
+  }
+  return JSON.stringify({ name, text: text.slice(0, lo) });
+}
+
+/** Send the interview setup to the agent after the room connects. Returns
+ * the names of documents that could not be delivered; a failed document
+ * must never block start_interview, or the agent falls back to a default
+ * session after a long silent wait (live failure 2026-07-13). */
+export async function sendSetup(room: Room, setup: InterviewSetup): Promise<string[]> {
   const agent = await waitForAgent(room);
+  const droppedDocs: string[] = [];
   for (const [name, text] of Object.entries(setup.materials)) {
     if (!text.trim()) continue;
-    await rpcWithRetry(room, agent.identity, 'set_doc', JSON.stringify({ name, text }));
+    try {
+      await rpcWithRetry(room, agent.identity, 'set_doc', fitPayload(name, text));
+    } catch (err) {
+      console.error(`set_doc failed for ${name}`, err);
+      droppedDocs.push(name);
+    }
   }
   const config = { ...setup, materials: {} };
   await rpcWithRetry(room, agent.identity, 'start_interview', JSON.stringify(config));
+  return droppedDocs;
 }

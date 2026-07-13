@@ -36,6 +36,7 @@ from src.engine.state import AnswerState, ProbeRecord, ProbeType, Question
 from src.grading import report
 from src.grading.ammo import missed_ammo
 from src.grading.grader import Timings, grade
+from src.llm.client import DailyCapReached, LLMUnavailable
 from src.persona.resolve import VOICE_LIBRARY, load_preset, resolve
 from src.persona.extract import PersonaTags
 from src.session import planner
@@ -107,7 +108,7 @@ def load_session_config() -> SessionConfig:
 
 
 async def wait_for_web_setup(ctx: agents.JobContext,
-                             timeout_s: float = 60.0) -> SessionConfig | None:
+                             timeout_s: float = 15.0) -> SessionConfig | None:
     """The web client sends the setup form over RPC right after it joins:
     one set_doc call per pasted document, then start_interview with the
     config. Returns None on timeout so the caller can fall back."""
@@ -405,14 +406,24 @@ class DrillRunner:
                 grade, gctx.transcript, gctx.probes,
                 Timings(duration_s=gctx.duration_s), self.manager.round,
                 gctx.grader_notes)
-        except Exception:
+        except (DailyCapReached, LLMUnavailable):
             # Grading needs the LLM; quota exhaustion must leave the user a
             # spoken way forward, not a dead session (live 2026-07-12).
-            logger.exception("grading failed")
+            logger.exception("grading failed: LLM unavailable")
             await self.say("I could not score that answer, my language "
                            "model quota is exhausted right now. Say retry "
                            "to answer it again, next to move on, or end "
                            "to stop.")
+            self.awaiting_verdict = True
+            return
+        except Exception:
+            # Anything else is a scoring bug, not quota; blaming quota here
+            # sent the user chasing limits that were fine (live 2026-07-13,
+            # TEST-LOG finding 4).
+            logger.exception("grading failed")
+            await self.say("Something went wrong while scoring that "
+                           "answer on my side. Say retry to answer it "
+                           "again, next to move on, or end to stop.")
             self.awaiting_verdict = True
             return
         try:
@@ -854,32 +865,37 @@ class InterviewerAgent(Agent):
     """The live interviewer. Its instructions come exclusively from
     InterviewerContext (question + persona + live transcript)."""
 
-    def __init__(self, runner: DrillRunner, instructions: str):
+    def __init__(self, runner: DrillRunner | None, instructions: str):
         super().__init__(instructions=instructions)
+        # None while the session warms up: the session must start (and
+        # speak) before pack/intel generation, which is when the runner
+        # gets built; anything the user says before then is not an answer.
         self.runner = runner
 
     async def on_user_turn_completed(self, turn_ctx, new_message) -> None:
-        text = getattr(new_message, "text_content", None) or ""
-        await self.runner.on_turn_complete(text)
+        if self.runner is not None:
+            text = getattr(new_message, "text_content", None) or ""
+            await self.runner.on_turn_complete(text)
         # The probe engine owns all interviewer speech; never let a chat LLM
         # generate a reply on its own.
         raise StopResponse()
 
 
 def build_tts(voice: dict) -> FallbackAdapter:
-    """ElevenLabs primary, Deepgram Aura fallback: when the ElevenLabs
-    free-tier quota runs out mid-session the interviewer keeps speaking
-    (in a slightly different voice) instead of going silent
-    (live failure 2026-07-12). Groq Orpheus was rejected as the fallback:
-    its generations drift into garble on longer utterances. Keys are read
-    from the environment, never hardcoded."""
+    """Deepgram Aura primary, ElevenLabs fallback (DECISIONS.md 2026-07-13).
+    The order was ElevenLabs-first until its quota ran out on 2026-07-12:
+    every utterance then paid ~2.6s of doomed retries before switching, and
+    on LiveKit Cloud the mid-stream switch to the fallback TTS hung without
+    audio or error, leaving the interviewer permanently silent (live failure
+    2026-07-13, reproduced in empty rooms). Aura-first avoids the switch
+    path entirely. Keys are read from the environment, never hardcoded."""
     return FallbackAdapter([
+        deepgram.TTS(model=voice["deepgram_voice"],
+                     api_key=os.environ["DEEPGRAM_API_KEY"]),
         # The plugin's env fallback is ELEVEN_API_KEY; our .env uses
         # ELEVENLABS_API_KEY, so pass the key explicitly.
         elevenlabs.TTS(voice_id=voice["elevenlabs_voice_id"],
                        api_key=os.environ["ELEVENLABS_API_KEY"]),
-        deepgram.TTS(model=voice["deepgram_voice"],
-                     api_key=os.environ["DEEPGRAM_API_KEY"]),
     ])
 
 
@@ -909,10 +925,13 @@ async def entrypoint(ctx: agents.JobContext) -> None:
 
     # Console mode configures via data/next_session.json; browser sessions
     # send the setup form over RPC after joining.
+    setup_missed = False
     if ctx.room.name.startswith("console"):
         cfg = load_session_config()
     else:
-        cfg = await wait_for_web_setup(ctx) or load_session_config()
+        web_cfg = await wait_for_web_setup(ctx)
+        setup_missed = web_cfg is None
+        cfg = web_cfg or load_session_config()
 
     if cfg.mode == "coach":
         session = AgentSession(
@@ -965,6 +984,28 @@ async def entrypoint(ctx: agents.JobContext) -> None:
 
     manager = SessionManager(cfg, persona)
 
+    voice = VOICE_LIBRARY.get(persona.voice_preset,
+                              VOICE_LIBRARY["brisk_neutral"])
+
+    session = AgentSession(
+        stt=deepgram.STT(model="nova-3", interim_results=True),
+        tts=build_tts(voice),
+        min_endpointing_delay=manager.round.patience_ms / 1000,
+    )
+
+    # The session starts and speaks BEFORE any slow work. Pack/intel
+    # generation reads the user's documents with the LLM and 30s on the
+    # free tier is normal; when it ran before session.start, the room had
+    # no audio track the whole time, the client sat on "your interviewer
+    # is joining" and gave up (live failure 2026-07-13, TEST-LOG finding
+    # 2). The runner does not exist yet, so it is attached to the agent
+    # after the queue is built; until then user speech is not an answer.
+    interviewer = InterviewerAgent(None, "")
+    await session.start(agent=interviewer, room=ctx.room)
+    if cfg.source.use_pack or cfg.source.intel_text.strip():
+        await session.say("Give me a moment while I read your documents.",
+                          allow_interruptions=False)
+
     # Pack and intel questions are generated here, by their owning modules
     # (they may read user docs; the queue and interviewer never do). This
     # was only ever wired for the coach; the interview path compiled an
@@ -993,6 +1034,11 @@ async def entrypoint(ctx: agents.JobContext) -> None:
     queue = compile_queue(cfg, topic_emphasis=persona.topic_emphasis,
                           pack_questions=pack_qs, intel_questions=intel_qs)
     fallback_note = ""
+    if setup_missed:
+        # The user filled a setup form that never arrived; running a default
+        # drill without saying so reads as the app ignoring their choices.
+        fallback_note = (" Heads up: your setup did not reach me, so this "
+                         "is a default practice drill.")
     if not queue:
         # Zero grounded pack questions or empty intel extraction must not
         # dead-end the session; fall back to the round's question bank and
@@ -1003,15 +1049,6 @@ async def entrypoint(ctx: agents.JobContext) -> None:
         fallback_note = (" I could not build questions from your documents "
                          "this time, so I picked standard ones for this "
                          "round.")
-
-    voice = VOICE_LIBRARY.get(persona.voice_preset,
-                              VOICE_LIBRARY["brisk_neutral"])
-
-    session = AgentSession(
-        stt=deepgram.STT(model="nova-3", interim_results=True),
-        tts=build_tts(voice),
-        min_endpointing_delay=manager.round.patience_ms / 1000,
-    )
 
     if cfg.session_type == SessionType.SIMULATION:
         sim_plan = planner.plan(queue, cfg.duration_min or 20, manager.round)
@@ -1049,12 +1086,10 @@ async def entrypoint(ctx: agents.JobContext) -> None:
     def _on_transcribed(event) -> None:
         runner.on_partial(event.transcript, event.is_final)
 
-    first_q = queue[0] if queue else None
-    ictx = manager.interviewer_context(first_q) if first_q else None
-    instructions = manager.interviewer_system_prompt(ictx) if ictx else ""
-
-    await session.start(agent=InterviewerAgent(runner, instructions),
-                        room=ctx.room)
+    # The session is already live (started above, before generation);
+    # handing the runner to the agent is what turns user speech into
+    # answers from here on.
+    interviewer.runner = runner
 
     if isinstance(runner, SimulationRunner):
         await runner.say(

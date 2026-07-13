@@ -137,6 +137,14 @@ def grade(transcript: str, probes: list[ProbeRecord], timings: Timings,
                                 "note": "grader returned no entry"})
         if scores[dim].get("level") not in LEVELS:
             scores[dim]["level"] = "NeedsWork"
+        # Models under failover return null or mistyped fields inside a
+        # dimension; one null note crashed scoring and the user heard a
+        # false "quota exhausted" (live 2026-07-13, TEST-LOG finding 4).
+        if not isinstance(scores[dim].get("note"), str):
+            scores[dim]["note"] = ""
+        evidence = scores[dim].get("evidence")
+        scores[dim]["evidence"] = ([str(e) for e in evidence if e is not None]
+                                   if isinstance(evidence, list) else [])
 
     violations = _verify_evidence(scores, transcript)
     _apply_auto_rules(scores, probes, grader_notes, transcript, timings, round)

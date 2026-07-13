@@ -19,6 +19,7 @@ Return strict JSON only:
 
 Rules:
 - Notes must quote the candidate's actual words in the problem field.
-- If docs are supplied, pull real facts from them into the rewrite; never invent facts, numbers, or names not present in the answer or docs.
-- The rewritten answer keeps the candidate's true story; it upgrades delivery, not substance.
-- If the answer is empty or trivially short, skip the notes (nothing to critique) and draft the rewritten answer entirely from the docs: pick the story in the docs that best fits the question and build a speakable answer from its real facts only.
+- If the answer tells a story, even a weak one, the rewritten answer MUST retell THAT SAME story and incident. Docs may only supply extra facts, names, and numbers that belong to that same story. Never replace the candidate's story with a different one from the docs; a rewrite of a story the candidate did not tell is useless to them.
+- If a different story in the docs would fit the question better, still rewrite the candidate's own story, and ADD one extra note: {"dimension": "alternative story", "problem": "why the story they told is a weaker fit for this question, quoting the question", "fix": "which doc story to use instead and one line on how to tell it"}.
+- Never invent facts, numbers, or names not present in the answer or docs.
+- Only if the answer is empty or trivially short (no story to keep): draft the rewritten answer entirely from the docs. Pick the story that matches the SPECIFIC competency the question asks about — quote the question's key phrase to yourself and match it (a question about disagreeing with feedback needs a feedback story, not any disagreement story). Include one note: {"dimension": "alternative story", "problem": "the answer had no story to work with", "fix": "which doc story was used and why it fits this exact question"}.

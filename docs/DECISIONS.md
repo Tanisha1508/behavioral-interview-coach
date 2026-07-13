@@ -127,3 +127,16 @@ Do not log decisions that the spec already made explicitly. This file is for gen
 - Header: owl + wordmark replaces the LiveKit logo; "Built with LiveKit
   Agents" stays as a muted credit (true, and it reads well for a
   portfolio piece).
+
+## 2026-07-13 — TTS order flipped: Deepgram Aura primary, ElevenLabs fallback
+
+**Item:** Amends the 2026-07-12 "ElevenLabs -> Deepgram Aura" fallback-chain decision.
+**Ambiguity:** ElevenLabs quota is exhausted until its monthly reset, so every utterance paid ~2.6s of doomed retries; worse, on LiveKit Cloud (agents 1.6.5 image) the FallbackAdapter's mid-stream switch to the second TTS hung with no audio and no error, leaving the interviewer permanently silent (live failure 2026-07-13, reproduced twice in empty debug rooms; the same switch works locally on 1.6.4 and 1.6.5).
+**Decision:** FallbackAdapter order is now [Deepgram Aura, ElevenLabs]; requirements-agent.txt pins livekit-agents==1.6.4 (the version all 127 tests and local runs use) instead of ~=1.6. Aura voices are the ones users have heard since the 12th anyway.
+**Why:** Aura-first avoids the broken switch path entirely and removes the retry latency. Revisit when the ElevenLabs quota resets IF the preset EL voices matter for the persona layer; flipping back requires first proving the cloud fallback switch works.
+
+## 2026-07-13 — Onboarding wizard approved (build order fixed, not yet built)
+
+**Item:** Next UI scope after the silent-interviewer fix.
+**Decision (user-approved):** (1) User live-tests the voice fix on hosted first; (2) if good, commit + push today's fixes to GitHub; (3) only then build onboarding. Shape: new Supabase `profiles` table (user_id, background, target_round, goal, onboarded_at) with the same RLS pattern; first-run wizard at /setup after sign-in when no profile row exists — three steps (about you / your round / your documents into the existing documents table), SKIPPABLE at every step; New session form pre-selects round from profile and collapses saved docs to an edit link; a Profile page in the SideNav lets the user edit every onboarding field and document later. Optionally pass background/goal to coach and grader only (context wall holds: live interviewer never sees docs).
+**Why:** User wants one-time document upload and a proper first-run experience; the documents table and prefill already exist, so this is profile row + wizard + form slimming, one focused session.

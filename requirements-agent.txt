@@ -3,9 +3,10 @@
 # local fallback STT/TTS nodes (faster-whisper, kokoro-onnx), none of which the
 # hosted worker uses. groq/orpheus TTS plugin was removed 2026-07-12; the groq
 # package stays for LLM failover.
-# ~=1.6 matches the version the local venv runs and tests against (1.6.4).
-# LiveKit Cloud's build check reads the spec literally and rejects ~=1.0.
-livekit-agents[deepgram,elevenlabs,silero,google,turn-detector]~=1.6
+# Pinned exactly: ~=1.6 let the 2026-07-13 cloud rebuild drift to 1.6.5
+# while every local run and test used 1.6.4. Bump deliberately, with a
+# local test pass on the same version first.
+livekit-agents[deepgram,elevenlabs,silero,google,turn-detector]==1.6.4
 google-genai
 groq
 pydantic>=2

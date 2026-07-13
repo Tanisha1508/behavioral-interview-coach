@@ -98,10 +98,18 @@ export function ViewController({ appConfig }: ViewControllerProps) {
     if (!isConnected || !pendingSetup.current) return;
     const setup = pendingSetup.current;
     pendingSetup.current = null;
-    sendSetup(session.room, setup).catch((err) => {
-      console.error('failed to send interview setup', err);
-      toast.warning('Setup could not reach the interviewer; using defaults.');
-    });
+    sendSetup(session.room, setup)
+      .then((droppedDocs) => {
+        if (droppedDocs.length > 0) {
+          toast.warning(
+            `Could not send ${droppedDocs.join(', ')} to the interviewer; continuing without.`
+          );
+        }
+      })
+      .catch((err) => {
+        console.error('failed to send interview setup', err);
+        toast.warning('Setup could not reach the interviewer; using defaults.');
+      });
   }, [isConnected, session.room]);
 
   useEffect(() => {

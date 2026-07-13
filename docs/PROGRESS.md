@@ -401,3 +401,95 @@ Configuration needs the vercel.app domain as Site URL / redirect URL.
   history in shell with active nav, saved-docs prefill toast still fires.
 - Also this slice: sign-in gate itself (form only after sign-in) was
   added on user feedback earlier today, deployed and verified hosted.
+
+## 2026-07-13 (later): GitHub public repo + README (item 14 part 1)
+
+- Public repo live: https://github.com/Tanisha1508/behavioral-interview-coach
+  (gh CLI installed via brew, user authenticated as Tanisha1508).
+- Pre-commit secrets audit caught a REAL Google API key pasted into
+  .env.example; blanked before the first commit ever existed, so nothing
+  was exposed and no rotation was needed. Broad entropy sweep after:
+  clean. .claude/ added to .gitignore.
+- Three commits pushed: initial codebase, design pass + app shell,
+  README rewrite.
+- README now leads with the hosted demo link, uses the live
+  /opengraph-image as its hero (verified 200), covers all three modes +
+  accounts/history, an architecture table, run-it-yourself for agent and
+  web, test count, and keeps the eval table.
+- Remaining for item 14: live spoken drill rep by the user to verify
+  agent -> Supabase persistence end to end (then human-agreement +
+  latency eval rows), persona-tag audit, MBA spot check.
+
+## 2026-07-13 (later): silent-interviewer fix (user's live drill failed)
+
+- User's hosted drill: agent joined but never spoke and never asked a
+  question. Two independent causes found from lk agent logs plus local
+  probes (scratchpad tts_probe.py):
+  1. TTS dead in cloud: ElevenLabs quota-exhausted ("no audio frames
+     were pushed"), and the FallbackAdapter's mid-stream switch to
+     Deepgram Aura hung on the cloud worker (agents 1.6.5 image, built
+     today from the ~=1.6 spec) — no audio, no error, session.say never
+     returned, so ask_next_question never ran. Reproduced twice in empty
+     debug rooms. The identical switch works locally on 1.6.4 AND 1.6.5,
+     and Deepgram Aura synthesizes fine with our key (curl 200 + probe).
+  2. Her setup form RPC never reached the agent ("no web setup arrived
+     in 60.0s"); she was connected the whole 4 minutes, so the send
+     failed client-side. Suspected: set_doc payload over the 15KiB RPC
+     cap (form's 12000-char cap only holds for ASCII; pasted PDFs carry
+     3-byte bullets), and any one doc failure aborted start_interview.
+- Fixes: build_tts order flipped to Aura-first (DECISIONS.md entry);
+  livekit-agents pinned ==1.6.4; wait_for_web_setup timeout 60s -> 15s
+  and the greeting now says when setup was missed; web sendSetup
+  byte-trims each set_doc payload, survives per-doc failures, always
+  sends start_interview, and reports dropped docs via toast.
+- 127 tests pass; prettier + next lint clean on the two web files.
+- Deployed: agent (lk agent deploy) and web (vercel --prod).
+- Verified in cloud after deploy (room verify-voice-room, lk room join
+  as probe-user): agent published 1 audio track, spoke the greeting with
+  the new setup-missed note, and asked the first bank question, zero TTS
+  failures in the logs. Empty-room caveat found on the way: the agent
+  defers audio linking until a participant joins, so empty debug rooms
+  always stall at the greeting by design; cloud voice checks need
+  lk room join.
+- Watch item: ~15 LiveKit agent minutes spent on today's debugging rooms
+  (counts against the 1000/month cap).
+
+## 2026-07-13 (night): six-run user test round -> four fixes (deployed, cloud-verified)
+
+- User ran 6 live scenarios on the hosted app; every finding, root cause,
+  and fix is logged in docs/TEST-LOG.md (new file, the running test log).
+  Three findings were by design (coach read time, speech queuing, Aura as
+  primary voice); four produced fixes:
+  1. Resume-pack "agent not joining": pack/intel generation (an LLM call,
+     ~26s on free tier) ran BEFORE session.start, so the room had no audio
+     track and the client gave up. Entrypoint reordered: session starts
+     and speaks first ("Give me a moment while I read your documents"),
+     generation runs after, runner attaches to the live InterviewerAgent
+     when the queue is ready (runner=None guard during warmup). The old
+     interviewer_context/instructions computation was removed with the
+     reorder: the interview AgentSession has no LLM and InterviewerAgent
+     always raises StopResponse, so instructions were inert.
+  2. False "quota exhausted" on scoring: the LLM returned "note": null in
+     one rubric dimension, pydantic crashed at grader.py, and the catch-all
+     blamed quota. grade() now sanitizes null/mistyped note+evidence per
+     dimension; _grade_and_feedback distinguishes DailyCapReached /
+     LLMUnavailable (real quota message) from other errors (honest
+     "something went wrong on my side", same retry/next/end options).
+  3. Rewrite swapping the user's story for a doc story: answer_rewrite
+     prompt hardened — substantive answers keep THEIR story (docs only add
+     facts to it); a better-fitting doc story becomes a labeled
+     "alternative story" note; thin-answer doc drafts must match the
+     question's specific competency and name the story used. UI renders
+     unknown dimension labels as-is, no web change needed.
+  4. Setup-form cold-start race ("no web setup arrived in 15.0s" on the
+     worker's first job): web rpcWithRetry window lengthened ~2s -> ~10s
+     (10 tries, 1s apart).
+- 127 tests pass; web tsc --noEmit clean.
+- Deployed: agent version PfXrtLFZnXtn (lk agent deploy) and web
+  (vercel --prod, Ready).
+- Cloud-verified via lk room join (room verify-fix-round2): agent joined,
+  published audio, spoke greeting + first question with no stall. Pack
+  mode with real docs needs the user's re-test to be fully verified;
+  TEST-LOG.md statuses stay FIX BUILT until then.
+- Still gated on the user: after her re-test passes, commit + push the
+  whole batch, then start the onboarding wizard (DECISIONS.md 2026-07-13).

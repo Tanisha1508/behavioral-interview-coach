@@ -17,6 +17,8 @@ Return strict JSON only:
 
 Rules:
 - "fact" MUST be an exact contiguous substring of the documents. Copy it character-for-character. Any item that is not an exact substring will be discarded.
-- Only include facts genuinely relevant to the question asked.
+- Only include facts genuinely relevant to the SPECIFIC competency the question asks about — quote the question's key phrase to yourself and check the fact against it, not against the candidate's job in general. A question about influencing leadership wants persuasion material, not any impressive fact.
+- If the answer told a story, prefer facts that belong to THAT story (its missing names, numbers, and outcomes) over facts from other projects; pull from a different project only when it answers the question better and say so in the relevance line.
+- The relevance line must say why the fact belonged in THIS answer to THIS question; if you cannot write that line convincingly, drop the item.
 - Only include facts absent from the spoken answer. A fact mentioned in different words in the answer counts as used, so leave it out.
 - 3 to 8 items. Fewer is fine if the answer used its material well.
