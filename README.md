@@ -17,7 +17,9 @@ A voice-native mock interviewer that asks real behavioral questions, listens to 
 - **Coach mode**: upload a resume and JD. Get a tailored question pack, a story-coverage map (which questions your prepared stories already answer), spoken game plans, and rubric-aligned rewrites.
 - **Probing engine**: mid-answer signals (vagueness, we-heavy phrasing, missing numbers, rambling) queue targeted follow-up probes that fire after your answer, never over it.
 - **Persona layer**: paste an interviewer bio; the tool extracts tags with a verbatim-evidence rule and tunes probe mix, intensity, pacing, and voice within bounds.
-- **Accounts and history**: Google sign-in. Sessions, per-answer scores, transcripts, rewrites, and saved documents persist to your account; a history page tracks progress over time. Saved resume and stories prefill the next session.
+- **Animated interviewer**: an owl mascot is who you talk to. It breathes and blinks while it listens, tilts into a thinking state while it scores, and its beak and halo move in time with its real voice while it speaks. Theme-aware and reduced-motion friendly.
+- **One-time setup and profile**: a skippable first-run wizard captures your background, target round, and documents once. A Profile page edits them later, and the New Session form pre-selects your round and reuses your saved documents. Your background and goal tune the questions you are asked and the coaching you get, never the live interviewer.
+- **Accounts and history**: Google sign-in, with a guest mode for a quick try. Sessions, per-answer scores, transcripts, rewrites, and saved documents persist to your account; a history page tracks progress over time. Close a score card by accident and a control reopens it until the next question.
 
 ## Architecture
 
@@ -27,7 +29,7 @@ A voice-native mock interviewer that asks real behavioral questions, listens to 
 | Web app | Next.js, LiveKit components, Tailwind | Vercel |
 | Accounts and data | Supabase (Google auth, Postgres with row-level security) | Supabase |
 
-Design rule worth knowing: a context wall. The live interviewer never sees your documents; only the grader, the missed-ammo pass, and the coach do. The agent writes history rows over the Supabase REST API with a service key; the browser reads them with the anon key under row-level security.
+Design rule worth knowing: a context wall. The live interviewer never sees your documents, background, or goal; only question generation, the grader, the missed-ammo pass, and the coach do. What shapes the interview is which questions get generated, not text fed to the interviewer at runtime (the interview path has no LLM). The agent writes history rows over the Supabase REST API with a service key; the browser reads them with the anon key under row-level security.
 
 ## Privacy
 
@@ -57,7 +59,7 @@ npm run dev
 
 Keys needed (all free tier): `GOOGLE_API_KEY` (AI Studio), `GROQ_API_KEY`, `DEEPGRAM_API_KEY`, `ELEVENLABS_API_KEY`, LiveKit credentials, and a Supabase project (run `supabase/schema.sql` in its SQL editor) if you want accounts.
 
-Tests: `python -m pytest tests/` (127 tests cover the turn-end decision loop, probe queueing, grading handoff, simulation pacing, and cloud persistence).
+Tests: `python -m pytest tests/` (130 tests cover the turn-end decision loop, probe queueing, the interrupt-then-command flow, grading handoff, simulation pacing, and cloud persistence).
 
 ## Eval results
 
