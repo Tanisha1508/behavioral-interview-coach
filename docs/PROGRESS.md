@@ -493,3 +493,96 @@ Configuration needs the vercel.app domain as Site URL / redirect URL.
   TEST-LOG.md statuses stay FIX BUILT until then.
 - Still gated on the user: after her re-test passes, commit + push the
   whole batch, then start the onboarding wizard (DECISIONS.md 2026-07-13).
+
+## 2026-07-14: onboarding wizard built (web side, tsc + lint clean, not yet live-tested)
+
+Six-run test round closed and committed/pushed (311af70) in the prior
+session; this checkpoint is the onboarding wizard per DECISIONS.md
+2026-07-13. Supabase `profiles` table run by the user in the SQL editor
+(user_id PK, background, goal, target_round with the five-round check,
+onboarded_at, updated_at; RLS "own profile" mirroring the other tables).
+schema.sql updated to match.
+
+Web work done:
+- lib/supabase/profiles.ts: loadProfile / saveProfile (partial upsert on
+  user_id) / markOnboarded + ROUNDS/ROUND_NAMES, mirroring documents.ts.
+- components/app/doc-input.tsx: DocInput + Field + DOC_LIMIT extracted from
+  setup-form so the wizard, profile page, and setup form share one input.
+- components/app/setup-wizard.tsx + app/setup/page.tsx: four screens
+  (welcome, about you, round, documents), skippable at every step; skip and
+  finish both stamp onboarded_at; prefills from any saved profile/docs so
+  re-running is not a reset; docs write to the existing documents table.
+- app/profile/page.tsx: edit background, goal, default round, and all four
+  documents; same shell + sign-in gate as history.
+- setup-form.tsx: first-run redirect to /setup when no profile row or
+  onboarded_at is null (held behind a load gate so the form never flashes;
+  fails open on error), round preselected from target_round, saved docs
+  collapsed to a "Your documents: ... Edit" line linking to /profile.
+- side-nav.tsx: Profile link added (desktop + mobile).
+
+Verify: web `npx tsc --noEmit` exit 0; `next lint` on all touched files
+clean.
+
+NOT done yet (next checkpoints):
+- Live click-through by the user on the hosted app (needs a vercel --prod
+  deploy first). Status stays build-verified, not live-tested.
+
+## 2026-07-14: background/goal wired into generation + coach (built, tests pass, not live-tested)
+
+The "interviewer knows your background" path, context-wall-respecting.
+background and goal travel from the saved profile through the setup RPC and
+into the two places that already read the user's documents. The live
+interviewer never receives them (it has no LLM; the wall in
+session/manager.py is untouched).
+
+- src/session/setup.py: SessionConfig gains background/goal (default ""),
+  so the start_interview RPC carries them into the agent automatically.
+- Pack generation: generate_pack(resume, jd, round, background, goal); both
+  agent call sites (coach start, interview pack) pass cfg.background/goal;
+  coach_questions.txt aims the pack at the stated level/target, ignored when
+  the lines add nothing. Empty -> "(not provided)".
+- Coach chat: coach_chat.txt gets who-they-are / what-they-prep-for lines and
+  a rule to pitch advice at that level without reading it back;
+  _llm_reply passes background/goal.
+- Web: InterviewSetup + DEFAULT_SETUP gain background/goal; setup-form loads
+  them from the profile and sends them in both interview and coach payloads.
+- Grader deliberately NOT wired (see DECISIONS.md 2026-07-14): scoring stays
+  blind to self-described background for consistency.
+
+Verify: 127 Python tests pass; web tsc --noEmit exit 0; next lint clean;
+load_prompt smoke test confirms no leftover {background}/{goal} placeholders
+and JSON braces preserved.
+
+Ready to deploy in one shot (agent + web) so the whole onboarding flow tests
+at once, per the user's batching request.
+
+## 2026-07-14 (later): deployed onboarding + background/goal; then interrupt fix
+
+- Deployed both: agent version qjpSvfsee47W (Running), web vercel --prod
+  READY. User tested: onboarding flow good; found the Interrupt button
+  broken (click Interrupt + say "end" did not end; agent spoke ahead).
+- Interrupt fix (agent-only, TEST-LOG round 2026-07-14 finding 7): Interrupt
+  now routes through the runner (note_interrupt), silences the rest of the
+  spoken feedback instead of playing on, and honors the next short "end" in
+  any state. 130 tests pass (3 new). Redeploying the agent; web unchanged.
+- NOT yet committed/pushed: whole batch (onboarding + background/goal +
+  interrupt fix) waits for the user's re-test to pass, then one commit.
+
+## 2026-07-14 (later still): score-card reopen + animated owl session UI
+
+- Score card reopen: closing the card no longer destroys it. useInterviewState
+  splits card (data) from cardOpen (visibility); a "View score card" pill sits
+  directly under the question card and reopens the same card (with its rewrite)
+  until the next question. Web-only, deployed.
+- Animated owl session screen: the agent tile is now the owl mascot that
+  listens / thinks / speaks. New components/app/speaking-owl.tsx reads
+  useVoiceAssistant() (state + audioTrack) and useMultibandTrackVolume for live
+  amplitude; beak, mouth, halo rings and head-bob ride --amp, breathe/tilt/
+  blink ride the state (styles in styles/globals.css, .owl-*). The vendored
+  agent tile visualizer (agent-session-view-01/.../audio-visualizer.tsx) now
+  renders SpeakingOwl instead of the bar/wave/etc.; the audioVisualizer* props
+  are kept for API compatibility but unused. Style approved via an artifact
+  mockup first (subtle & tasteful). Respects prefers-reduced-motion. Web tsc +
+  lint clean; deploying.
+- Still uncommitted: the whole session's batch goes up as one commit after the
+  owl is live-verified by the user.

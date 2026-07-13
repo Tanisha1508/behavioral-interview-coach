@@ -32,11 +32,14 @@ def _normalize(text: str) -> str:
 
 
 def generate_pack(resume_text: str, jd_text: str,
-                  round: RoundProfile) -> QuestionPack:
+                  round: RoundProfile, background: str = "",
+                  goal: str = "") -> QuestionPack:
     result = complete("coach_questions", {
         "resume": resume_text,
         "jd": jd_text,
         "profile_id": round.profile_id,
+        "background": background.strip() or "(not provided)",
+        "goal": goal.strip() or "(not provided)",
     }, json_schema={"type": "object"})
 
     resume_norm = _normalize(resume_text)

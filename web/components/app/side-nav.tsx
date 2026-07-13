@@ -3,7 +3,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { toast } from 'sonner';
-import { ClockCounterClockwiseIcon, HouseIcon, SignOutIcon } from '@phosphor-icons/react/dist/ssr';
+import {
+  ClockCounterClockwiseIcon,
+  HouseIcon,
+  SignOutIcon,
+  UserIcon,
+} from '@phosphor-icons/react/dist/ssr';
 import { OwlMascot } from '@/components/app/owl-mascot';
 import { useUser } from '@/hooks/useUser';
 import { cn } from '@/lib/shadcn/utils';
@@ -27,6 +32,7 @@ export function SideNav() {
   const links = [
     { href: '/', label: 'New session', icon: HouseIcon },
     { href: '/history', label: 'History', icon: ClockCounterClockwiseIcon },
+    { href: '/profile', label: 'Profile', icon: UserIcon },
   ];
 
   return (

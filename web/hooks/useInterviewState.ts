@@ -56,6 +56,9 @@ export function useInterviewState(room: Room | undefined) {
   const [questionNumber, setQuestionNumber] = useState(0);
   const [questionTotal, setQuestionTotal] = useState(0);
   const [card, setCard] = useState<ScoreCard | null>(null);
+  // Visibility is separate from the data so closing the card by mistake does
+  // not lose it: the user can reopen the same card until the next question.
+  const [cardOpen, setCardOpen] = useState(false);
   const [coachPack, setCoachPack] = useState<CoachPack | null>(null);
   const [gamePlans, setGamePlans] = useState<Record<string, string>>({});
   const [rewrite, setRewrite] = useState<RewriteResult | null>(null);
@@ -88,9 +91,11 @@ export function useInterviewState(room: Room | undefined) {
           setQuestionNumber(data.number ?? 0);
           setQuestionTotal(data.total ?? 0);
           setCard(null); // a new question clears the previous card
+          setCardOpen(false);
           setRewrite(null);
         } else if (topic === 'scorecard') {
           setCard(data as ScoreCard);
+          setCardOpen(true);
         } else if (topic === 'coachpack') {
           setCoachPack(data as CoachPack);
         } else if (topic === 'gameplan') {
@@ -115,6 +120,7 @@ export function useInterviewState(room: Room | undefined) {
       setQuestionNumber(0);
       setQuestionTotal(0);
       setCard(null);
+      setCardOpen(false);
       setCoachPack(null);
       setGamePlans({});
       setRewrite(null);
@@ -134,11 +140,13 @@ export function useInterviewState(room: Room | undefined) {
     questionNumber,
     questionTotal,
     card,
+    cardOpen,
     coachPack,
     gamePlans,
     rewrite,
     debrief,
     ended,
-    dismissCard: () => setCard(null),
+    showCard: () => setCardOpen(true),
+    dismissCard: () => setCardOpen(false),
   };
 }

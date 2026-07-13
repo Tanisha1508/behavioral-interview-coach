@@ -629,3 +629,79 @@ def test_simulation_records_all_reps_then_finishes(monkeypatch):
         assert cloud.finish_calls and \
             cloud.finish_calls[0]["raw"]["type"] == "simulation"
     asyncio.run(run())
+
+
+# --- Interrupt button + spoken command (live 2026-07-14: clicking Interrupt
+# then saying "end" did not end; the agent spoke ahead over the user) ---
+
+def test_interrupt_then_end_ends_session(monkeypatch):
+    # The reported bug: interrupt mid-rep, then a bare "end" must end it,
+    # even though we are not in the post-score verdict state.
+    monkeypatch.setattr(agent_mod, "END_SHUTDOWN_DELAY_S", 0.01)
+
+    async def run():
+        ended = []
+        runner, session, graded = make_runner(on_end=lambda: ended.append(True))
+        await runner.ask_next_question()
+        runner.note_interrupt()  # the web Interrupt button
+        await runner.on_turn_complete("end")
+        assert not graded, "interrupt + end must not grade a partial answer"
+        await asyncio.sleep(0.05)
+        assert ended, "interrupt + 'end' did not end the session"
+    asyncio.run(run())
+
+
+def test_interrupt_is_one_shot(monkeypatch):
+    # After an interrupt, a non-command utterance clears the flag and normal
+    # answering resumes; it must not be swallowed or mistaken for a command.
+    monkeypatch.setattr(agent_mod, "END_SHUTDOWN_DELAY_S", 0.01)
+
+    async def run():
+        ended = []
+        runner, session, graded = make_runner(on_end=lambda: ended.append(True))
+        await runner.ask_next_question()
+        runner.note_interrupt()
+        await runner.on_turn_complete("So the project I want to talk about")
+        assert not ended, "a normal utterance after interrupt ended the session"
+        assert not runner._interrupted, "interrupt flag must be one-shot"
+        assert runner.state is not None, "runner should resume listening"
+    asyncio.run(run())
+
+
+def test_interrupt_silences_feedback_but_opens_verdict(monkeypatch):
+    # No speaking ahead: an interrupt during scoring suppresses the spoken
+    # feedback and verdict prompt (a non-interruptible say would talk over
+    # the user's "end"), while awaiting_verdict still opens retry/next/end.
+    class DummyScores:
+        spoken_summary = ["ok"]
+
+        def model_dump(self):
+            return {"dimensions": {}}
+
+    monkeypatch.setattr(agent_mod, "grade", lambda *a, **k: DummyScores())
+    monkeypatch.setattr(agent_mod, "missed_ammo", lambda *a, **k: [])
+    monkeypatch.setattr(agent_mod, "save_session", lambda *a, **k: None)
+    monkeypatch.setattr(agent_mod.report, "render_card", lambda *a, **k: "card")
+    monkeypatch.setattr(agent_mod.report, "spoken_script",
+                        lambda *a, **k: "your feedback here")
+
+    async def run():
+        cfg = SessionConfig(profile_id="pm")
+        persona = resolve(PersonaTags(), overrides=cfg.persona_overrides,
+                          selected_round=cfg.profile_id)
+        manager = SessionManager(cfg, persona)
+        session = FakeSession()
+        queue = [Question(id="q0", text="Question 0?")]
+        runner = DrillRunner(session, manager, queue)
+        await runner.ask_next_question()
+        runner.on_partial("I did the thing and it worked well.", True)
+        runner.note_interrupt()
+        await runner._grade_and_feedback()
+        assert runner.awaiting_verdict, \
+            "verdict path must still open so retry/next/end work"
+        joined = " ".join(session.spoken)
+        assert "your feedback here" not in joined, \
+            "interrupt must silence the spoken feedback"
+        assert "Say retry" not in joined, \
+            "interrupt must silence the verdict prompt (no speaking ahead)"
+    asyncio.run(run())

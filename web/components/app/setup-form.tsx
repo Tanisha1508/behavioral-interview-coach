@@ -1,9 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { ChatCircleDotsIcon, ExamIcon, GraduationCapIcon } from '@phosphor-icons/react/dist/ssr';
 import { SignInCard } from '@/components/app/account-menu';
+import { DocInput, Field } from '@/components/app/doc-input';
 import { OwlMascot } from '@/components/app/owl-mascot';
 import { SideNav } from '@/components/app/side-nav';
 import { Button } from '@/components/ui/button';
@@ -11,6 +14,7 @@ import { useUser } from '@/hooks/useUser';
 import { DEFAULT_SETUP, type InterviewSetup } from '@/lib/interview-setup';
 import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { loadDocuments, saveDocuments } from '@/lib/supabase/documents';
+import { loadProfile } from '@/lib/supabase/profiles';
 
 const PROFILES: Record<string, string> = {
   pm: 'Product Management',
@@ -31,124 +35,14 @@ const SOURCE_HINTS: Record<string, string> = {
   scripted: 'Type your questions below. No documents needed.',
   intel: 'Paste the questions you collected below. No documents needed.',
 };
-const DOC_LIMIT = 12000; // keeps each set_doc RPC under the 15KiB payload cap
-
+const DOC_KIND_LABELS: Record<string, string> = {
+  resume: 'Resume',
+  jd: 'JD',
+  stories: 'Stories',
+  bio: 'Interviewer bio',
+};
 interface SetupFormProps {
   onStartCall: (setup: InterviewSetup) => void;
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="flex flex-col gap-1 text-left">
-      <span className="text-foreground text-sm font-medium">{label}</span>
-      {children}
-    </label>
-  );
-}
-
-function DocInput({
-  label,
-  value,
-  onChange,
-  placeholder,
-  allowUpload = false,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  placeholder: string;
-  allowUpload?: boolean;
-}) {
-  const [status, setStatus] = useState('');
-  const [fileName, setFileName] = useState('');
-  const [showText, setShowText] = useState(false);
-
-  const onFile = async (file: File | undefined) => {
-    if (!file) return;
-    setStatus('Reading file...');
-    try {
-      const { extractText } = await import('@/lib/extract-text');
-      let text = (await extractText(file)).trim();
-      if (!text) {
-        setStatus('No text found in that file (is it a scanned PDF?). Paste instead.');
-        return;
-      }
-      let note = '';
-      if (text.length > DOC_LIMIT) {
-        text = text.slice(0, DOC_LIMIT);
-        note = ` (trimmed to ${DOC_LIMIT.toLocaleString()} characters)`;
-      }
-      onChange(text);
-      setFileName(file.name);
-      setShowText(false);
-      setStatus(`${text.length.toLocaleString()} characters${note}`);
-    } catch (err) {
-      console.error('document extraction failed', err);
-      setStatus('Could not read that file. Paste the text instead.');
-    }
-  };
-
-  const remove = () => {
-    onChange('');
-    setFileName('');
-    setStatus('');
-    setShowText(false);
-  };
-
-  return (
-    <Field label={label}>
-      {allowUpload && !fileName && (
-        <input
-          type="file"
-          accept=".pdf,.md,.txt"
-          onChange={(e) => onFile(e.target.files?.[0])}
-          className="text-muted-foreground file:border-input file:bg-background file:text-foreground text-xs file:mr-2 file:cursor-pointer file:rounded-md file:border file:px-2 file:py-1"
-        />
-      )}
-      {fileName ? (
-        <div className="border-input bg-background flex items-center gap-2 rounded-md border p-2 text-sm">
-          <span className="text-foreground min-w-0 flex-1 truncate">
-            {fileName} <span className="text-muted-foreground text-xs">{status}</span>
-          </span>
-          <button
-            type="button"
-            onClick={() => setShowText(!showText)}
-            className="text-muted-foreground text-xs underline"
-          >
-            {showText ? 'Hide text' : 'View text'}
-          </button>
-          <button
-            type="button"
-            onClick={remove}
-            className="text-muted-foreground text-xs underline"
-          >
-            Remove
-          </button>
-        </div>
-      ) : (
-        <>
-          <textarea
-            value={value}
-            maxLength={DOC_LIMIT}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder={placeholder}
-            rows={4}
-            className="border-input bg-background text-foreground rounded-md border p-2 text-sm"
-          />
-          {status && <span className="text-muted-foreground text-xs">{status}</span>}
-        </>
-      )}
-      {fileName && showText && (
-        <textarea
-          value={value}
-          maxLength={DOC_LIMIT}
-          onChange={(e) => onChange(e.target.value)}
-          rows={8}
-          className="border-input bg-background text-foreground rounded-md border p-2 text-sm"
-        />
-      )}
-    </Field>
-  );
 }
 
 export const SetupForm = ({ onStartCall, ref }: React.ComponentProps<'div'> & SetupFormProps) => {
@@ -165,11 +59,44 @@ export const SetupForm = ({ onStartCall, ref }: React.ComponentProps<'div'> & Se
   const [jd, setJd] = useState('');
   const [stories, setStories] = useState('');
   const [bio, setBio] = useState('');
+  // From the saved profile; sent to generation + coach, never the interviewer.
+  const [background, setBackground] = useState('');
+  const [goal, setGoal] = useState('');
   const [showDocs, setShowDocs] = useState(false);
   const [error, setError] = useState('');
   const { user, loading: userLoading, supabase } = useUser();
   const [docsLoaded, setDocsLoaded] = useState(false);
+  const [savedDocKinds, setSavedDocKinds] = useState<string[]>([]);
   const [savingDocs, setSavingDocs] = useState(false);
+  const [profileChecked, setProfileChecked] = useState(false);
+  const profileLoadStarted = useRef(false);
+  const router = useRouter();
+
+  // First-run gate: a signed-in user with no profile row, or one who has not
+  // finished (or skipped) onboarding, goes to the wizard. Once onboarded_at is
+  // stamped this never fires again. Also preselects their saved round.
+  // profileChecked stays false until the load resolves so the form never
+  // flashes before a redirect; on a not-onboarded user it stays false while we
+  // navigate away, and fails open on error.
+  useEffect(() => {
+    if (!user || !supabase || profileLoadStarted.current) return;
+    profileLoadStarted.current = true;
+    loadProfile(supabase)
+      .then((p) => {
+        if (!p || !p.onboarded_at) {
+          router.replace('/setup');
+          return;
+        }
+        if (p.target_round) setProfile(p.target_round);
+        if (p.background) setBackground(p.background);
+        if (p.goal) setGoal(p.goal);
+        setProfileChecked(true);
+      })
+      .catch((err) => {
+        console.error('loading profile failed', err);
+        setProfileChecked(true);
+      });
+  }, [user, supabase, router]);
 
   // Signed-in users get their saved documents prefilled, without ever
   // overwriting something already typed or uploaded in this visit.
@@ -182,6 +109,7 @@ export const SetupForm = ({ onStartCall, ref }: React.ComponentProps<'div'> & Se
         if (docs.jd) setJd((prev) => (prev.trim() ? prev : docs.jd!));
         if (docs.stories) setStories((prev) => (prev.trim() ? prev : docs.stories!));
         if (docs.bio) setBio((prev) => (prev.trim() ? prev : docs.bio!));
+        setSavedDocKinds(Object.keys(docs));
         if (Object.keys(docs).length) toast.info('Loaded your saved documents.');
       })
       .catch((err) => console.error('loading saved documents failed', err));
@@ -216,6 +144,8 @@ export const SetupForm = ({ onStartCall, ref }: React.ComponentProps<'div'> & Se
         ...DEFAULT_SETUP,
         mode: 'coach',
         profile_id: profile,
+        background,
+        goal,
         materials: Object.fromEntries(
           Object.entries({ resume, jd, stories }).filter(([, v]) => v.trim())
         ),
@@ -241,6 +171,8 @@ export const SetupForm = ({ onStartCall, ref }: React.ComponentProps<'div'> & Se
       session_type: sessionType,
       duration_min: sessionType === 'SIMULATION' ? durationMin : null,
       followup_mode: mode,
+      background,
+      goal,
       materials: Object.fromEntries(
         Object.entries({ resume, jd, stories, bio }).filter(([, v]) => v.trim())
       ),
@@ -260,8 +192,10 @@ export const SetupForm = ({ onStartCall, ref }: React.ComponentProps<'div'> & Se
     onStartCall({ ...DEFAULT_SETUP, ...setup });
   };
 
-  // Auth still resolving: render nothing rather than flash the wrong view.
-  if (isSupabaseConfigured && userLoading) {
+  // Auth still resolving, or a signed-in user's profile not yet checked
+  // (they may be about to be redirected to the wizard): render nothing rather
+  // than flash the form.
+  if (isSupabaseConfigured && (userLoading || (user && !profileChecked))) {
     return <div ref={ref} className="max-h-svh w-full overflow-y-auto" />;
   }
 
@@ -459,13 +393,33 @@ export const SetupForm = ({ onStartCall, ref }: React.ComponentProps<'div'> & Se
               />
             )}
 
+            {appMode === 'interview' && user && savedDocKinds.length > 0 && !showDocs && (
+              <div className="text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm">
+                <span>
+                  Your documents:{' '}
+                  <span className="text-foreground">
+                    {savedDocKinds.map((k) => DOC_KIND_LABELS[k] ?? k).join(', ')}
+                  </span>
+                </span>
+                <Link
+                  href="/profile"
+                  className="text-primary underline underline-offset-2 hover:opacity-80"
+                >
+                  Edit
+                </Link>
+              </div>
+            )}
             {appMode === 'interview' && (
               <button
                 type="button"
                 onClick={() => setShowDocs(!showDocs)}
                 className="text-muted-foreground self-start text-sm underline"
               >
-                {showDocs ? 'Hide documents' : 'Add documents (resume, JD, stories)'}
+                {showDocs
+                  ? 'Hide documents'
+                  : savedDocKinds.length > 0
+                    ? 'Adjust documents for this session'
+                    : 'Add documents (resume, JD, stories)'}
               </button>
             )}
             {(showDocs || appMode === 'coach') && (

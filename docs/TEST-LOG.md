@@ -108,6 +108,56 @@ captured live via `lk agent logs` during the runs.
   told, and drop any item whose relevance line cannot be written
   convincingly (src/llm/prompts/missed_ammo.txt).
 
+## Round 2026-07-14 (onboarding + background/goal deploy)
+
+### 7. Interrupt button then "end" did not end; agent spoke ahead
+
+- Symptom: during spoken feedback the user clicks Interrupt and says "end";
+  the session does not end and the agent keeps talking.
+- Root cause: three compounding issues. (a) The Interrupt RPC only
+  force-stopped the CURRENT non-interruptible say; _grade_and_feedback
+  chains several says (feedback, then the verdict prompt), so cutting one
+  advanced to the next ("speaking ahead"). (b) The user's "end" landed while
+  that next say played, and agent speech is interruption-immune, so the mic
+  turn was dropped. (c) Bare "end" only ends in the post-score verdict
+  state; mid-feedback self.state is None and on_turn_complete early-returned.
+- Fix: route Interrupt through the runner (note_interrupt). It sets a
+  one-shot flag that (1) silences the rest of the feedback chain in
+  _grade_and_feedback while still opening awaiting_verdict, so the agent goes
+  quiet instead of talking over the user, and (2) makes the next short
+  "end"/"stop" end the session in any state (_handle_interrupt_command);
+  retry/next still flow through the verdict path. The score card is already
+  on screen, so nothing visible is lost (src/agent.py).
+- Tests: 3 added in tests/test_agent_runner.py (interrupt+end ends;
+  one-shot; feedback silenced but verdict opened). 130 tests pass.
+- Status: FIX BUILT (awaiting user re-test on hosted).
+
+### 8. No way to reopen the score card after closing it
+
+- Symptom: closing the score card (Close, or an accidental backdrop feel)
+  removed it with no way to bring it back; the scores were gone until the
+  next question.
+- Root cause: dismissCard set the card data to null, so the card and its
+  rewrite were destroyed, not just hidden.
+- Fix: split visibility from data in useInterviewState (card vs cardOpen).
+  Close now only hides; a centered "View score card" pill reopens the same
+  card (with its rewrite) until the next question clears it. Interrupt +
+  finding 7 unaffected (web/hooks/useInterviewState.ts,
+  web/components/app/view-controller.tsx). Web-only change.
+- Status: FIX BUILT (awaiting user re-test on hosted).
+
+### 9. Owl showed "listening" while it was scoring
+
+- Symptom: during grading the animated owl read Listening, not Thinking.
+- Root cause: the interview AgentSession has no LLM and grading runs in a
+  background thread, so LiveKit's voice-assistant state (which the owl reads)
+  stays "listening" through scoring.
+- Fix: the runner publishes an "agent_phase" data message ("thinking" when
+  grading starts, "idle" at every exit); SpeakingOwl listens for it and
+  overrides idle/listening with thinking (speaking still wins). Both sides
+  deployed (src/agent.py, web/components/app/speaking-owl.tsx).
+- Status: FIX BUILT (awaiting user re-test).
+
 ### Watch items from this round
 
 - Persona extraction (`extract_tags`) also runs an LLM call before

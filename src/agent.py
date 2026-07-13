@@ -168,6 +168,10 @@ class DrillRunner:
         self._last_rep = None  # grader context kept for rewrite requests
         self._rewrite_busy = False
         self._pregen_launched: set[str] = set()
+        # Set by the web Interrupt button. One-shot: it silences the rest of
+        # the current spoken feedback and makes the next short utterance a
+        # command, then clears on the next turn.
+        self._interrupted = False
 
     # ---- lifecycle ----
 
@@ -186,6 +190,7 @@ class DrillRunner:
         self.answer_started = None  # starts when the user starts speaking
         self.main_answer_ms: int | None = None
         self.awaiting_verdict = False
+        self._interrupted = False
         self._last_rep = None
         self._pregen_launched.clear()
         self.publish_ui("question", {"text": self.current_question.text,
@@ -293,7 +298,33 @@ class DrillRunner:
             self.state.transcript_partial = ""
             self.answer_started = None  # clock restarts with the real answer
 
+    def note_interrupt(self) -> None:
+        """The web Interrupt button was pressed (the session already
+        force-stopped the current utterance). Flag it so the rest of the
+        spoken feedback is skipped instead of playing on, and the user's
+        next short command is honored right away."""
+        self._interrupted = True
+
+    async def _handle_interrupt_command(self, text: str) -> bool:
+        """After an interrupt, honor a short spoken 'end'/'stop' in any
+        state. Returns True when it ended the session, False to fall
+        through to normal handling (retry/next stay on the verdict path)."""
+        low = text.lower().strip()
+        words = set(low.replace(",", " ").replace(".", " ").split())
+        if len(low.split()) <= 8 and ("end" in words or "stop" in words):
+            await self.say("Ending the session. Good work today.")
+            self._end_session()
+            return True
+        return False
+
     async def on_turn_complete(self, final_text: str) -> None:
+        if self._interrupted:
+            # One-shot: the button silenced the feedback; the next utterance
+            # is treated as a command. Clear before handling so normal turns
+            # resume immediately after.
+            self._interrupted = False
+            if await self._handle_interrupt_command(final_text):
+                return
         if self.awaiting_verdict:
             await self._handle_verdict(final_text)
             return
@@ -401,6 +432,12 @@ class DrillRunner:
         self._last_rep = gctx  # kept for a possible rewrite request
 
         await self.say("Thanks. Give me a few seconds to score that.")
+        # Scoring runs in a background thread, which the LiveKit voice-assistant
+        # state cannot see, so the animated owl would read "listening" while it
+        # is really working. Drive the owl's thinking state explicitly here and
+        # clear it at every exit (live 2026-07-14: owl showed listening while
+        # scoring).
+        self.publish_ui("agent_phase", {"phase": "thinking"})
         try:
             scores = await asyncio.to_thread(
                 grade, gctx.transcript, gctx.probes,
@@ -410,6 +447,7 @@ class DrillRunner:
             # Grading needs the LLM; quota exhaustion must leave the user a
             # spoken way forward, not a dead session (live 2026-07-12).
             logger.exception("grading failed: LLM unavailable")
+            self.publish_ui("agent_phase", {"phase": "idle"})
             await self.say("I could not score that answer, my language "
                            "model quota is exhausted right now. Say retry "
                            "to answer it again, next to move on, or end "
@@ -421,6 +459,7 @@ class DrillRunner:
             # sent the user chasing limits that were fine (live 2026-07-13,
             # TEST-LOG finding 4).
             logger.exception("grading failed")
+            self.publish_ui("agent_phase", {"phase": "idle"})
             await self.say("Something went wrong while scoring that "
                            "answer on my side. Say retry to answer it "
                            "again, next to move on, or end to stop.")
@@ -433,6 +472,7 @@ class DrillRunner:
             # Missed ammo is an enhancement; the card stands without it.
             logger.exception("missed-ammo pass failed; continuing without")
             ammo = []
+        self.publish_ui("agent_phase", {"phase": "idle"})
 
         card = report.render_card(scores, ammo)
         print(card)
@@ -455,17 +495,23 @@ class DrillRunner:
                 question=self.current_question.text,
                 transcript=gctx.transcript, duration_s=duration_s,
                 scores=scores.model_dump())
-        await self.say(report.spoken_script(scores, ammo)
-                       + " To improve the answer, click Show me the "
-                       "rewrite on the card.")
-        if self.queue:
-            await self.say(
-                f"That was question {self.question_number} of "
-                f"{self.total_questions}. Say retry to redo it, next for "
-                "the next question, or end to stop here.")
-        else:
-            await self.say("That was the last question. Say retry to redo "
-                           "it, or end to finish.")
+        # Interrupt pressed during scoring: stay silent instead of playing
+        # the spoken feedback and verdict prompt over the user (a
+        # non-interruptible say would swallow their "end"). The score card is
+        # already on screen; awaiting_verdict still opens the retry/next/end
+        # path, and a short "end" ends it via note_interrupt.
+        if not self._interrupted:
+            await self.say(report.spoken_script(scores, ammo)
+                           + " To improve the answer, click Show me the "
+                           "rewrite on the card.")
+            if self.queue:
+                await self.say(
+                    f"That was question {self.question_number} of "
+                    f"{self.total_questions}. Say retry to redo it, next for "
+                    "the next question, or end to stop here.")
+            else:
+                await self.say("That was the last question. Say retry to redo "
+                               "it, or end to finish.")
         self.awaiting_verdict = True
 
     async def send_rewrite(self) -> None:
@@ -713,7 +759,7 @@ class CoachRunner:
         try:
             self.pack = await asyncio.to_thread(
                 coach_questions.generate_pack, resume, jd,
-                self.cfg.round_profile())
+                self.cfg.round_profile(), self.cfg.background, self.cfg.goal)
         except Exception:
             # LLM quota exhaustion must end the session with words, not an
             # unhandled crash the client reads as "agent left unexpectedly"
@@ -845,6 +891,8 @@ class CoachRunner:
             f"{speaker}: {text}" for speaker, text in self.history[-9:-1])
         try:
             result = complete("coach_chat", {
+                "background": self.cfg.background.strip() or "(not provided)",
+                "goal": self.cfg.goal.strip() or "(not provided)",
                 "resume": self.cfg.materials.get("resume", ""),
                 "jd": self.cfg.materials.get("jd", ""),
                 "stories": self.cfg.materials.get("stories", ""),
@@ -900,11 +948,14 @@ def build_tts(voice: dict) -> FallbackAdapter:
 
 
 def _register_interrupt_rpc(ctx: agents.JobContext, session: AgentSession,
-                            loop: asyncio.AbstractEventLoop) -> None:
+                            loop: asyncio.AbstractEventLoop,
+                            runner=None) -> None:
     """Web 'Interrupt' button: agent speech is deliberately immune to
     voice interruption (user rule 2026-07-10), so an explicit button is
     the only way to cut a long game plan or feedback short
-    (user request 2026-07-13). force=True overrides the protection."""
+    (user request 2026-07-13). force=True overrides the protection, and the
+    runner is told so it stops speaking ahead and takes the next short
+    command (live 2026-07-14: interrupt + 'end' did not end)."""
 
     def _handle_interrupt(data) -> str:
         def _do() -> None:
@@ -912,6 +963,9 @@ def _register_interrupt_rpc(ctx: agents.JobContext, session: AgentSession,
                 session.interrupt(force=True)
             except Exception:
                 logger.debug("interrupt ignored", exc_info=True)
+            note = getattr(runner, "note_interrupt", None)
+            if callable(note):
+                note()
 
         loop.call_soon_threadsafe(_do)
         return "ok"
@@ -958,7 +1012,7 @@ async def entrypoint(ctx: agents.JobContext) -> None:
 
         ctx.room.local_participant.register_rpc_method(
             "discuss_question", _handle_discuss)
-        _register_interrupt_rpc(ctx, session, loop)
+        _register_interrupt_rpc(ctx, session, loop, runner)
 
         await session.start(
             agent=InterviewerAgent(
@@ -1017,7 +1071,8 @@ async def entrypoint(ctx: agents.JobContext) -> None:
             pack = await asyncio.to_thread(
                 coach_questions.generate_pack,
                 cfg.materials.get("resume", ""),
-                cfg.materials.get("jd", ""), manager.round)
+                cfg.materials.get("jd", ""), manager.round,
+                cfg.background, cfg.goal)
             # A drill rep is a handful of questions, not a full prep list.
             pack_qs = [Question(id=f"pack_{i + 1:02d}", text=q.text,
                                 source="pack")
@@ -1080,7 +1135,7 @@ async def entrypoint(ctx: agents.JobContext) -> None:
 
     ctx.room.local_participant.register_rpc_method(
         "get_rewrite", _handle_rewrite)
-    _register_interrupt_rpc(ctx, session, loop)
+    _register_interrupt_rpc(ctx, session, loop, runner)
 
     @session.on("user_input_transcribed")
     def _on_transcribed(event) -> None:

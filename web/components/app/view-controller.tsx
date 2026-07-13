@@ -55,11 +55,13 @@ export function ViewController({ appConfig }: ViewControllerProps) {
     questionNumber,
     questionTotal,
     card,
+    cardOpen,
     coachPack,
     gamePlans,
     rewrite,
     debrief,
     ended,
+    showCard,
     dismissCard,
   } = useInterviewState(session.room);
 
@@ -172,7 +174,12 @@ export function ViewController({ appConfig }: ViewControllerProps) {
       </AnimatePresence>
       {isConnected && (
         <>
-          <QuestionBanner question={question} number={questionNumber} total={questionTotal} />
+          <QuestionBanner
+            question={question}
+            number={questionNumber}
+            total={questionTotal}
+            onViewCard={card && !cardOpen ? showCard : undefined}
+          />
           {coachPack && !question && <CoachActionsBanner />}
           {coachPack && (
             <CoachPackPanel
@@ -182,7 +189,7 @@ export function ViewController({ appConfig }: ViewControllerProps) {
               onPractice={practiceInDrill}
             />
           )}
-          {card && (
+          {card && cardOpen && (
             <ScoreCardPanel
               card={card}
               rewrite={rewrite}

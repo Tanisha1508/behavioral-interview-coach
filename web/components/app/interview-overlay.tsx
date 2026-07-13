@@ -29,14 +29,16 @@ export function QuestionBanner({
   question,
   number,
   total,
+  onViewCard,
 }: {
   question: string;
   number?: number;
   total?: number;
+  onViewCard?: () => void;
 }) {
   if (!question) return null;
   return (
-    <div className="pointer-events-none fixed top-4 right-4 left-4 z-40 flex justify-center">
+    <div className="pointer-events-none fixed top-4 right-4 left-4 z-40 flex flex-col items-center gap-2">
       <div className="bg-background/95 border-input max-w-2xl rounded-lg border px-4 py-3 shadow-sm backdrop-blur">
         <p className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
           {number && total ? `Question ${number} of ${total}` : 'Question'}
@@ -47,6 +49,15 @@ export function QuestionBanner({
           &ldquo;repeat the question&rdquo; to hear it again.
         </p>
       </div>
+      {onViewCard && (
+        <button
+          type="button"
+          onClick={onViewCard}
+          className="bg-background/95 border-input text-foreground hover:bg-muted pointer-events-auto rounded-full border px-4 py-1.5 text-sm font-medium shadow-sm backdrop-blur transition-colors"
+        >
+          View score card
+        </button>
+      )}
     </div>
   );
 }

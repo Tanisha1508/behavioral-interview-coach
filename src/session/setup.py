@@ -40,6 +40,12 @@ class SessionConfig(BaseModel):
     followup_mode: str = "listen"
     duration_min: int | None = None  # SIMULATION only
     materials: dict[str, str] = Field(default_factory=dict)  # resume|jd|bio|stories
+    # Short self-description and prep goal from the user's saved profile. They
+    # feed question generation and the coach only, the same channel as the
+    # documents. The live interviewer never receives them (the context wall
+    # holds; the interviewer path has no LLM anyway).
+    background: str = ""
+    goal: str = ""
     source: QuestionSourceConfig = Field(default_factory=QuestionSourceConfig)
     persona_overrides: dict = Field(default_factory=dict)
 

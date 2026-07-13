@@ -9,6 +9,10 @@ export interface InterviewSetup {
   session_type: 'DRILL' | 'SIMULATION';
   duration_min: number | null; // SIMULATION only, 15-60
   followup_mode: 'listen' | 'probing';
+  // From the user's saved profile. Feed question generation and the coach
+  // only; the live interviewer never receives them (context wall).
+  background: string;
+  goal: string;
   materials: Record<string, string>;
   source: {
     scripted: string[];
@@ -24,6 +28,8 @@ export const DEFAULT_SETUP: InterviewSetup = {
   session_type: 'DRILL',
   duration_min: null,
   followup_mode: 'listen',
+  background: '',
+  goal: '',
   materials: {},
   source: { scripted: [], use_pack: false, bank_count: 3, intel_text: '' },
 };

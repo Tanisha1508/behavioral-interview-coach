@@ -10,6 +10,9 @@ Job description:
 {jd}
 ---
 
+Candidate's own summary of their background: {background}
+What they are preparing for: {goal}
+
 Return strict JSON only:
 {"questions": [{"text": "the question", "bucket": "story bucket it targets (conflict, failure, influence, ambiguity, ownership, data, prioritization, user_insight, leadership, resilience)", "resume_line": "verbatim contiguous span from the resume this question digs into", "why_likely": "one line: why this JD makes this question likely"}]}
 
@@ -19,3 +22,4 @@ Rules:
 - Questions probe risk areas: gaps between resume claims and JD demands, big claims with no visible evidence, transitions, and the competencies this JD repeats.
 - Behavioral questions only (tell me about a time...). No technical puzzles, no case math.
 - Phrase them the way a {profile_id} round interviewer would.
+- If the background or goal above is provided (not "(not provided)"), aim the pack at that level and target: pick the competencies and seniority those lines imply. Ignore them when they add nothing beyond the resume.

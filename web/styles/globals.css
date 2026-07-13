@@ -122,3 +122,210 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Speaking owl: the session agent tile. Beak, mouth, halo and head-bob are
+   driven by --amp (agent audio amplitude, set inline); breathe/tilt/blink run
+   off the agent state on data-state. Colors ride the theme tokens. */
+.owl-stage {
+  --amp: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+.owl-area {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  display: grid;
+  place-items: center;
+}
+.owl-area > * {
+  grid-area: 1 / 1;
+}
+.owl-glow {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--primary) 34%, transparent),
+    transparent 66%
+  );
+  filter: blur(8px);
+  opacity: 0.9;
+  z-index: 0;
+  transition: opacity 0.5s ease;
+}
+.owl-stage[data-state='thinking'] .owl-glow {
+  opacity: 0.45;
+}
+.owl-halo {
+  border-radius: 50%;
+  border: 1.5px solid var(--primary);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.owl-halo.r1 {
+  width: 170px;
+  height: 170px;
+  opacity: calc(var(--amp) * 0.5);
+  transform: scale(calc(0.9 + var(--amp) * 0.12));
+}
+.owl-halo.r2 {
+  width: 210px;
+  height: 210px;
+  opacity: calc(var(--amp) * 0.34);
+  transform: scale(calc(0.92 + var(--amp) * 0.14));
+}
+.owl-halo.r3 {
+  width: 252px;
+  height: 252px;
+  opacity: calc(var(--amp) * 0.2);
+  transform: scale(calc(0.94 + var(--amp) * 0.16));
+}
+.owl-stage:not([data-state='speaking']) .owl-halo {
+  opacity: 0;
+}
+.owl-wrap {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  z-index: 3;
+  will-change: transform;
+}
+.owl-wrap svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.owl-beak {
+  transform-box: fill-box;
+  transform-origin: top center;
+  transform: scaleY(calc(1 + var(--amp) * 0.55));
+}
+.owl-mouth {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scaleY(calc(1 + var(--amp) * 4.2));
+}
+.owl-caption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.owl-cdot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+.owl-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+.owl-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.35;
+}
+.owl-cdot,
+.owl-dots {
+  display: none;
+}
+.owl-stage[data-state='listening'] .owl-cdot,
+.owl-stage[data-state='speaking'] .owl-cdot {
+  display: inline-block;
+}
+.owl-stage[data-state='thinking'] .owl-dots {
+  display: inline-flex;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .owl-stage[data-state='listening'] .owl-wrap {
+    animation: owl-breathe 4.2s ease-in-out infinite;
+  }
+  .owl-stage[data-state='thinking'] .owl-wrap {
+    transform: rotate(-4deg);
+    transition: transform 0.5s ease;
+  }
+  .owl-stage[data-state='speaking'] .owl-wrap {
+    transform: translateY(calc(var(--amp) * -3px));
+  }
+  .owl-stage[data-state='listening'] .owl-cdot {
+    animation: owl-listen 2.6s ease-in-out infinite;
+  }
+  .owl-stage[data-state='thinking'] .owl-dots span {
+    animation: owl-think 1.3s ease-in-out infinite;
+  }
+  .owl-stage[data-state='thinking'] .owl-dots span:nth-child(2) {
+    animation-delay: 0.18s;
+  }
+  .owl-stage[data-state='thinking'] .owl-dots span:nth-child(3) {
+    animation-delay: 0.36s;
+  }
+  .owl-eye {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: owl-blink 5.4s infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .owl-beak,
+  .owl-mouth,
+  .owl-wrap {
+    transform: none !important;
+  }
+  .owl-halo {
+    opacity: 0 !important;
+  }
+}
+
+@keyframes owl-breathe {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-2px) scale(1.02);
+  }
+}
+@keyframes owl-listen {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 55%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+@keyframes owl-think {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+@keyframes owl-blink {
+  0%,
+  93%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.12);
+  }
+}
