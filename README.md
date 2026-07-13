@@ -1,36 +1,63 @@
+<p align="center">
+  <img src="web/app/icon.svg" alt="Owl mascot" width="72" />
+</p>
+
 # Behavioral Interview Coach
 
-Voice-native mock interviewer that probes mid-answer and grades spoken delivery on a 6-dimension rubric with verbatim evidence. Built on LiveKit Agents. Free-tier and open-source stack only.
+**Live demo: [behavioral-interview-coach-psi.vercel.app](https://behavioral-interview-coach-psi.vercel.app)** (sign in with Google, allow the mic, speak your answers)
 
-Full product spec: `Behavioral_Interview_Coach_Spec.md`. Session operating rules: `CLAUDE.md` and `docs/`.
+A voice-native mock interviewer that asks real behavioral questions, listens to your spoken answer, probes it the way a trained interviewer would, and grades your delivery on a 6-dimension rubric with verbatim evidence. Built on LiveKit Agents. Free-tier and open-source stack only.
+
+![Behavioral Interview Coach](https://behavioral-interview-coach-psi.vercel.app/opengraph-image)
 
 ## What it does
 
-- **Drill mode**: ask a question by voice, listen, interrupt with targeted probes (specificity, ownership, quantify, redirect), grade the answer on 6 dimensions plus a missed-ammo report, deliver spoken feedback.
-- **Coach mode**: paste a resume and JD, get a tailored question pack, a story-coverage map, and rubric-aligned answer rewrites.
+- **Drill mode**: one question at a time. Speak a full answer, get a scored card after each one: 6 rubric dimensions (structure, specificity, I vs we, quantification, length, reflection), missed ammo from your own documents, and an on-demand rewrite of the answer you gave.
+- **Simulation mode**: a timed set. The interviewer paces questions against the clock, drops questions when answers run long (and tells you), then delivers one debrief with per-answer grades and cross-answer patterns.
+- **Coach mode**: upload a resume and JD. Get a tailored question pack, a story-coverage map (which questions your prepared stories already answer), spoken game plans, and rubric-aligned rewrites.
+- **Probing engine**: mid-answer signals (vagueness, we-heavy phrasing, missing numbers, rambling) queue targeted follow-up probes that fire after your answer, never over it.
 - **Persona layer**: paste an interviewer bio; the tool extracts tags with a verbatim-evidence rule and tunes probe mix, intensity, pacing, and voice within bounds.
+- **Accounts and history**: Google sign-in. Sessions, per-answer scores, transcripts, rewrites, and saved documents persist to your account; a history page tracks progress over time. Saved resume and stories prefill the next session.
+
+## Architecture
+
+| Piece | Stack | Hosting |
+|---|---|---|
+| Voice agent | Python, LiveKit Agents 1.6 (Deepgram nova-3 STT, Gemini 2.5 Flash grading with Groq failover, Deepgram Aura / ElevenLabs TTS, Silero VAD) | LiveKit Cloud |
+| Web app | Next.js, LiveKit components, Tailwind | Vercel |
+| Accounts and data | Supabase (Google auth, Postgres with row-level security) | Supabase |
+
+Design rule worth knowing: a context wall. The live interviewer never sees your documents; only the grader, the missed-ammo pass, and the coach do. The agent writes history rows over the Supabase REST API with a service key; the browser reads them with the anon key under row-level security.
 
 ## Privacy
 
-Pasted docs (resume, JD, stories) transit the Gemini API on the free tier. Fine for personal use, disclosed here for anyone else. The live interviewer never sees your docs; only the grader and Coach do. No voice cloning: preset voices only, and there is no audio-sample input path.
+Pasted docs (resume, JD, stories) transit the Gemini API on the free tier. Fine for personal use, disclosed here for anyone else. No voice cloning: preset voices only, and there is no audio-sample input path.
 
-## Setup
+## Run it yourself
+
+Agent:
 
 ```bash
 uv venv --python 3.12 .venv
 source .venv/bin/activate
 uv pip install -r requirements.txt
 cp .env.example .env   # fill in your own keys
-```
-
-Keys needed (all free tier): `GOOGLE_API_KEY` (AI Studio), `GROQ_API_KEY`, `DEEPGRAM_API_KEY`, `ELEVENLABS_API_KEY`, LiveKit credentials if using Cloud.
-
-## Run
-
-```bash
-python -m src.agent console   # Drill session in console mode
+python -m src.agent console   # Drill session in console mode, no web needed
 python -m src.coach.cli       # Coach mode: pack + coverage + rewrites
 ```
+
+Web app:
+
+```bash
+cd web
+npm install
+cp .env.example .env.local    # LiveKit + Supabase keys
+npm run dev
+```
+
+Keys needed (all free tier): `GOOGLE_API_KEY` (AI Studio), `GROQ_API_KEY`, `DEEPGRAM_API_KEY`, `ELEVENLABS_API_KEY`, LiveKit credentials, and a Supabase project (run `supabase/schema.sql` in its SQL editor) if you want accounts.
+
+Tests: `python -m pytest tests/` (127 tests cover the turn-end decision loop, probe queueing, grading handoff, simulation pacing, and cloud persistence).
 
 ## Eval results
 
@@ -50,3 +77,5 @@ Run 2026-07-09 against gemini-2.5-flash (spec Section 6). Reproduce with
 | LLM failover | Gemini 429 hands off to Groq in-call; ledger cap routes directly to Groq | no dropped turn |
 | Human agreement | pending (needs a scored live session) | 4/6 exact match |
 | Turn latency p50 / p95, barge-in yield | pending (measured during live Drill rep) | under 2s / report; under 200ms |
+
+Full product spec: `Behavioral_Interview_Coach_Spec.md`. Session operating rules: `CLAUDE.md` and `docs/`.
