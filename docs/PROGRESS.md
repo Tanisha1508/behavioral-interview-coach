@@ -594,3 +594,22 @@ live by the user and committed as a single commit 88a4514, pushed to
 origin/main (311af70..88a4514). 130 Python tests pass; web tsc + lint clean.
 Agent version 8NG4qbvy9h8R and the Vercel production web are the live build.
 TEST-LOG round 2026-07-14 findings 7, 8, 9 are FIXED+VERIFIED.
+
+## 2026-07-14 (later): History page — tabs, delete, Performance analytics
+
+Web-only, in web/app/history/page.tsx. Four user-requested additions:
+- Tabbed layout replacing the single scroll: **Sessions / Saved items /
+  Performance** (accent-underline tabs matching the app shell).
+- Unsave on each saved item; Remove on each session card. Both use a
+  two-step arm/confirm (click -> red "Confirm", auto-disarms after 4s) so a
+  stray click never deletes; delete is an optimistic Supabase .delete().eq(id)
+  on the user's own RLS-protected rows (sessions cascade to their answers).
+- Performance tab: two summary tiles (avg time PER QUESTION = mean of
+  answers.duration_s, not per-session; answers graded) plus a 6-dimension
+  Solid/Needs-work/Gap breakdown bar per dimension, computed client-side from
+  the already-loaded sessions+answers. Empty-state owl when nothing graded.
+No schema change (RLS `for all` already permits the browser to delete its own
+rows). Web tsc --noEmit exit 0; next lint clean; next build clean.
+Deployed via `vercel --prod` (aliased to behavioral-interview-coach-psi),
+verified live signed-in by the user incl. the delete round-trip.
+Committed in 182442d (code) + this docs note. Status: done-and-tested.
