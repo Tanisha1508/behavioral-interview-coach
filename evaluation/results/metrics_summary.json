@@ -1,0 +1,403 @@
+{
+  "grading_success_rate": {
+    "value": 1.0,
+    "n": 101,
+    "success": 101,
+    "statuses": {
+      "success": 101
+    }
+  },
+  "llm_call_success_rate": {
+    "value": 1.0,
+    "n": 133,
+    "success": 133
+  },
+  "json_schema_validity_pct": {
+    "value": 1.0,
+    "n": 133,
+    "valid": 133
+  },
+  "fallback_invocation_rate": {
+    "value": 1.0,
+    "n": 133,
+    "non_primary_calls": 133,
+    "provider_distribution": {
+      "gemini-lite": 115,
+      "groq": 18
+    }
+  },
+  "retry_rate": {
+    "value": 0.0,
+    "n": 133,
+    "calls_with_gt1_gemini_attempt": 0,
+    "mean_gemini_attempts_per_call": 1,
+    "note": "counts total src.llm.client._call_gemini invocations per complete() call -- this spans both same-tier retry-on-transient-error AND the primary-then-lite two-step, since both call _call_gemini; see report for exact methodology"
+  },
+  "grading_latency_s": {
+    "n": 133,
+    "mean": 3.6797325460037174,
+    "median": 2.9694555001333356,
+    "min": 1.7958272499963641,
+    "max": 13.717008582782,
+    "p50": 2.9694555001333356,
+    "p95": 8.269173350278285,
+    "stdev": 2.030168461266556,
+    "note": "text-in/JSON-out grading call latency; NOT voice round-trip"
+  },
+  "ttft": {
+    "value": null,
+    "note": "Not applicable: src/llm/client.py uses non-streaming generate_content / chat.completions.create calls throughout (complete() in src/llm/client.py). No token-level streaming exists in this codebase's LLM path to measure TTFT from."
+  },
+  "hallucination_rate": {
+    "items_with_violation": 88,
+    "n_items": 101,
+    "items_with_violation_pct": 0.8712871287128713,
+    "evidence_quotes_kept": 1034,
+    "evidence_quotes_dropped": 140,
+    "per_attempt_violation_rate": 0.11925042589437819
+  },
+  "rubric_by_category": {
+    "excellent": {
+      "n": 13,
+      "dimensions": {
+        "structure": {
+          "Solid": 13
+        },
+        "specificity": {
+          "Solid": 13
+        },
+        "i_vs_we": {
+          "NeedsWork": 5,
+          "Solid": 8
+        },
+        "quantification": {
+          "Solid": 13
+        },
+        "length": {
+          "Solid": 13
+        },
+        "reflection": {
+          "Solid": 13
+        }
+      },
+      "solid_rate": 0.9358974358974359
+    },
+    "weak": {
+      "n": 12,
+      "dimensions": {
+        "structure": {
+          "NeedsWork": 9,
+          "Solid": 3
+        },
+        "specificity": {
+          "Gap": 7,
+          "NeedsWork": 5
+        },
+        "i_vs_we": {
+          "Gap": 12
+        },
+        "quantification": {
+          "Gap": 12
+        },
+        "length": {
+          "Gap": 12
+        },
+        "reflection": {
+          "Gap": 9,
+          "NeedsWork": 3
+        }
+      },
+      "solid_rate": 0.041666666666666664
+    },
+    "average": {
+      "n": 13,
+      "dimensions": {
+        "structure": {
+          "Solid": 13
+        },
+        "specificity": {
+          "NeedsWork": 13
+        },
+        "i_vs_we": {
+          "NeedsWork": 2,
+          "Solid": 11
+        },
+        "quantification": {
+          "NeedsWork": 9,
+          "Solid": 3,
+          "Gap": 1
+        },
+        "length": {
+          "NeedsWork": 13
+        },
+        "reflection": {
+          "NeedsWork": 13
+        }
+      },
+      "solid_rate": 0.34615384615384615
+    },
+    "off_topic": {
+      "n": 12,
+      "dimensions": {
+        "structure": {
+          "Gap": 11,
+          "NeedsWork": 1
+        },
+        "specificity": {
+          "Gap": 10,
+          "Solid": 2
+        },
+        "i_vs_we": {
+          "Solid": 8,
+          "Gap": 4
+        },
+        "quantification": {
+          "Solid": 2,
+          "Gap": 10
+        },
+        "length": {
+          "Gap": 12
+        },
+        "reflection": {
+          "Gap": 12
+        }
+      },
+      "solid_rate": 0.16666666666666666
+    },
+    "star_explicit": {
+      "n": 13,
+      "dimensions": {
+        "structure": {
+          "Solid": 13
+        },
+        "specificity": {
+          "Solid": 13
+        },
+        "i_vs_we": {
+          "NeedsWork": 5,
+          "Solid": 5,
+          "Gap": 3
+        },
+        "quantification": {
+          "Solid": 13
+        },
+        "length": {
+          "Solid": 13
+        },
+        "reflection": {
+          "Solid": 13
+        }
+      },
+      "solid_rate": 0.8974358974358975
+    },
+    "non_star": {
+      "n": 13,
+      "dimensions": {
+        "structure": {
+          "NeedsWork": 3,
+          "Solid": 10
+        },
+        "specificity": {
+          "Solid": 13
+        },
+        "i_vs_we": {
+          "NeedsWork": 5,
+          "Solid": 8
+        },
+        "quantification": {
+          "Solid": 13
+        },
+        "length": {
+          "NeedsWork": 5,
+          "Solid": 8
+        },
+        "reflection": {
+          "Solid": 13
+        }
+      },
+      "solid_rate": 0.8333333333333334
+    },
+    "incomplete": {
+      "n": 13,
+      "dimensions": {
+        "structure": {
+          "Gap": 13
+        },
+        "specificity": {
+          "NeedsWork": 8,
+          "Gap": 3,
+          "Solid": 2
+        },
+        "i_vs_we": {
+          "Solid": 7,
+          "NeedsWork": 1,
+          "Gap": 5
+        },
+        "quantification": {
+          "Solid": 3,
+          "Gap": 8,
+          "NeedsWork": 2
+        },
+        "length": {
+          "Gap": 13
+        },
+        "reflection": {
+          "Gap": 13
+        }
+      },
+      "solid_rate": 0.15384615384615385
+    },
+    "fabricated": {
+      "n": 12,
+      "dimensions": {
+        "structure": {
+          "Solid": 10,
+          "NeedsWork": 2
+        },
+        "specificity": {
+          "Gap": 3,
+          "Solid": 5,
+          "NeedsWork": 4
+        },
+        "i_vs_we": {
+          "Solid": 10,
+          "Gap": 2
+        },
+        "quantification": {
+          "Solid": 9,
+          "NeedsWork": 3
+        },
+        "length": {
+          "Gap": 12
+        },
+        "reflection": {
+          "NeedsWork": 10,
+          "Gap": 2
+        }
+      },
+      "solid_rate": 0.4722222222222222
+    }
+  },
+  "quality_rank_correlation": {
+    "n": 38,
+    "pearson_r": 0.9681451381308678,
+    "note": "Pearson r between author-intended quality rank (weak=1, average=2, excellent=3) and mean dimension score (Gap=0, NeedsWork=1, Solid=2) per item. This is a construct-validity check against authoring intent, NOT a human-rater correlation."
+  },
+  "star_order_invariance": {
+    "excellent": {
+      "n": 13,
+      "structure_solid_rate": 1.0,
+      "overall_solid_rate": 0.9358974358974359
+    },
+    "star_explicit": {
+      "n": 13,
+      "structure_solid_rate": 1.0,
+      "overall_solid_rate": 0.8974358974358975
+    },
+    "non_star": {
+      "n": 13,
+      "structure_solid_rate": 0.7692307692307693,
+      "overall_solid_rate": 0.8333333333333334
+    }
+  },
+  "consistency": {
+    "n_items": 16,
+    "n_dimension_slots": 96,
+    "modal_stable_pct": 1.0,
+    "span_violation_pct": 0.041666666666666664,
+    "cohens_kappa_inter_run": 0.8590573708778799,
+    "mae_inter_run": 0.11805555555555555,
+    "n_pairwise_comparisons": 288,
+    "note": "Kappa/MAE computed between repeated grade() calls on the SAME transcript (inter-run self-consistency), not model-vs-human agreement -- no independent human ratings exist in this repo (see report)."
+  },
+  "probe_by_category": {
+    "excellent": {
+      "n": 13,
+      "triggered_rate": 0.0,
+      "types": {}
+    },
+    "weak": {
+      "n": 12,
+      "triggered_rate": 1.0,
+      "types": {
+        "DEPTH": 24
+      }
+    },
+    "average": {
+      "n": 13,
+      "triggered_rate": 0.6923076923076923,
+      "types": {
+        "QUANTIFY": 6,
+        "OWNERSHIP": 6,
+        "SPECIFICITY": 6
+      }
+    },
+    "off_topic": {
+      "n": 12,
+      "triggered_rate": 0.0,
+      "types": {}
+    },
+    "star_explicit": {
+      "n": 13,
+      "triggered_rate": 0.0,
+      "types": {}
+    },
+    "non_star": {
+      "n": 13,
+      "triggered_rate": 1.0,
+      "types": {
+        "DEPTH": 26
+      }
+    },
+    "incomplete": {
+      "n": 13,
+      "triggered_rate": 0.0,
+      "types": {}
+    },
+    "fabricated": {
+      "n": 12,
+      "triggered_rate": 0.0,
+      "types": {}
+    }
+  },
+  "followup_precision_recall_f1": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "n": 50,
+    "confusion": {
+      "tp": 12,
+      "fp": 0,
+      "fn": 0,
+      "tn": 38
+    },
+    "expected_trigger_map": {
+      "excellent": false,
+      "weak": true,
+      "star_explicit": false,
+      "off_topic": false
+    }
+  },
+  "voice": {
+    "tts_model": "aura-2-thalia-en",
+    "stt_model": "nova-3",
+    "n_sampled": 24,
+    "n_success": 22,
+    "n_error": 2,
+    "errors": [
+      "ReadTimeout: The read operation timed out",
+      "ReadTimeout: The read operation timed out"
+    ],
+    "call_success_rate": 0.9166666666666666,
+    "wer_mean": 0.03685001391585118,
+    "wer_median": 0.0419831223628692,
+    "wer_max": 0.0954356846473029,
+    "cer_mean": 0.03813986994616188,
+    "cer_median": 0.03149750699316105,
+    "cer_max": 0.10483870967741936,
+    "tts_latency_s_mean": 24.159465810495682,
+    "stt_latency_s_mean": 3.843422164865346,
+    "round_trip_s_mean": 28.002887975361027,
+    "note": "WER/CER measured on a Deepgram-Aura-synthesized voice round-tripped through Deepgram nova-3 STT, not real human speech -- see report for what this can and cannot claim."
+  }
+}

@@ -1,0 +1,2188 @@
+{
+  "n_items": 50,
+  "probe_results": [
+    {
+      "id": "excellent_01",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "excellent_02",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "excellent_03",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "excellent_04",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "excellent_05",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "excellent_06",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "excellent_07",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "excellent_08",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "excellent_09",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "excellent_10",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "excellent_11",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "excellent_12",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "excellent_13",
+      "category": "excellent",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "weak_01",
+      "category": "weak",
+      "fired": [
+        "DEPTH"
+      ],
+      "queued": [
+        "DEPTH"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "weak_02",
+      "category": "weak",
+      "fired": [
+        "DEPTH"
+      ],
+      "queued": [
+        "DEPTH"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "weak_03",
+      "category": "weak",
+      "fired": [
+        "DEPTH"
+      ],
+      "queued": [
+        "DEPTH"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "weak_04",
+      "category": "weak",
+      "fired": [
+        "DEPTH"
+      ],
+      "queued": [
+        "DEPTH"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "weak_05",
+      "category": "weak",
+      "fired": [
+        "DEPTH"
+      ],
+      "queued": [
+        "DEPTH"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "weak_06",
+      "category": "weak",
+      "fired": [
+        "DEPTH"
+      ],
+      "queued": [
+        "DEPTH"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "weak_07",
+      "category": "weak",
+      "fired": [
+        "DEPTH"
+      ],
+      "queued": [
+        "DEPTH"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "weak_08",
+      "category": "weak",
+      "fired": [
+        "DEPTH"
+      ],
+      "queued": [
+        "DEPTH"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "weak_09",
+      "category": "weak",
+      "fired": [
+        "DEPTH"
+      ],
+      "queued": [
+        "DEPTH"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "weak_10",
+      "category": "weak",
+      "fired": [
+        "DEPTH"
+      ],
+      "queued": [
+        "DEPTH"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "weak_11",
+      "category": "weak",
+      "fired": [
+        "DEPTH"
+      ],
+      "queued": [
+        "DEPTH"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "weak_12",
+      "category": "weak",
+      "fired": [
+        "DEPTH"
+      ],
+      "queued": [
+        "DEPTH"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "average_01",
+      "category": "average",
+      "fired": [
+        "QUANTIFY"
+      ],
+      "queued": [
+        "QUANTIFY"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "average_02",
+      "category": "average",
+      "fired": [
+        "OWNERSHIP"
+      ],
+      "queued": [
+        "OWNERSHIP"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "average_03",
+      "category": "average",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "average_04",
+      "category": "average",
+      "fired": [
+        "SPECIFICITY"
+      ],
+      "queued": [
+        "SPECIFICITY"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "average_05",
+      "category": "average",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "average_06",
+      "category": "average",
+      "fired": [
+        "QUANTIFY"
+      ],
+      "queued": [
+        "QUANTIFY"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "average_07",
+      "category": "average",
+      "fired": [
+        "SPECIFICITY"
+      ],
+      "queued": [
+        "SPECIFICITY"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "average_08",
+      "category": "average",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "average_09",
+      "category": "average",
+      "fired": [
+        "OWNERSHIP"
+      ],
+      "queued": [
+        "OWNERSHIP"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "average_10",
+      "category": "average",
+      "fired": [
+        "QUANTIFY"
+      ],
+      "queued": [
+        "QUANTIFY"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "average_11",
+      "category": "average",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "average_12",
+      "category": "average",
+      "fired": [
+        "OWNERSHIP"
+      ],
+      "queued": [
+        "OWNERSHIP"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "average_13",
+      "category": "average",
+      "fired": [
+        "SPECIFICITY"
+      ],
+      "queued": [
+        "SPECIFICITY"
+      ],
+      "triggered_any": true
+    },
+    {
+      "id": "off_topic_01",
+      "category": "off_topic",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "off_topic_02",
+      "category": "off_topic",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "off_topic_03",
+      "category": "off_topic",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "off_topic_04",
+      "category": "off_topic",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "off_topic_05",
+      "category": "off_topic",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "off_topic_06",
+      "category": "off_topic",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "off_topic_07",
+      "category": "off_topic",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "off_topic_08",
+      "category": "off_topic",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "off_topic_09",
+      "category": "off_topic",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "off_topic_10",
+      "category": "off_topic",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "off_topic_11",
+      "category": "off_topic",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    },
+    {
+      "id": "off_topic_12",
+      "category": "off_topic",
+      "fired": [],
+      "queued": [],
+      "triggered_any": false
+    }
+  ],
+  "grading_results": [
+    {
+      "id": "excellent_01",
+      "category": "excellent",
+      "duration_s": 92.0,
+      "word_count": 230,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [],
+      "evidence_count": 30,
+      "wall_s": 18.800123875029385
+    },
+    {
+      "id": "excellent_02",
+      "category": "excellent",
+      "duration_s": 94.8,
+      "word_count": 237,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [],
+      "evidence_count": 13,
+      "wall_s": 16.44343304214999
+    },
+    {
+      "id": "excellent_03",
+      "category": "excellent",
+      "duration_s": 93.6,
+      "word_count": 234,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [],
+      "evidence_count": 20,
+      "wall_s": 12.929473374970257
+    },
+    {
+      "id": "excellent_04",
+      "category": "excellent",
+      "duration_s": 93.6,
+      "word_count": 234,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [],
+      "evidence_count": 31,
+      "wall_s": 17.318809792399406
+    },
+    {
+      "id": "excellent_05",
+      "category": "excellent",
+      "duration_s": 94.4,
+      "word_count": 236,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [],
+      "evidence_count": 25,
+      "wall_s": 13.423239958938211
+    },
+    {
+      "id": "excellent_06",
+      "category": "excellent",
+      "duration_s": 93.6,
+      "word_count": 234,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [],
+      "evidence_count": 15,
+      "wall_s": 13.349107374902815
+    },
+    {
+      "id": "excellent_07",
+      "category": "excellent",
+      "duration_s": 94.4,
+      "word_count": 236,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [],
+      "evidence_count": 26,
+      "wall_s": 12.039330541156232
+    },
+    {
+      "id": "excellent_08",
+      "category": "excellent",
+      "duration_s": 95.6,
+      "word_count": 239,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [],
+      "evidence_count": 21,
+      "wall_s": 18.952914083842188
+    },
+    {
+      "id": "excellent_09",
+      "category": "excellent",
+      "duration_s": 95.6,
+      "word_count": 239,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "specificity: non-verbatim quote dropped: 'pulled a sample of 500 queued reviews and I found 65 percent of the backlog was low-risk transactions under a fixed dollar threshold.'"
+      ],
+      "evidence_count": 22,
+      "wall_s": 13.253492665942758
+    },
+    {
+      "id": "excellent_10",
+      "category": "excellent",
+      "duration_s": 94.4,
+      "word_count": 236,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [],
+      "evidence_count": 21,
+      "wall_s": 22.36020233342424
+    },
+    {
+      "id": "excellent_11",
+      "category": "excellent",
+      "duration_s": 93.2,
+      "word_count": 233,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 93 seconds'"
+      ],
+      "evidence_count": 15,
+      "wall_s": 3.650858750101179
+    },
+    {
+      "id": "excellent_12",
+      "category": "excellent",
+      "duration_s": 95.2,
+      "word_count": 238,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '95 seconds'"
+      ],
+      "evidence_count": 17,
+      "wall_s": 3.9292487907223403
+    },
+    {
+      "id": "excellent_13",
+      "category": "excellent",
+      "duration_s": 95.6,
+      "word_count": 239,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "specificity: non-verbatim quote dropped: 'I went to Layla, our product designer, with 2 specific options'",
+        "specificity: non-verbatim quote dropped: 'I checked in with Layla twice a week'",
+        "i_vs_we: non-verbatim quote dropped: 'I checked in with Layla twice a week'",
+        "i_vs_we: non-verbatim quote dropped: 'I wrote the rollout plan myself'",
+        "length: non-verbatim quote dropped: '96 seconds'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 3.3244181252084672
+    },
+    {
+      "id": "weak_01",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 36 seconds'"
+      ],
+      "evidence_count": 13,
+      "wall_s": 3.7483116248622537
+    },
+    {
+      "id": "weak_02",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 3.193306041881442
+    },
+    {
+      "id": "weak_03",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 13,
+      "wall_s": 3.7111149998381734
+    },
+    {
+      "id": "weak_04",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 3.4467440000735223
+    },
+    {
+      "id": "weak_05",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 3.4154843343421817
+    },
+    {
+      "id": "weak_06",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 10,
+      "wall_s": 3.6066828751936555
+    },
+    {
+      "id": "weak_07",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 36 seconds.'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 3.097693958785385
+    },
+    {
+      "id": "weak_08",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 3.414981833193451
+    },
+    {
+      "id": "weak_09",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 6.325596667360514
+    },
+    {
+      "id": "weak_10",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 13,
+      "wall_s": 3.106549291871488
+    },
+    {
+      "id": "weak_11",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 13,
+      "wall_s": 2.930982875172049
+    },
+    {
+      "id": "weak_12",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 3.3839393337257206
+    },
+    {
+      "id": "average_01",
+      "category": "average",
+      "duration_s": 76.0,
+      "word_count": 190,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "NeedsWork",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 76 seconds. Round length band: 90 to 150 seconds.'"
+      ],
+      "evidence_count": 10,
+      "wall_s": 2.7087419158779085
+    },
+    {
+      "id": "average_02",
+      "category": "average",
+      "duration_s": 74.8,
+      "word_count": 187,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [],
+      "evidence_count": 9,
+      "wall_s": 2.450878208037466
+    },
+    {
+      "id": "average_03",
+      "category": "average",
+      "duration_s": 72.8,
+      "word_count": 182,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i consolidated the most-asked topics into one space'",
+        "length: non-verbatim quote dropped: '73 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 6.052509000059217
+    },
+    {
+      "id": "average_04",
+      "category": "average",
+      "duration_s": 76.4,
+      "word_count": 191,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [],
+      "evidence_count": 9,
+      "wall_s": 3.3518682499416173
+    },
+    {
+      "id": "average_05",
+      "category": "average",
+      "duration_s": 76.0,
+      "word_count": 190,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '76 seconds'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 3.0594795420765877
+    },
+    {
+      "id": "average_06",
+      "category": "average",
+      "duration_s": 74.0,
+      "word_count": 185,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '74 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 3.8747324999421835
+    },
+    {
+      "id": "average_07",
+      "category": "average",
+      "duration_s": 74.4,
+      "word_count": 186,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '74 seconds'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 3.587217374704778
+    },
+    {
+      "id": "average_08",
+      "category": "average",
+      "duration_s": 76.0,
+      "word_count": 190,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i worked with support to cut it down to one form'",
+        "length: non-verbatim quote dropped: 'answer duration 76 seconds'"
+      ],
+      "evidence_count": 10,
+      "wall_s": 3.5088700843043625
+    },
+    {
+      "id": "average_09",
+      "category": "average",
+      "duration_s": 75.6,
+      "word_count": 189,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 76 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 3.660000250209123
+    },
+    {
+      "id": "average_10",
+      "category": "average",
+      "duration_s": 75.6,
+      "word_count": 189,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '76 seconds'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 3.4802526249550283
+    },
+    {
+      "id": "average_11",
+      "category": "average",
+      "duration_s": 77.2,
+      "word_count": 193,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i cut it down to the 12 questions leadership actually acted on'",
+        "quantification: non-verbatim quote dropped: 'i cut it down to the 12 questions'",
+        "length: non-verbatim quote dropped: '77 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 3.6528169163502753
+    },
+    {
+      "id": "average_12",
+      "category": "average",
+      "duration_s": 76.0,
+      "word_count": 190,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '76 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 3.809661959297955
+    },
+    {
+      "id": "average_13",
+      "category": "average",
+      "duration_s": 74.0,
+      "word_count": 185,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i moved the writing step to a week before each release'",
+        "length: non-verbatim quote dropped: 'answer duration 74 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 3.601422708015889
+    },
+    {
+      "id": "off_topic_01",
+      "category": "off_topic",
+      "duration_s": 19.2,
+      "word_count": 48,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i tried a new pasta recipe'",
+        "length: non-verbatim quote dropped: '19 seconds'"
+      ],
+      "evidence_count": 6,
+      "wall_s": 2.9639712921343744
+    },
+    {
+      "id": "off_topic_02",
+      "category": "off_topic",
+      "duration_s": 16.4,
+      "word_count": 41,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '16 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 4.712446041870862
+    },
+    {
+      "id": "off_topic_03",
+      "category": "off_topic",
+      "duration_s": 13.6,
+      "word_count": 34,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 8,
+      "wall_s": 2.666424209252
+    },
+    {
+      "id": "off_topic_04",
+      "category": "off_topic",
+      "duration_s": 14.0,
+      "word_count": 35,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '14 seconds'"
+      ],
+      "evidence_count": 7,
+      "wall_s": 2.7254384579136968
+    },
+    {
+      "id": "off_topic_05",
+      "category": "off_topic",
+      "duration_s": 15.6,
+      "word_count": 39,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '16 seconds'"
+      ],
+      "evidence_count": 5,
+      "wall_s": 3.1093975002877414
+    },
+    {
+      "id": "off_topic_06",
+      "category": "off_topic",
+      "duration_s": 13.2,
+      "word_count": 33,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: \"The answer duration is 13 seconds, which is outside the round's target band of 90 to 150 seconds.\"",
+        "reflection: non-verbatim quote dropped: \"There is no reflection or learning mentioned in the candidate's answer.\""
+      ],
+      "evidence_count": 5,
+      "wall_s": 3.168229540809989
+    },
+    {
+      "id": "off_topic_07",
+      "category": "off_topic",
+      "duration_s": 15.2,
+      "word_count": 38,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 7,
+      "wall_s": 2.9331090841442347
+    },
+    {
+      "id": "off_topic_08",
+      "category": "off_topic",
+      "duration_s": 14.4,
+      "word_count": 36,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '14 seconds'"
+      ],
+      "evidence_count": 6,
+      "wall_s": 3.0985736660659313
+    },
+    {
+      "id": "off_topic_09",
+      "category": "off_topic",
+      "duration_s": 14.4,
+      "word_count": 36,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 8,
+      "wall_s": 3.417430958710611
+    },
+    {
+      "id": "off_topic_10",
+      "category": "off_topic",
+      "duration_s": 14.0,
+      "word_count": 35,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '14 seconds'"
+      ],
+      "evidence_count": 7,
+      "wall_s": 3.7615115409716964
+    },
+    {
+      "id": "off_topic_11",
+      "category": "off_topic",
+      "duration_s": 13.2,
+      "word_count": 33,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '13 seconds'"
+      ],
+      "evidence_count": 6,
+      "wall_s": 3.1936257081106305
+    },
+    {
+      "id": "off_topic_12",
+      "category": "off_topic",
+      "duration_s": 14.8,
+      "word_count": 37,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '15 seconds'"
+      ],
+      "evidence_count": 5,
+      "wall_s": 3.2200006251223385
+    }
+  ],
+  "consistency_results": {
+    "excellent_01": {
+      "category": "excellent",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        }
+      ]
+    },
+    "excellent_02": {
+      "category": "excellent",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        }
+      ]
+    },
+    "weak_01": {
+      "category": "weak",
+      "runs": [
+        {
+          "structure": "NeedsWork",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        }
+      ]
+    },
+    "weak_02": {
+      "category": "weak",
+      "runs": [
+        {
+          "structure": "NeedsWork",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        }
+      ]
+    },
+    "average_01": {
+      "category": "average",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "NeedsWork",
+          "quantification": "NeedsWork",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
+          "quantification": "Gap",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
+          "quantification": "Gap",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        }
+      ]
+    },
+    "average_02": {
+      "category": "average",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
+          "quantification": "NeedsWork",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
+          "quantification": "NeedsWork",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
+          "quantification": "NeedsWork",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        }
+      ]
+    },
+    "off_topic_01": {
+      "category": "off_topic",
+      "runs": [
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "Gap"
+        }
+      ]
+    },
+    "off_topic_02": {
+      "category": "off_topic",
+      "runs": [
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        }
+      ]
+    }
+  },
+  "call_log": [
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 18.79352774983272,
+      "provider": "gemini",
+      "failovers": 0,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 16.43361616600305,
+      "provider": "gemini",
+      "failovers": 0,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 12.917899084277451,
+      "provider": "gemini",
+      "failovers": 0,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 17.308269875124097,
+      "provider": "gemini",
+      "failovers": 0,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 13.411734708119184,
+      "provider": "gemini",
+      "failovers": 0,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 13.338049250189215,
+      "provider": "gemini",
+      "failovers": 0,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 12.03133395826444,
+      "provider": "gemini",
+      "failovers": 0,
+      "success": true,
+      "schema_strict_valid": false
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 18.94186529191211,
+      "provider": "gemini",
+      "failovers": 0,
+      "success": true,
+      "schema_strict_valid": false
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 13.245104792062193,
+      "provider": "gemini",
+      "failovers": 0,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 22.34860120806843,
+      "provider": "gemini",
+      "failovers": 0,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.6397902918979526,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.9209963330067694,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.3123833746649325,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.7398460838012397,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.181246791034937,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.6986363753676414,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.4342439169995487,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.4057146250270307,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.594703834038228,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.0852582501247525,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.4043742502108216,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 6.315966709051281,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.0976008754223585,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.9211502498947084,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.3722102497704327,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.694177458062768,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.444336249958724,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 6.041843249928206,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.3422469589859247,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.0463143340311944,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.862503250129521,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.57551791658625,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.4968054997734725,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.6486029173247516,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.468223833013326,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.6452265828847885,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.7892229170538485,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.590189625043422,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.9538468751125038,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 4.701648375019431,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.654279542155564,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.713455416727811,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.097979957703501,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.156817500013858,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.9244567919522524,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.0869060000404716,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.4064265838824213,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.74983795825392,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.1819630837999284,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.2059239582158625,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.5231942920945585,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.573228540830314,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.723067917395383,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.615611291024834,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.4337801672518253,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.8314370419830084,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.5694905831478536,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.803207667078823,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.6675462909042835,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.255908749997616,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.3422172078862786,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 4.244028333108872,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.4634500830434263,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.9038105411455035,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.28601345885545,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.190431124996394,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true
+    }
+  ]
+}

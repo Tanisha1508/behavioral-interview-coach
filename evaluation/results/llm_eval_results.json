@@ -1,0 +1,3716 @@
+{
+  "n_items": 101,
+  "grading_results": [
+    {
+      "id": "excellent_01",
+      "category": "excellent",
+      "duration_s": 92.0,
+      "word_count": 230,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '92 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 3.8759918748401105
+    },
+    {
+      "id": "excellent_02",
+      "category": "excellent",
+      "duration_s": 94.8,
+      "word_count": 237,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "structure: non-verbatim quote dropped: 'I decided to cap frequency at 2 sends per user with a holdout on a third slot'",
+        "i_vs_we: non-verbatim quote dropped: 'I built a proposal'",
+        "i_vs_we: non-verbatim quote dropped: 'I decided to cap frequency'",
+        "i_vs_we: non-verbatim quote dropped: 'I wrote the rollout plan myself'",
+        "length: non-verbatim quote dropped: 'answer duration 95 seconds'"
+      ],
+      "evidence_count": 14,
+      "wall_s": 3.450600833632052
+    },
+    {
+      "id": "excellent_03",
+      "category": "excellent",
+      "duration_s": 93.6,
+      "word_count": 234,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 94 seconds'"
+      ],
+      "evidence_count": 16,
+      "wall_s": 2.966725166887045
+    },
+    {
+      "id": "excellent_04",
+      "category": "excellent",
+      "duration_s": 93.6,
+      "word_count": 234,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "specificity: non-verbatim quote dropped: 'I went to Alex, our search engineer, with 2 specific options'",
+        "i_vs_we: non-verbatim quote dropped: 'I decided to roll back ranking for long-tail queries only'",
+        "i_vs_we: non-verbatim quote dropped: 'I wrote the rollout plan myself'",
+        "length: non-verbatim quote dropped: 'answer duration 94 seconds'"
+      ],
+      "evidence_count": 10,
+      "wall_s": 2.7669587917625904
+    },
+    {
+      "id": "excellent_05",
+      "category": "excellent",
+      "duration_s": 94.4,
+      "word_count": 236,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i already tried a couple of quick fixes'",
+        "length: non-verbatim quote dropped: '94 seconds'"
+      ],
+      "evidence_count": 14,
+      "wall_s": 2.9561873329803348
+    },
+    {
+      "id": "excellent_06",
+      "category": "excellent",
+      "duration_s": 93.6,
+      "word_count": 234,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'I already tried a couple of quick fixes'",
+        "i_vs_we: non-verbatim quote dropped: 'I built a proposal'",
+        "i_vs_we: non-verbatim quote dropped: 'I wrote the rollout plan myself'",
+        "length: non-verbatim quote dropped: '94 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 2.9515156657435
+    },
+    {
+      "id": "excellent_07",
+      "category": "excellent",
+      "duration_s": 94.4,
+      "word_count": 236,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 94 seconds'"
+      ],
+      "evidence_count": 13,
+      "wall_s": 2.675343499984592
+    },
+    {
+      "id": "excellent_08",
+      "category": "excellent",
+      "duration_s": 95.6,
+      "word_count": 239,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'I built a proposal and i went to Grace, our mobile lead'",
+        "i_vs_we: non-verbatim quote dropped: 'I decided to ship the filter back in a patch release'",
+        "length: non-verbatim quote dropped: '96 seconds'"
+      ],
+      "evidence_count": 16,
+      "wall_s": 3.156669874675572
+    },
+    {
+      "id": "excellent_09",
+      "category": "excellent",
+      "duration_s": 95.6,
+      "word_count": 239,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '96 seconds'"
+      ],
+      "evidence_count": 14,
+      "wall_s": 2.7561371247284114
+    },
+    {
+      "id": "excellent_10",
+      "category": "excellent",
+      "duration_s": 94.4,
+      "word_count": 236,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "specificity: non-verbatim quote dropped: 'I went to Ben, our support lead'",
+        "length: non-verbatim quote dropped: '94 seconds'"
+      ],
+      "evidence_count": 15,
+      "wall_s": 4.44604866579175
+    },
+    {
+      "id": "excellent_11",
+      "category": "excellent",
+      "duration_s": 93.2,
+      "word_count": 233,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i was the PM'",
+        "length: non-verbatim quote dropped: 'answer duration 93 seconds'",
+        "length: non-verbatim quote dropped: 'Round length band: 90 to 150 seconds'"
+      ],
+      "evidence_count": 16,
+      "wall_s": 2.9646954173222184
+    },
+    {
+      "id": "excellent_12",
+      "category": "excellent",
+      "duration_s": 95.2,
+      "word_count": 238,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '95 seconds'"
+      ],
+      "evidence_count": 16,
+      "wall_s": 4.848606291692704
+    },
+    {
+      "id": "excellent_13",
+      "category": "excellent",
+      "duration_s": 95.6,
+      "word_count": 239,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "specificity: non-verbatim quote dropped: 'I went to Layla, our product designer, with 2 specific options'",
+        "specificity: non-verbatim quote dropped: 'I checked in with Layla twice a week'",
+        "length: non-verbatim quote dropped: 'answer duration 96 seconds'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 3.073332999832928
+    },
+    {
+      "id": "weak_01",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 13,
+      "wall_s": 3.2473111669532955
+    },
+    {
+      "id": "weak_02",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 13,
+      "wall_s": 2.7672966248355806
+    },
+    {
+      "id": "weak_03",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 36 seconds'"
+      ],
+      "evidence_count": 10,
+      "wall_s": 2.594439208973199
+    },
+    {
+      "id": "weak_04",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 36 seconds'"
+      ],
+      "evidence_count": 11,
+      "wall_s": 2.314951959066093
+    },
+    {
+      "id": "weak_05",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 3.246261874679476
+    },
+    {
+      "id": "weak_06",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 36 seconds'"
+      ],
+      "evidence_count": 11,
+      "wall_s": 1.8297052499838173
+    },
+    {
+      "id": "weak_07",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "specificity: non-verbatim quote dropped: '[  0.0s] CANDIDATE: what we did was we aligned stakeholders and drove consensus across the teams involved'",
+        "i_vs_we: non-verbatim quote dropped: '[  0.0s] CANDIDATE: what we did was we aligned stakeholders and drove consensus across the teams involved'",
+        "i_vs_we: non-verbatim quote dropped: '[ 17.0s] CANDIDATE: we took ownership of the overall outcome together'",
+        "quantification: non-verbatim quote dropped: '[  0.0s] CANDIDATE: it needed a lot of work honestly'"
+      ],
+      "evidence_count": 5,
+      "wall_s": 2.5466694589704275
+    },
+    {
+      "id": "weak_08",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 36 seconds. Round length band: 90 to 150 seconds.'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 2.5785643751733005
+    },
+    {
+      "id": "weak_09",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 14,
+      "wall_s": 2.9648405420593917
+    },
+    {
+      "id": "weak_10",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 10,
+      "wall_s": 4.668682999908924
+    },
+    {
+      "id": "weak_11",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 2.961461125407368
+    },
+    {
+      "id": "weak_12",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 36 seconds'"
+      ],
+      "evidence_count": 14,
+      "wall_s": 2.4797570002265275
+    },
+    {
+      "id": "average_01",
+      "category": "average",
+      "duration_s": 76.0,
+      "word_count": 190,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "NeedsWork",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "specificity: non-verbatim quote dropped: \"i don't remember the exact number offhand\"",
+        "quantification: non-verbatim quote dropped: \"i don't remember the exact number offhand\"",
+        "length: non-verbatim quote dropped: '76 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 3.4635683340020478
+    },
+    {
+      "id": "average_02",
+      "category": "average",
+      "duration_s": 74.8,
+      "word_count": 187,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '75 seconds'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 2.9755673753097653
+    },
+    {
+      "id": "average_03",
+      "category": "average",
+      "duration_s": 72.8,
+      "word_count": 182,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i consolidated the most-asked topics into one space'",
+        "length: non-verbatim quote dropped: 'answer duration 73 seconds'"
+      ],
+      "evidence_count": 7,
+      "wall_s": 3.881623040884733
+    },
+    {
+      "id": "average_04",
+      "category": "average",
+      "duration_s": 76.4,
+      "word_count": 191,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '76 seconds'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 2.664203833322972
+    },
+    {
+      "id": "average_05",
+      "category": "average",
+      "duration_s": 76.0,
+      "word_count": 190,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i set up a shared checklist between the two teams'",
+        "length: non-verbatim quote dropped: 'answer duration 76 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 3.074385750107467
+    },
+    {
+      "id": "average_06",
+      "category": "average",
+      "duration_s": 74.0,
+      "word_count": 185,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '74 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 2.979460542090237
+    },
+    {
+      "id": "average_07",
+      "category": "average",
+      "duration_s": 74.4,
+      "word_count": 186,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 74 seconds'"
+      ],
+      "evidence_count": 11,
+      "wall_s": 3.015513415914029
+    },
+    {
+      "id": "average_08",
+      "category": "average",
+      "duration_s": 76.0,
+      "word_count": 190,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i worked with support to cut it down to one form'",
+        "length: non-verbatim quote dropped: 'answer duration 76 seconds'"
+      ],
+      "evidence_count": 10,
+      "wall_s": 2.5636724587529898
+    },
+    {
+      "id": "average_09",
+      "category": "average",
+      "duration_s": 75.6,
+      "word_count": 189,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '76 seconds'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 2.967020916286856
+    },
+    {
+      "id": "average_10",
+      "category": "average",
+      "duration_s": 75.6,
+      "word_count": 189,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 76 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 3.1604116251692176
+    },
+    {
+      "id": "average_11",
+      "category": "average",
+      "duration_s": 77.2,
+      "word_count": 193,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i cut it down to the 12 questions'",
+        "length: non-verbatim quote dropped: '77 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 2.5957280420698225
+    },
+    {
+      "id": "average_12",
+      "category": "average",
+      "duration_s": 76.0,
+      "word_count": 190,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 76 seconds. Round length band: 90 to 150 seconds.'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 2.088038290850818
+    },
+    {
+      "id": "average_13",
+      "category": "average",
+      "duration_s": 74.0,
+      "word_count": 185,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 74 seconds'",
+        "length: non-verbatim quote dropped: 'Round length band: 90 to 150 seconds'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 1.809689374640584
+    },
+    {
+      "id": "off_topic_01",
+      "category": "off_topic",
+      "duration_s": 19.2,
+      "word_count": 48,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i tried a new pasta recipe'",
+        "length: non-verbatim quote dropped: '19 seconds'"
+      ],
+      "evidence_count": 6,
+      "wall_s": 2.568630165886134
+    },
+    {
+      "id": "off_topic_02",
+      "category": "off_topic",
+      "duration_s": 16.4,
+      "word_count": 41,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: '[   0.0s] CANDIDATE: i was actually just thinking about this recipe i tried last night'",
+        "length: non-verbatim quote dropped: 'The answer duration is 16 seconds, which is more than 25 percent outside the target band of 90 to 150 seconds.'"
+      ],
+      "evidence_count": 4,
+      "wall_s": 2.401129625272006
+    },
+    {
+      "id": "off_topic_03",
+      "category": "off_topic",
+      "duration_s": 13.6,
+      "word_count": 34,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 6,
+      "wall_s": 1.8634285000152886
+    },
+    {
+      "id": "off_topic_04",
+      "category": "off_topic",
+      "duration_s": 14.0,
+      "word_count": 35,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '14 seconds'"
+      ],
+      "evidence_count": 7,
+      "wall_s": 2.987797582987696
+    },
+    {
+      "id": "off_topic_05",
+      "category": "off_topic",
+      "duration_s": 15.6,
+      "word_count": 39,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '16 seconds'"
+      ],
+      "evidence_count": 5,
+      "wall_s": 2.6798760825768113
+    },
+    {
+      "id": "off_topic_06",
+      "category": "off_topic",
+      "duration_s": 13.2,
+      "word_count": 33,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 8,
+      "wall_s": 2.879531292244792
+    },
+    {
+      "id": "off_topic_07",
+      "category": "off_topic",
+      "duration_s": 15.2,
+      "word_count": 38,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 6,
+      "wall_s": 3.1715572918765247
+    },
+    {
+      "id": "off_topic_08",
+      "category": "off_topic",
+      "duration_s": 14.4,
+      "word_count": 36,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 8,
+      "wall_s": 2.4767170841805637
+    },
+    {
+      "id": "off_topic_09",
+      "category": "off_topic",
+      "duration_s": 14.4,
+      "word_count": 36,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 9,
+      "wall_s": 3.0885060830041766
+    },
+    {
+      "id": "off_topic_10",
+      "category": "off_topic",
+      "duration_s": 14.0,
+      "word_count": 35,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '14 seconds'"
+      ],
+      "evidence_count": 6,
+      "wall_s": 2.6686392086558044
+    },
+    {
+      "id": "off_topic_11",
+      "category": "off_topic",
+      "duration_s": 13.2,
+      "word_count": 33,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '13 seconds'"
+      ],
+      "evidence_count": 7,
+      "wall_s": 2.798158457968384
+    },
+    {
+      "id": "off_topic_12",
+      "category": "off_topic",
+      "duration_s": 14.8,
+      "word_count": 37,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '15 seconds'"
+      ],
+      "evidence_count": 5,
+      "wall_s": 3.770557917188853
+    },
+    {
+      "id": "star_explicit_01",
+      "category": "star_explicit",
+      "duration_s": 91.6,
+      "word_count": 229,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 92 seconds'"
+      ],
+      "evidence_count": 16,
+      "wall_s": 3.4879330419935286
+    },
+    {
+      "id": "star_explicit_02",
+      "category": "star_explicit",
+      "duration_s": 94.4,
+      "word_count": 236,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '94 seconds'"
+      ],
+      "evidence_count": 18,
+      "wall_s": 3.7628952502273023
+    },
+    {
+      "id": "star_explicit_03",
+      "category": "star_explicit",
+      "duration_s": 93.2,
+      "word_count": 233,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 93 seconds'",
+        "length: non-verbatim quote dropped: 'Round length band: 90 to 150 seconds'"
+      ],
+      "evidence_count": 15,
+      "wall_s": 3.477661665994674
+    },
+    {
+      "id": "star_explicit_04",
+      "category": "star_explicit",
+      "duration_s": 93.2,
+      "word_count": 233,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '93 seconds'"
+      ],
+      "evidence_count": 17,
+      "wall_s": 3.7655536248348653
+    },
+    {
+      "id": "star_explicit_05",
+      "category": "star_explicit",
+      "duration_s": 94.0,
+      "word_count": 235,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '94 seconds'"
+      ],
+      "evidence_count": 15,
+      "wall_s": 3.1761725419200957
+    },
+    {
+      "id": "star_explicit_06",
+      "category": "star_explicit",
+      "duration_s": 93.2,
+      "word_count": 233,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '93 seconds'"
+      ],
+      "evidence_count": 10,
+      "wall_s": 3.074459374882281
+    },
+    {
+      "id": "star_explicit_07",
+      "category": "star_explicit",
+      "duration_s": 94.0,
+      "word_count": 235,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '94 seconds'"
+      ],
+      "evidence_count": 13,
+      "wall_s": 2.5735579999163747
+    },
+    {
+      "id": "star_explicit_08",
+      "category": "star_explicit",
+      "duration_s": 95.2,
+      "word_count": 238,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Gap",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "specificity: non-verbatim quote dropped: '[ 24.0s] CANDIDATE: I pulled 400 one- and two-star reviews and I found 80 percent of complaints named a single missing filter option.'",
+        "specificity: non-verbatim quote dropped: '[ 44.0s] CANDIDATE: I went to Grace, our mobile lead, with 2 specific options,'",
+        "i_vs_we: non-verbatim quote dropped: '[ 44.0s] CANDIDATE: I decided to ship the filter back in a patch release ahead of the next milestone, writing the rollout plan myself'",
+        "quantification: non-verbatim quote dropped: '[ 24.0s] CANDIDATE: I pulled 400 one- and two-star reviews and I found 80 percent of complaints named a single missing filter option.'",
+        "length: non-verbatim quote dropped: 'Answer duration: 95 seconds'",
+        "length: non-verbatim quote dropped: 'Round length band: 90 to 150 seconds'",
+        "reflection: non-verbatim quote dropped: '[ 80.0s] CANDIDATE: What I learned is to read the actual complaints before proposing a fix, and I have used that rule 4 times since.'"
+      ],
+      "evidence_count": 7,
+      "wall_s": 2.828031833283603
+    },
+    {
+      "id": "star_explicit_09",
+      "category": "star_explicit",
+      "duration_s": 95.2,
+      "word_count": 238,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '95 seconds'"
+      ],
+      "evidence_count": 19,
+      "wall_s": 2.63975195819512
+    },
+    {
+      "id": "star_explicit_10",
+      "category": "star_explicit",
+      "duration_s": 94.0,
+      "word_count": 235,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Gap",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "specificity: non-verbatim quote dropped: 'I pulled ticket logs for 3 months and I found a single ticket category, password resets, made up 22 percent of volume.'",
+        "length: non-verbatim quote dropped: 'The answer duration is 94 seconds, which is within the target band of 90 to 150 seconds.'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 2.8391817500814795
+    },
+    {
+      "id": "star_explicit_11",
+      "category": "star_explicit",
+      "duration_s": 92.8,
+      "word_count": 232,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "structure: non-verbatim quote dropped: '[ 22.0s] CANDIDATE: Action: what I did was pull usage logs across every account tier and I found the setup flow required 7 manual steps most admins abandoned.'",
+        "specificity: non-verbatim quote dropped: '[ 22.0s] CANDIDATE: Action: what I did was pull usage logs across every account tier and I found the setup flow required 7 manual steps most admins abandoned.'",
+        "i_vs_we: non-verbatim quote dropped: '[ 22.0s] CANDIDATE: Action: what I did was pull usage logs across every account tier and I found the setup flow required 7 manual steps most admins abandoned.'",
+        "quantification: non-verbatim quote dropped: '[  0.0s] CANDIDATE: Task: the problem was only 15 percent of customers had activated any integration, and it had been getting worse for 2 quarters,'",
+        "length: non-verbatim quote dropped: 'The answer duration is 93 seconds, which is within the target band of 90 to 150 seconds.'",
+        "reflection: non-verbatim quote dropped: '[ 77.0s] CANDIDATE: What I learned is to fix the top 5 before trying to fix all 60, and I have used that rule 2 times since.'"
+      ],
+      "evidence_count": 6,
+      "wall_s": 2.392971375025809
+    },
+    {
+      "id": "star_explicit_12",
+      "category": "star_explicit",
+      "duration_s": 94.8,
+      "word_count": 237,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '95 seconds'"
+      ],
+      "evidence_count": 18,
+      "wall_s": 2.7959377076476812
+    },
+    {
+      "id": "star_explicit_13",
+      "category": "star_explicit",
+      "duration_s": 95.2,
+      "word_count": 238,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Gap",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "specificity: non-verbatim quote dropped: '[ 22.0s] CANDIDATE: Action: what I did was pull 60 recorded mobile sessions and I found the date picker required 6 taps most users gave up on.'",
+        "i_vs_we: non-verbatim quote dropped: '[ 42.0s] CANDIDATE: ...and I checked in with Layla twice a week during the rollout so we could react fast if anything looked off.'",
+        "quantification: non-verbatim quote dropped: '[  0.0s] CANDIDATE: ...which had 200 thousand monthly bookings at the time.'",
+        "quantification: non-verbatim quote dropped: '[ 22.0s] CANDIDATE: ...mobile conversion was 40 percent below desktop,'",
+        "reflection: non-verbatim quote dropped: '[ 78.0s] CANDIDATE: What I learned is that the smallest UI element can gate the whole funnel, and I have used that rule 3 times since.'"
+      ],
+      "evidence_count": 7,
+      "wall_s": 7.316186500247568
+    },
+    {
+      "id": "non_star_01",
+      "category": "non_star",
+      "duration_s": 87.6,
+      "word_count": 219,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '88 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 4.1808847091160715
+    },
+    {
+      "id": "non_star_02",
+      "category": "non_star",
+      "duration_s": 90.4,
+      "word_count": 226,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '90 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 4.177986916620284
+    },
+    {
+      "id": "non_star_03",
+      "category": "non_star",
+      "duration_s": 89.2,
+      "word_count": 223,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '89 seconds'"
+      ],
+      "evidence_count": 13,
+      "wall_s": 3.128996375016868
+    },
+    {
+      "id": "non_star_04",
+      "category": "non_star",
+      "duration_s": 89.2,
+      "word_count": 223,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '89 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 6.06353749986738
+    },
+    {
+      "id": "non_star_05",
+      "category": "non_star",
+      "duration_s": 90.0,
+      "word_count": 225,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 90 seconds'"
+      ],
+      "evidence_count": 13,
+      "wall_s": 3.4583271252922714
+    },
+    {
+      "id": "non_star_06",
+      "category": "non_star",
+      "duration_s": 89.2,
+      "word_count": 223,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '89 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 2.787556500174105
+    },
+    {
+      "id": "non_star_07",
+      "category": "non_star",
+      "duration_s": 90.0,
+      "word_count": 225,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 90 seconds'",
+        "length: non-verbatim quote dropped: 'Round length band: 90 to 150 seconds'"
+      ],
+      "evidence_count": 14,
+      "wall_s": 2.9716596249490976
+    },
+    {
+      "id": "non_star_08",
+      "category": "non_star",
+      "duration_s": 91.2,
+      "word_count": 228,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '91 seconds'"
+      ],
+      "evidence_count": 13,
+      "wall_s": 3.084890624973923
+    },
+    {
+      "id": "non_star_09",
+      "category": "non_star",
+      "duration_s": 91.2,
+      "word_count": 228,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '91 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 2.87943245889619
+    },
+    {
+      "id": "non_star_10",
+      "category": "non_star",
+      "duration_s": 90.0,
+      "word_count": 225,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 90 seconds. Round length band: 90 to 150 seconds.'"
+      ],
+      "evidence_count": 14,
+      "wall_s": 3.5749531658366323
+    },
+    {
+      "id": "non_star_11",
+      "category": "non_star",
+      "duration_s": 88.8,
+      "word_count": 222,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '89 seconds'"
+      ],
+      "evidence_count": 14,
+      "wall_s": 3.0374529170803726
+    },
+    {
+      "id": "non_star_12",
+      "category": "non_star",
+      "duration_s": 90.8,
+      "word_count": 227,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '91 seconds'"
+      ],
+      "evidence_count": 11,
+      "wall_s": 2.6782410829328
+    },
+    {
+      "id": "non_star_13",
+      "category": "non_star",
+      "duration_s": 91.2,
+      "word_count": 228,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Solid",
+        "length": "Solid",
+        "reflection": "Solid"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '91 seconds'"
+      ],
+      "evidence_count": 13,
+      "wall_s": 3.09897099994123
+    },
+    {
+      "id": "incomplete_01",
+      "category": "incomplete",
+      "duration_s": 28.0,
+      "word_count": 70,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '28 seconds'"
+      ],
+      "evidence_count": 6,
+      "wall_s": 2.5853585000149906
+    },
+    {
+      "id": "incomplete_02",
+      "category": "incomplete",
+      "duration_s": 24.0,
+      "word_count": 60,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "NeedsWork",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 7,
+      "wall_s": 2.4787708749063313
+    },
+    {
+      "id": "incomplete_03",
+      "category": "incomplete",
+      "duration_s": 21.6,
+      "word_count": 54,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Solid",
+        "i_vs_we": "Gap",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '22 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 2.4828833332285285
+    },
+    {
+      "id": "incomplete_04",
+      "category": "incomplete",
+      "duration_s": 20.0,
+      "word_count": 50,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '20 seconds'"
+      ],
+      "evidence_count": 7,
+      "wall_s": 2.694348792079836
+    },
+    {
+      "id": "incomplete_05",
+      "category": "incomplete",
+      "duration_s": 16.8,
+      "word_count": 42,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 5,
+      "wall_s": 2.887986999936402
+    },
+    {
+      "id": "incomplete_06",
+      "category": "incomplete",
+      "duration_s": 19.2,
+      "word_count": 48,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "NeedsWork",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 7,
+      "wall_s": 3.0807138751260936
+    },
+    {
+      "id": "incomplete_07",
+      "category": "incomplete",
+      "duration_s": 19.2,
+      "word_count": 48,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '19 seconds'"
+      ],
+      "evidence_count": 7,
+      "wall_s": 2.512829250190407
+    },
+    {
+      "id": "incomplete_08",
+      "category": "incomplete",
+      "duration_s": 14.8,
+      "word_count": 37,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Solid",
+        "i_vs_we": "Gap",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 5,
+      "wall_s": 2.3100244998931885
+    },
+    {
+      "id": "incomplete_09",
+      "category": "incomplete",
+      "duration_s": 17.6,
+      "word_count": 44,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '18 seconds'"
+      ],
+      "evidence_count": 7,
+      "wall_s": 2.9156528753228486
+    },
+    {
+      "id": "incomplete_10",
+      "category": "incomplete",
+      "duration_s": 18.4,
+      "word_count": 46,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 6,
+      "wall_s": 2.796048041898757
+    },
+    {
+      "id": "incomplete_11",
+      "category": "incomplete",
+      "duration_s": 18.0,
+      "word_count": 45,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [],
+      "evidence_count": 7,
+      "wall_s": 2.883652084041387
+    },
+    {
+      "id": "incomplete_12",
+      "category": "incomplete",
+      "duration_s": 18.8,
+      "word_count": 47,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '19 seconds'"
+      ],
+      "evidence_count": 5,
+      "wall_s": 4.964574417099357
+    },
+    {
+      "id": "incomplete_13",
+      "category": "incomplete",
+      "duration_s": 18.0,
+      "word_count": 45,
+      "status": "success",
+      "dimensions": {
+        "structure": "Gap",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '18 seconds'"
+      ],
+      "evidence_count": 5,
+      "wall_s": 2.6893156659789383
+    },
+    {
+      "id": "fabricated_01",
+      "category": "fabricated",
+      "duration_s": 31.6,
+      "word_count": 79,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 32 seconds'"
+      ],
+      "evidence_count": 11,
+      "wall_s": 3.186708000022918
+    },
+    {
+      "id": "fabricated_02",
+      "category": "fabricated",
+      "duration_s": 30.8,
+      "word_count": 77,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '31 seconds'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 2.488728541880846
+    },
+    {
+      "id": "fabricated_03",
+      "category": "fabricated",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 9,
+      "wall_s": 3.172916540876031
+    },
+    {
+      "id": "fabricated_04",
+      "category": "fabricated",
+      "duration_s": 33.6,
+      "word_count": 84,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'I rewrote the entire codebase'",
+        "length: non-verbatim quote dropped: '34 seconds'"
+      ],
+      "evidence_count": 10,
+      "wall_s": 2.7826067078858614
+    },
+    {
+      "id": "fabricated_05",
+      "category": "fabricated",
+      "duration_s": 29.2,
+      "word_count": 73,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 29 seconds'"
+      ],
+      "evidence_count": 11,
+      "wall_s": 2.981554416939616
+    },
+    {
+      "id": "fabricated_06",
+      "category": "fabricated",
+      "duration_s": 35.6,
+      "word_count": 89,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "quantification: non-verbatim quote dropped: '[ 11.0s] CANDIDATE: as a result, I collected feedback that increased our stock price by 800 percent, even though we were a private company with no stock.'"
+      ],
+      "evidence_count": 7,
+      "wall_s": 2.3971918332390487
+    },
+    {
+      "id": "fabricated_07",
+      "category": "fabricated",
+      "duration_s": 33.2,
+      "word_count": 83,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "specificity: non-verbatim quote dropped: '[ 14.0s] CANDIDATE: as a result, our project won a Nobel Prize, and we signed a deal worth more than the GDP of a mid-size country.'",
+        "i_vs_we: non-verbatim quote dropped: '[ 14.0s] CANDIDATE: as a result, our project won a Nobel Prize, and we signed a deal worth more than the GDP of a mid-size country.'",
+        "quantification: non-verbatim quote dropped: '[ 14.0s] CANDIDATE: as a result, our project won a Nobel Prize, and we signed a deal worth more than the GDP of a mid-size country.'"
+      ],
+      "evidence_count": 7,
+      "wall_s": 2.674777749925852
+    },
+    {
+      "id": "fabricated_08",
+      "category": "fabricated",
+      "duration_s": 30.4,
+      "word_count": 76,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [],
+      "evidence_count": 7,
+      "wall_s": 2.3642120002768934
+    },
+    {
+      "id": "fabricated_09",
+      "category": "fabricated",
+      "duration_s": 31.2,
+      "word_count": 78,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 31 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 2.306153832934797
+    },
+    {
+      "id": "fabricated_10",
+      "category": "fabricated",
+      "duration_s": 31.2,
+      "word_count": 78,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "NeedsWork",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [],
+      "evidence_count": 8,
+      "wall_s": 2.3220428340137005
+    },
+    {
+      "id": "fabricated_11",
+      "category": "fabricated",
+      "duration_s": 33.2,
+      "word_count": 83,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '33 seconds'"
+      ],
+      "evidence_count": 15,
+      "wall_s": 3.880887624807656
+    },
+    {
+      "id": "fabricated_12",
+      "category": "fabricated",
+      "duration_s": 30.8,
+      "word_count": 77,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "Gap",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'I became CEO'",
+        "length: non-verbatim quote dropped: 'answer duration 31 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 2.9155385829508305
+    }
+  ],
+  "consistency_results": {
+    "excellent_01": {
+      "category": "excellent",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        }
+      ]
+    },
+    "excellent_02": {
+      "category": "excellent",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        }
+      ]
+    },
+    "weak_01": {
+      "category": "weak",
+      "runs": [
+        {
+          "structure": "NeedsWork",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        }
+      ]
+    },
+    "weak_02": {
+      "category": "weak",
+      "runs": [
+        {
+          "structure": "NeedsWork",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Gap",
+          "i_vs_we": "Gap",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        }
+      ]
+    },
+    "average_01": {
+      "category": "average",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "NeedsWork",
+          "quantification": "NeedsWork",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Gap",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Gap",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        }
+      ]
+    },
+    "average_02": {
+      "category": "average",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
+          "quantification": "NeedsWork",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
+          "quantification": "NeedsWork",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
+          "quantification": "NeedsWork",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        }
+      ]
+    },
+    "off_topic_01": {
+      "category": "off_topic",
+      "runs": [
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "Gap"
+        }
+      ]
+    },
+    "off_topic_02": {
+      "category": "off_topic",
+      "runs": [
+        {
+          "structure": "Gap",
+          "specificity": "Solid",
+          "i_vs_we": "Solid",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        }
+      ]
+    },
+    "star_explicit_01": {
+      "category": "star_explicit",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        }
+      ]
+    },
+    "star_explicit_02": {
+      "category": "star_explicit",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        }
+      ]
+    },
+    "non_star_01": {
+      "category": "non_star",
+      "runs": [
+        {
+          "structure": "NeedsWork",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "NeedsWork",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "NeedsWork",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "NeedsWork",
+          "reflection": "Solid"
+        }
+      ]
+    },
+    "non_star_02": {
+      "category": "non_star",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        }
+      ]
+    },
+    "incomplete_01": {
+      "category": "incomplete",
+      "runs": [
+        {
+          "structure": "Gap",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "NeedsWork",
+          "specificity": "Solid",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Gap",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "Gap"
+        }
+      ]
+    },
+    "incomplete_02": {
+      "category": "incomplete",
+      "runs": [
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Gap",
+          "specificity": "NeedsWork",
+          "i_vs_we": "NeedsWork",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        }
+      ]
+    },
+    "fabricated_01": {
+      "category": "fabricated",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "Gap",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "NeedsWork"
+        }
+      ]
+    },
+    "fabricated_02": {
+      "category": "fabricated",
+      "runs": [
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Gap",
+          "reflection": "NeedsWork"
+        }
+      ]
+    }
+  },
+  "call_log": [
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.869220667053014,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.441260250285268,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.9570502089336514,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.7576250000856817,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.946510958019644,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.9396625831723213,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.668919290881604,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.1481425003148615,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.749434542376548,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 4.436634708195925,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.9531902079470456,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 4.839436291251332,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.064520750194788,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.2367907920852304,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.757593708112836,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.5843163332901895,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.305304166395217,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.2369985417462885,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 1.81737224990502,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.5343495002016425,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.5662699579261243,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.955561541952193,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 4.660014207940549,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.952743750065565,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.468757291790098,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.454215249978006,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.9656911669299006,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.872671957593411,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.6550177917815745,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.061767667066306,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.9694555001333356,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.0066920001991093,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.5548529997467995,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.957785749807954,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.1484767086803913,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.586066166870296,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.079186665825546,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 1.7958272499963641,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.556760124862194,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.3921469165943563,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 1.8507871660403907,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.976394792087376,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.67114174971357,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.8700668327510357,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.1622644998133183,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.4678201251663268,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.0755068748258054,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.6598410001024604,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.789326125290245,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.761630999855697,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.4774164999835193,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.7515478748828173,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.4681840422563255,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.75688408408314,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.167821167036891,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.064322458114475,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.5596400829963386,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.819486292079091,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.6271102079190314,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.8299424587748945,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.3791111656464636,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.7838586661964655,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 7.309539666865021,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 4.1675851247273386,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 4.168481125030667,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.1200696667656302,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 6.054376957938075,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.4485088330693543,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.7748288330622017,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.9631428327411413,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.0747198746539652,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.869619832839817,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.567052375059575,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.0261859581805766,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.670936292037368,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.0898469160310924,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.5763357090763748,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.472249499987811,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.471284749917686,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.6880673333071172,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.879467333201319,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.0710991667583585,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.504059874918312,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.298560833092779,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.906370500102639,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.7858011671341956,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.873937000054866,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 4.9551797499880195,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.6779245832003653,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.177761583123356,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.4795152079313993,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.1637200829572976,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.773507250007242,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.96854987507686,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.3880946249701083,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.6640824996866286,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.3495435831137,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.2945597087964416,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.3080129576846957,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.867833707947284,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.9063583337701857,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.117111415602267,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.042547458317131,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.3128697499632835,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.7834553751163185,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.8123160423710942,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.127835084218532,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 5.730616791639477,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.5835105828009546,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.09992445865646,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 4.4073901660740376,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 5.5523110828362405,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 6.73308925004676,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 7.994198916014284,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 6.216211541090161,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 5.098156082909554,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 11.604759125038981,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 8.902460082899779,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 4.251563458237797,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 8.673447582870722,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.784459833987057,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 2.6260364577174187,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.1504660001955926,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.4890866661444306,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.473591917194426,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 12.36913829203695,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 8.124932083766907,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 8.48553525004536,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 7.087219334207475,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 10.099760625045747,
+      "provider": "groq",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 13.717008582782,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 3.155031958129257,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    },
+    {
+      "prompt_id": "grading_system",
+      "latency_s": 5.117217083927244,
+      "provider": "gemini-lite",
+      "failovers": 1,
+      "success": true,
+      "schema_strict_valid": true,
+      "gemini_attempts": 1
+    }
+  ]
+}
