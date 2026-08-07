@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import * as amplitude from '@amplitude/analytics-browser';
 import { ChatCircleDotsIcon, ExamIcon, GraduationCapIcon } from '@phosphor-icons/react/dist/ssr';
 import { SignInCard } from '@/components/app/account-menu';
 import { DocInput, Field } from '@/components/app/doc-input';
@@ -140,6 +141,11 @@ export const SetupForm = ({ onStartCall, ref }: React.ComponentProps<'div'> & Se
         return;
       }
       setError('');
+      amplitude.track('Started Session', {
+        app_mode: 'coach',
+        round_profile: profile,
+        guest: !user,
+      });
       onStartCall({
         ...DEFAULT_SETUP,
         mode: 'coach',
@@ -189,6 +195,14 @@ export const SetupForm = ({ onStartCall, ref }: React.ComponentProps<'div'> & Se
         intel_text: sourceKind === 'intel' ? intel : '',
       },
     };
+    amplitude.track('Started Session', {
+      app_mode: 'interview',
+      session_type: sessionType,
+      round_profile: profile,
+      followup_mode: mode,
+      source_kind: sourceKind,
+      guest: !user,
+    });
     onStartCall({ ...DEFAULT_SETUP, ...setup });
   };
 

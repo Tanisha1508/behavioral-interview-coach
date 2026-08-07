@@ -1,7 +1,8 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { TokenSource } from 'livekit-client';
+import * as amplitude from '@amplitude/analytics-browser';
 import { useSession } from '@livekit/components-react';
 import { WarningIcon } from '@phosphor-icons/react/dist/ssr';
 import type { AppConfig } from '@/app-config';
@@ -11,6 +12,7 @@ import { ViewController } from '@/components/app/view-controller';
 import { Toaster } from '@/components/ui/sonner';
 import { useAgentErrors } from '@/hooks/useAgentErrors';
 import { useDebugMode } from '@/hooks/useDebug';
+import { initAmplitude } from '@/lib/amplitude/client';
 import { getSandboxTokenSource } from '@/lib/utils';
 
 const IN_DEVELOPMENT = process.env.NODE_ENV !== 'production';
@@ -18,6 +20,12 @@ const IN_DEVELOPMENT = process.env.NODE_ENV !== 'production';
 function AppSetup() {
   useDebugMode({ enabled: IN_DEVELOPMENT });
   useAgentErrors();
+
+  useEffect(() => {
+    initAmplitude();
+    // prompt_version helps verify this setup flow — safe to remove once confirmed live.
+    amplitude.track('Viewed Home Page', { prompt_version: 'BA400.4' });
+  }, []);
 
   return null;
 }

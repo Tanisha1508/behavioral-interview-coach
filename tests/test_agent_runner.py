@@ -705,3 +705,132 @@ def test_interrupt_silences_feedback_but_opens_verdict(monkeypatch):
         assert "Say retry" not in joined, \
             "interrupt must silence the verdict prompt (no speaking ahead)"
     asyncio.run(run())
+
+
+def _fake_track(calls):
+    async def track(event_type, *, device_id, user_id=None, event_properties=None):
+        calls.append((event_type, event_properties))
+    return track
+
+
+def test_mark_abandoned_fires_once_with_mid_answer_context(monkeypatch):
+    async def run():
+        calls = []
+        monkeypatch.setattr(agent_mod.amplitude, "track", _fake_track(calls))
+        runner, session, graded = make_runner()
+        await runner.ask_next_question()  # sets runner.state: mid-answer
+
+        runner.mark_abandoned()
+        runner.mark_abandoned()  # must not double-fire
+        await asyncio.sleep(0)  # let the create_task'd track() calls run
+
+        abandoned = [c for c in calls if c[0] == "session_abandoned"]
+        assert len(abandoned) == 1, "mark_abandoned must be idempotent"
+        props = abandoned[0][1]
+        assert props["mid_answer"] is True
+        assert props["questions_answered"] == 1
+    asyncio.run(run())
+
+
+def test_mark_abandoned_noop_after_explicit_end(monkeypatch):
+    async def run():
+        calls = []
+        monkeypatch.setattr(agent_mod.amplitude, "track", _fake_track(calls))
+        runner, session, graded = make_runner()
+        await runner.ask_next_question()
+
+        runner._end_session()
+        runner.mark_abandoned()
+        await asyncio.sleep(0)
+
+        assert not [c for c in calls if c[0] == "session_abandoned"], \
+            "a room close after an explicit end must not also count as abandoned"
+        assert [c for c in calls if c[0] == "session_ended"]
+    asyncio.run(run())
+
+
+def test_close_event_binding_only_fires_on_participant_disconnected(monkeypatch):
+    async def run():
+        calls = []
+        monkeypatch.setattr(agent_mod.amplitude, "track", _fake_track(calls))
+
+        class FakeSessionWithClose(FakeSession, FakeEmitter):
+            def __init__(self):
+                FakeSession.__init__(self)
+                FakeEmitter.__init__(self)
+
+        session = FakeSessionWithClose()
+        bind = agent_mod.register_abandonment_tracking(session)
+
+        cfg = SessionConfig(profile_id="pm")
+        persona = resolve(PersonaTags(), overrides=cfg.persona_overrides,
+                          selected_round=cfg.profile_id)
+        manager = SessionManager(cfg, persona)
+        queue = [Question(id="q0", text="Question 0?")]
+        runner = DrillRunner(session, manager, queue)
+        await runner.ask_next_question()
+        bind(runner)
+
+        class FakeCloseEvent:
+            reason = agent_mod.CloseReason.JOB_SHUTDOWN
+        session.emit("close", FakeCloseEvent())
+        await asyncio.sleep(0)
+        assert not [c for c in calls if c[0] == "session_abandoned"], \
+            "JOB_SHUTDOWN is our own explicit end path, not abandonment"
+
+        class DisconnectedEvent:
+            reason = agent_mod.CloseReason.PARTICIPANT_DISCONNECTED
+        session.emit("close", DisconnectedEvent())
+        await asyncio.sleep(0)
+        assert [c for c in calls if c[0] == "session_abandoned"], \
+            "PARTICIPANT_DISCONNECTED after binding must fire session_abandoned"
+    asyncio.run(run())
+
+
+class FakeEmitter:
+    """Minimal .on()/.emit() double for anything the agent registers a
+    handler on (AgentSession, FallbackAdapter) without needing the real
+    livekit classes."""
+    def __init__(self):
+        self._handlers = {}
+
+    def on(self, event, handler=None):
+        def register(fn):
+            self._handlers[event] = fn
+            return fn
+        return register(handler) if handler else register
+
+    def emit(self, event, ev):
+        self._handlers[event](ev)
+
+
+def test_tts_fallback_tracking_fires_triggered_and_recovered(monkeypatch):
+    async def run():
+        calls = []
+        monkeypatch.setattr(agent_mod.amplitude, "track", _fake_track(calls))
+
+        tts_adapter = FakeEmitter()
+        agent_mod.register_tts_fallback_tracking(tts_adapter, None, "interview")
+
+        class FakeProvider:
+            label = "elevenlabs.TTS"
+
+        class UnavailableEvent:
+            tts = FakeProvider()
+            available = False
+
+        class AvailableEvent:
+            tts = FakeProvider()
+            available = True
+
+        tts_adapter.emit("tts_availability_changed", UnavailableEvent())
+        tts_adapter.emit("tts_availability_changed", AvailableEvent())
+        await asyncio.sleep(0)
+
+        triggered = [c for c in calls if c[0] == "tts_fallback_triggered"]
+        recovered = [c for c in calls if c[0] == "tts_fallback_recovered"]
+        assert len(triggered) == 1
+        assert triggered[0][1] == {"session_type": "interview", "provider": "elevenlabs.TTS"}
+        assert len(recovered) == 1
+        assert recovered[0][1]["provider"] == "elevenlabs.TTS"
+    asyncio.run(run())

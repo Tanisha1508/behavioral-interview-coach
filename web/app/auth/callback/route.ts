@@ -12,7 +12,12 @@ export async function GET(request: Request) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      return NextResponse.redirect(`${origin}${next.startsWith('/') ? next : '/'}`);
+      const destination = next.startsWith('/') ? next : '/';
+      const separator = destination.includes('?') ? '&' : '?';
+      // Sign-in completes server-side (this route), but Amplitude is
+      // client-only — the landing page fires the event and strips this
+      // param so a refresh never double-counts it.
+      return NextResponse.redirect(`${origin}${destination}${separator}signed_in=1`);
     }
   }
 

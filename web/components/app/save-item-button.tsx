@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+import * as amplitude from '@amplitude/analytics-browser';
 import { useUser } from '@/hooks/useUser';
 
 // "Save to my account" for rewrites, answers, and coach gaps
@@ -40,6 +41,7 @@ export function SaveItemButton({
       return;
     }
     setState('saved');
+    amplitude.track('Saved Suggestion', { kind });
     toast.success('Saved. Find it on your history page.');
   };
 

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import * as amplitude from '@amplitude/analytics-browser';
 import { TrashIcon } from '@phosphor-icons/react/dist/ssr';
 import { OwlMascot } from '@/components/app/owl-mascot';
 import { SideNav } from '@/components/app/side-nav';
@@ -479,7 +480,10 @@ export default function HistoryPage() {
                   <button
                     key={t.key}
                     type="button"
-                    onClick={() => setTab(t.key)}
+                    onClick={() => {
+                      setTab(t.key);
+                      amplitude.track('History Tab Changed', { tab: t.key });
+                    }}
                     className={cn(
                       '-mb-px border-b-2 px-3 py-2 text-sm font-medium transition-colors',
                       tab === t.key

@@ -1,3 +1,4 @@
+import * as amplitude from '@amplitude/analytics-browser';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 // Saved setup documents (documents table, RLS-scoped to the user).
@@ -36,5 +37,7 @@ export async function saveDocuments(
     onConflict: 'user_id,kind',
   });
   if (error) throw error;
+  // Kinds only, never content: resume/JD/stories text must not leave the app.
+  amplitude.track('Saved Document', { kinds: rows.map((r) => r.kind) });
   return rows.length;
 }

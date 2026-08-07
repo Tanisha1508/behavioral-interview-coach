@@ -184,3 +184,34 @@ def test_speech_during_reply_is_batched_not_dropped(monkeypatch):
         assert seen[1] == "the conflict question?", \
             "speech during reply generation was dropped"
     asyncio.run(run())
+
+
+def _fake_track(calls):
+    async def track(event_type, *, device_id, user_id=None, event_properties=None):
+        calls.append((event_type, event_properties))
+    return track
+
+
+def test_coach_mark_abandoned_fires_once_and_noops_after_explicit_end(monkeypatch):
+    async def run():
+        calls = []
+        monkeypatch.setattr(agent_mod.amplitude, "track", _fake_track(calls))
+        runner, session, _ = make_coach(
+            {"resume": "led x and shipped y"}, monkeypatch)
+        runner.history.append(("candidate", "tell me about x"))
+
+        runner.mark_abandoned()
+        runner.mark_abandoned()  # idempotent
+        await asyncio.sleep(0)
+        abandoned = [c for c in calls if c[0] == "session_abandoned"]
+        assert len(abandoned) == 1
+        assert abandoned[0][1]["turns"] == 1
+
+        calls.clear()
+        runner2, _, _ = make_coach({"resume": "led x"}, monkeypatch)
+        runner2._track_ended("end_phrase")
+        runner2.mark_abandoned()
+        await asyncio.sleep(0)
+        assert not [c for c in calls if c[0] == "session_abandoned"], \
+            "a room close after an explicit end must not also count as abandoned"
+    asyncio.run(run())

@@ -7,10 +7,21 @@ Pure analysis, no LLM/API calls -- safe to re-run any number of times.
 
 from __future__ import annotations
 
+import asyncio
 import json
 import statistics
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+
+from dotenv import load_dotenv  # noqa: E402
+
+from src.analytics import amplitude  # noqa: E402
+
+load_dotenv(ROOT / ".env")
 
 RESULTS_DIR = Path(__file__).resolve().parents[1] / "results"
 DIMS = ["structure", "specificity", "i_vs_we", "quantification", "length", "reflection"]
@@ -252,6 +263,49 @@ def main() -> None:
     out_path.write_text(json.dumps(summary, indent=2, default=str))
     print(f"wrote {out_path}")
     print(json.dumps(summary, indent=2, default=str)[:3000])
+
+    asyncio.run(track_eval_run(summary))
+
+
+async def track_eval_run(summary: dict) -> None:
+    """eval_run_completed (scope item 16, checkpoint 6): headline golden-
+    dataset metrics as a trackable trend, not the full nested report --
+    the deeply-nested breakdowns (rubric_by_category, probe_by_category,
+    star_order_invariance) stay in metrics_summary.json/EVALUATION_REPORT.md
+    for reading directly, not duplicated into Amplitude's flat property
+    model. No-ops (like every other event in this project) if
+    AMPLITUDE_API_KEY is unset."""
+    voice = summary["voice"]
+    consistency = summary["consistency"]
+    followup = summary["followup_precision_recall_f1"]
+    await amplitude.track(
+        "eval_run_completed", device_id="golden-eval-suite",
+        event_properties={
+            "n_items": summary["grading_success_rate"]["n"],
+            "grading_success_rate": summary["grading_success_rate"]["value"],
+            "llm_call_success_rate": summary["llm_call_success_rate"]["value"],
+            "json_schema_validity_pct": summary["json_schema_validity_pct"]["value"],
+            "fallback_invocation_rate": summary["fallback_invocation_rate"]["value"],
+            "retry_rate": summary["retry_rate"]["value"],
+            "hallucination_items_with_violation_pct":
+                summary["hallucination_rate"]["items_with_violation_pct"],
+            "hallucination_per_attempt_violation_rate":
+                summary["hallucination_rate"]["per_attempt_violation_rate"],
+            "grading_latency_p50_s": summary["grading_latency_s"]["p50"],
+            "grading_latency_p95_s": summary["grading_latency_s"]["p95"],
+            "consistency_modal_stable_pct": consistency["modal_stable_pct"],
+            "consistency_span_violation_pct": consistency["span_violation_pct"],
+            "consistency_cohens_kappa": consistency["cohens_kappa_inter_run"],
+            "followup_precision": followup["precision"],
+            "followup_recall": followup["recall"],
+            "followup_f1": followup["f1"],
+            "voice_call_success_rate": voice["call_success_rate"],
+            "voice_wer_mean": voice["wer_mean"],
+            "voice_cer_mean": voice["cer_mean"],
+        })
+    print("posted eval_run_completed to Amplitude"
+          if amplitude._api_key() else
+          "AMPLITUDE_API_KEY unset; eval_run_completed skipped")
 
 
 if __name__ == "__main__":

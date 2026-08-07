@@ -21,7 +21,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from livekit import agents
-from livekit.agents import Agent, AgentSession, StopResponse
+from livekit.agents import Agent, AgentSession, CloseReason, StopResponse
 from livekit.agents.tts import FallbackAdapter
 from livekit.plugins import deepgram, elevenlabs
 
@@ -44,8 +44,9 @@ from src.session.manager import SessionManager
 from src.session.planner import SimulationPlan
 from src.session.queue import compile_queue
 from src.session.setup import SessionConfig, SessionType
-from src.session.cloud_store import CloudSession
+from src.session.cloud_store import CloudSession, user_id_from_room
 from src.session.store import save_session
+from src.analytics import amplitude
 
 load_dotenv()
 logger = logging.getLogger("interview-coach")
@@ -99,6 +100,88 @@ def end_after_grace(on_end) -> None:
     asyncio.create_task(_later())
 
 
+def register_voice_metrics(session: AgentSession, room, session_type: str) -> None:
+    """STT/TTS pipeline metrics (scope item 16, checkpoint 2): latency and
+    audio duration off LiveKit's own per-request metrics, not hand-rolled
+    timing. The `label` field also reveals which provider actually served
+    the request, so a TTS FallbackAdapter switch (Deepgram Aura <->
+    ElevenLabs, DECISIONS.md 2026-07-13) shows up here for free."""
+    device_id = amplitude.device_id_from_room(room)
+    user_id = user_id_from_room(room)
+
+    @session.on("metrics_collected")
+    def _on_metrics(ev) -> None:
+        m = ev.metrics
+        if m.type == "stt_metrics":
+            asyncio.create_task(amplitude.track(
+                "stt_metrics", device_id=device_id, user_id=user_id,
+                event_properties={
+                    "session_type": session_type,
+                    "provider": m.label,
+                    "duration_s": m.duration,
+                    "audio_duration_s": m.audio_duration,
+                    "streamed": m.streamed,
+                }))
+        elif m.type == "tts_metrics":
+            asyncio.create_task(amplitude.track(
+                "tts_metrics", device_id=device_id, user_id=user_id,
+                event_properties={
+                    "session_type": session_type,
+                    "provider": m.label,
+                    "ttfb_s": m.ttfb,
+                    "duration_s": m.duration,
+                    "audio_duration_s": m.audio_duration,
+                    "characters_count": m.characters_count,
+                    "cancelled": m.cancelled,
+                }))
+
+
+def register_tts_fallback_tracking(tts_adapter: FallbackAdapter, room,
+                                   session_type: str) -> None:
+    """tts_fallback_triggered / tts_fallback_recovered (scope item 16,
+    checkpoint 5): FallbackAdapter's own tts_availability_changed event
+    fires exactly at the moment a provider goes down or recovers, not
+    inferred after the fact from a provider label changing between
+    tts_metrics events. STT has no FallbackAdapter in this app (raw
+    deepgram.STT at both AgentSession construction sites), so this is
+    TTS-only."""
+    device_id = amplitude.device_id_from_room(room)
+    user_id = user_id_from_room(room)
+
+    @tts_adapter.on("tts_availability_changed")
+    def _on_availability_changed(ev) -> None:
+        event_type = "tts_fallback_recovered" if ev.available else "tts_fallback_triggered"
+        asyncio.create_task(amplitude.track(
+            event_type, device_id=device_id, user_id=user_id,
+            event_properties={
+                "session_type": session_type,
+                "provider": ev.tts.label,
+            }))
+
+
+def register_abandonment_tracking(session: AgentSession):
+    """session_abandoned (scope item 16, checkpoint 4): fires only when
+    AgentSession's own close reason is PARTICIPANT_DISCONNECTED (the
+    participant actually left) rather than JOB_SHUTDOWN (our own explicit
+    end path via ctx.shutdown, already covered by session_ended). The
+    runner does not exist yet when the interview path calls this (it is
+    built after queue compilation, well after AgentSession construction),
+    so this returns a bind(runner) setter instead of taking the runner
+    directly; the handler no-ops until bind() is called."""
+    holder: dict[str, object | None] = {"runner": None}
+
+    @session.on("close")
+    def _on_close(ev) -> None:
+        runner = holder["runner"]
+        if runner is not None and ev.reason == CloseReason.PARTICIPANT_DISCONNECTED:
+            runner.mark_abandoned()
+
+    def bind(runner: object) -> None:
+        holder["runner"] = runner
+
+    return bind
+
+
 def load_session_config() -> SessionConfig:
     """The wizard (python -m src.session.setup) writes data/next_session.json.
     Without one, default to a pm Drill with 2 bank questions."""
@@ -150,7 +233,8 @@ class DrillRunner:
 
     def __init__(self, session: AgentSession, manager: SessionManager,
                  queue: list[Question], on_end=None,
-                 followup_mode: str = "listen", room=None, cloud=None):
+                 followup_mode: str = "listen", room=None, cloud=None,
+                 session_type: str = "drill"):
         self.session = session
         self.manager = manager
         self.queue = queue
@@ -159,6 +243,19 @@ class DrillRunner:
         self.room = room  # for UI data messages; None in unit tests
         self.cloud: CloudSession | None = cloud  # Supabase history; None for guests
         self.max_followups = 0 if followup_mode == "listen" else MAX_FOLLOWUPS
+        self.session_type = session_type
+        self._session_started_at = time.monotonic()
+        self._device_id = amplitude.device_id_from_room(room)
+        self._user_id = user_id_from_room(room)
+        self._ended_explicitly = False
+        asyncio.create_task(amplitude.track(
+            "session_started", device_id=self._device_id,
+            user_id=self._user_id, event_properties={
+                "session_type": session_type,
+                "round_profile": manager.round.profile_id,
+                "followup_mode": followup_mode,
+                "guest": self._user_id is None,
+            }))
         self.state: AnswerState | None = None
         self.answer_started: float | None = None
         self.transcript_log: list[tuple[float, str, str]] = []  # (t, speaker, text)
@@ -408,15 +505,76 @@ class DrillRunner:
                            else "Say retry or end.")
 
     def _end_session(self) -> None:
+        self._ended_explicitly = True
         self.awaiting_verdict = False
         self.state = None
         self.publish_ui("session_ended", {})
         if self.cloud:
             # Fire and forget: the shutdown grace period gives it time.
             asyncio.create_task(self.cloud.finish())
+        asyncio.create_task(amplitude.track(
+            "session_ended", device_id=self._device_id,
+            user_id=self._user_id, event_properties={
+                "session_type": self.session_type,
+                "round_profile": self.manager.round.profile_id,
+                "duration_s": int(time.monotonic() - self._session_started_at),
+                "questions_total": self.total_questions,
+                "questions_answered": getattr(self, "question_number", 0),
+                "dropped": getattr(self, "dropped", 0),
+                "guest": self._user_id is None,
+            }))
         end_after_grace(self.on_end)
 
+    def mark_abandoned(self) -> None:
+        """The room closed because the participant actually left
+        (CloseReason.PARTICIPANT_DISCONNECTED), not through _end_session.
+        No-ops if _end_session already ran (the ctx.shutdown that follows
+        an explicit end also closes the room, which must not double-fire
+        this as an abandonment)."""
+        if self._ended_explicitly:
+            return
+        self._ended_explicitly = True
+        asyncio.create_task(amplitude.track(
+            "session_abandoned", device_id=self._device_id,
+            user_id=self._user_id, event_properties={
+                "session_type": self.session_type,
+                "round_profile": self.manager.round.profile_id,
+                "duration_s": int(time.monotonic() - self._session_started_at),
+                "questions_total": self.total_questions,
+                "questions_answered": getattr(self, "question_number", 0),
+                "mid_answer": self.state is not None,
+                "guest": self._user_id is None,
+            }))
+
     # ---- grading handoff ----
+
+    def _track_graded(self, scores, duration_s: float,
+                      question_number: int) -> None:
+        # evidence_violations is the existing verbatim-quote guard
+        # (grader.py _verify_evidence): a non-zero count is a caught
+        # hallucination, the closest proxy this codebase has to a
+        # hallucination rate.
+        dims = scores.model_dump()["dimensions"]
+        asyncio.create_task(amplitude.track(
+            "answer_graded", device_id=self._device_id,
+            user_id=self._user_id, event_properties={
+                "session_type": self.session_type,
+                "round_profile": self.manager.round.profile_id,
+                "question_number": question_number,
+                "duration_s": duration_s,
+                "evidence_violations": len(
+                    getattr(scores, "evidence_violations", []) or []),
+                "dimension_levels": {d: v["level"] for d, v in dims.items()},
+            }))
+
+    def _track_grading_failed(self, reason: str) -> None:
+        asyncio.create_task(amplitude.track(
+            "answer_grading_failed", device_id=self._device_id,
+            user_id=self._user_id, event_properties={
+                "session_type": self.session_type,
+                "round_profile": self.manager.round.profile_id,
+                "reason": reason,
+            }))
 
     async def _grade_and_feedback(self) -> None:
         assert self.state and self.current_question
@@ -447,6 +605,7 @@ class DrillRunner:
             # Grading needs the LLM; quota exhaustion must leave the user a
             # spoken way forward, not a dead session (live 2026-07-12).
             logger.exception("grading failed: LLM unavailable")
+            self._track_grading_failed("llm_unavailable")
             self.publish_ui("agent_phase", {"phase": "idle"})
             await self.say("I could not score that answer, my language "
                            "model quota is exhausted right now. Say retry "
@@ -459,12 +618,14 @@ class DrillRunner:
             # sent the user chasing limits that were fine (live 2026-07-13,
             # TEST-LOG finding 4).
             logger.exception("grading failed")
+            self._track_grading_failed("error")
             self.publish_ui("agent_phase", {"phase": "idle"})
             await self.say("Something went wrong while scoring that "
                            "answer on my side. Say retry to answer it "
                            "again, next to move on, or end to stop.")
             self.awaiting_verdict = True
             return
+        self._track_graded(scores, duration_s, self.question_number)
         try:
             ammo = await asyncio.to_thread(
                 missed_ammo, gctx.transcript, gctx.docs, gctx.question_text)
@@ -581,7 +742,7 @@ class SimulationRunner(DrillRunner):
                  followup_mode: str = "listen", room=None, cloud=None):
         super().__init__(session, manager, queue[:plan.question_count],
                          on_end=on_end, followup_mode=followup_mode,
-                         room=room, cloud=cloud)
+                         room=room, cloud=cloud, session_type="simulation")
         self.plan = plan
         self.sim_started: float | None = None
         self.reps: list[report.RepResult] = []
@@ -642,10 +803,16 @@ class SimulationRunner(DrillRunner):
                 grade, gctx.transcript, gctx.probes,
                 Timings(duration_s=gctx.duration_s), self.manager.round,
                 gctx.grader_notes)
-        except Exception:
+            self._track_graded(rep.scores, gctx.duration_s,
+                               self.reps.index(rep) + 1)
+        except Exception as exc:
             # One failed grade must not kill the set; the debrief says
             # which answers went unscored.
             logger.exception("simulation grading failed for one answer")
+            reason = ("llm_unavailable"
+                      if isinstance(exc, (DailyCapReached, LLMUnavailable))
+                      else "error")
+            self._track_grading_failed(reason)
         try:
             rep.ammo = await asyncio.to_thread(
                 missed_ammo, gctx.transcript, gctx.docs, gctx.question_text)
@@ -736,6 +903,45 @@ class CoachRunner:
         self.ended = False
         self._busy = False
         self._pending: list[str] = []
+        self._session_started_at = time.monotonic()
+        self._device_id = amplitude.device_id_from_room(room)
+        self._user_id = user_id_from_room(room)
+        self._ended_explicitly = False
+        asyncio.create_task(amplitude.track(
+            "session_started", device_id=self._device_id,
+            user_id=self._user_id, event_properties={
+                "session_type": "coach",
+                "round_profile": cfg.profile_id,
+                "guest": self._user_id is None,
+            }))
+
+    def _track_ended(self, reason: str) -> None:
+        self._ended_explicitly = True
+        asyncio.create_task(amplitude.track(
+            "session_ended", device_id=self._device_id,
+            user_id=self._user_id, event_properties={
+                "session_type": "coach",
+                "round_profile": self.cfg.profile_id,
+                "duration_s": int(time.monotonic() - self._session_started_at),
+                "reason": reason,
+                "guest": self._user_id is None,
+            }))
+
+    def mark_abandoned(self) -> None:
+        """See DrillRunner.mark_abandoned: same PARTICIPANT_DISCONNECTED
+        vs explicit-end distinction, coach-shaped properties."""
+        if self._ended_explicitly:
+            return
+        self._ended_explicitly = True
+        asyncio.create_task(amplitude.track(
+            "session_abandoned", device_id=self._device_id,
+            user_id=self._user_id, event_properties={
+                "session_type": "coach",
+                "round_profile": self.cfg.profile_id,
+                "duration_s": int(time.monotonic() - self._session_started_at),
+                "turns": len(self.history),
+                "guest": self._user_id is None,
+            }))
 
     def on_partial(self, transcript: str, is_final: bool) -> None:
         pass  # the coach has no mid-speech analyzers
@@ -769,6 +975,7 @@ class CoachRunner:
                            "likely a quota limit. Please end this session "
                            "and try again in a few minutes.")
             publish_ui(self.room, "session_ended", {})
+            self._track_ended("pack_generation_failed")
             end_after_grace(self.on_end)
             return
         if stories.strip() and self.pack.questions:
@@ -829,6 +1036,7 @@ class CoachRunner:
             self.ended = True
             self._pending.clear()
             publish_ui(self.room, "session_ended", {})
+            self._track_ended("end_phrase")
             await self.say("Good luck out there. Ending the session.")
             end_after_grace(self.on_end)
             return
@@ -988,16 +1196,21 @@ async def entrypoint(ctx: agents.JobContext) -> None:
         cfg = web_cfg or load_session_config()
 
     if cfg.mode == "coach":
+        coach_tts = build_tts(VOICE_LIBRARY["warm_slower"])
         session = AgentSession(
             stt=deepgram.STT(model="nova-3", interim_results=True),
-            tts=build_tts(VOICE_LIBRARY["warm_slower"]),
+            tts=coach_tts,
             # People phrase questions in bursts; 0.8s made the coach answer
             # fragments (live session 2026-07-12). Wait for a real pause.
             min_endpointing_delay=2.0,
         )
+        register_voice_metrics(session, ctx.room, "coach")
+        register_tts_fallback_tracking(coach_tts, ctx.room, "coach")
+        bind_abandonment = register_abandonment_tracking(session)
         runner = CoachRunner(
             session, cfg, room=ctx.room,
             on_end=lambda: ctx.shutdown(reason="coach session ended"))
+        bind_abandonment(runner)
 
         loop = asyncio.get_running_loop()
 
@@ -1041,11 +1254,15 @@ async def entrypoint(ctx: agents.JobContext) -> None:
     voice = VOICE_LIBRARY.get(persona.voice_preset,
                               VOICE_LIBRARY["brisk_neutral"])
 
+    interview_tts = build_tts(voice)
     session = AgentSession(
         stt=deepgram.STT(model="nova-3", interim_results=True),
-        tts=build_tts(voice),
+        tts=interview_tts,
         min_endpointing_delay=manager.round.patience_ms / 1000,
     )
+    register_voice_metrics(session, ctx.room, "interview")
+    register_tts_fallback_tracking(interview_tts, ctx.room, "interview")
+    bind_abandonment = register_abandonment_tracking(session)
 
     # The session starts and speaks BEFORE any slow work. Pack/intel
     # generation reads the user's documents with the LLM and 30s on the
@@ -1125,6 +1342,7 @@ async def entrypoint(ctx: agents.JobContext) -> None:
             session, manager, queue,
             on_end=lambda: ctx.shutdown(reason="user ended"),
             followup_mode=cfg.followup_mode, room=ctx.room, cloud=cloud)
+    bind_abandonment(runner)
 
     loop = asyncio.get_running_loop()
 

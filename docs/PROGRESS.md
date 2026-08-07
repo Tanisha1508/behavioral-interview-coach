@@ -613,3 +613,344 @@ rows). Web tsc --noEmit exit 0; next lint clean; next build clean.
 Deployed via `vercel --prod` (aliased to behavioral-interview-coach-psi),
 verified live signed-in by the user incl. the delete round-trip.
 Committed in 182442d (code) + this docs note. Status: done-and-tested.
+
+## 2026-08-07: Scope item 16 (new) — Amplitude product analytics, checkpoint 1
+
+User wants end-to-end analytics: product/engagement events plus AI-quality
+metrics (STT/TTS latency, hallucination rate via existing verbatim-evidence
+checks). Checkpoint 1 is client-side-only: prove the pipe works with one
+real event. Checkpoint 2 (not started) is server-side instrumentation from
+the Python LiveKit agent for the AI-eval events; a client-only SDK cannot
+reach those.
+
+- `@amplitude/analytics-browser@^2` installed (web-only, browser SDK).
+  Deliberately NOT `@amplitude/unified`: that package's `initAll` bundles
+  Session Replay and an Engagement (in-app guides/surveys) SDK the user
+  never asked for and that auto-fire their own events/network calls with no
+  config flag to fully disable Engagement. See DECISIONS.md entry same date.
+- `web/lib/amplitude/client.ts`: `initAmplitude()`, guarded on a missing
+  `NEXT_PUBLIC_AMPLITUDE_API_KEY` (warns and no-ops rather than throwing).
+  `amplitude.init(apiKey, { autocapture: false })` — analytics-only entry
+  point, no session replay, no engagement bundle.
+- One event instrumented as the checkpoint-1 verification: `Viewed Home
+  Page`, fired from a `useEffect` in `components/app/app.tsx`'s `AppSetup`
+  (mounts once at app load). Carries `prompt_version: 'BA400.4'` per the
+  Amplitude setup-wizard convention; safe to remove later.
+- `autocapture: false` cascades to `defaultTracking: false` inside the SDK
+  (confirmed by reading `@amplitude/analytics-browser/lib/esm/config.js`:
+  `if (options.autocapture !== undefined) options.defaultTracking =
+  options.autocapture`), so no auto page-view/session events fire either —
+  only the one explicit `track()` call above. Matches the user's "deliberate
+  events only" choice.
+- `NEXT_PUBLIC_AMPLITUDE_API_KEY` in `web/.env.local` (gitignored) and
+  documented (blank) in `web/.env.example`.
+- Verified live: `npm run build` clean (tsc + lint), then `npm run dev` +
+  browser navigation confirmed via network tab that `POST
+  api2.amplitude.com/2/httpapi` returns 200 and no `engagement-browser`
+  bundle loads. User independently confirmed `Viewed Home Page` in
+  Amplitude's Live Events view (screenshot, 2026-08-07).
+- Not yet committed to git; not yet deployed to Vercel prod (Vercel env var
+  for the API key still needs setting when this ships).
+
+Status: checkpoint 1 done-and-tested.
+
+## 2026-08-07 (later): Scope item 16, checkpoint 2 — server-side AI-eval events
+
+Python agent side of the analytics push: session engagement, grading/
+hallucination-rate signal, and STT/TTS pipeline metrics, from the LiveKit
+agent process the web SDK can never reach. Deliberately deferred out of
+this pass: per-LLM-call (Gemini/Groq) provider and latency tracking —
+`src/llm/client.py`'s failover logic has documented fragile edge cases
+(see the 2026-07-12/13 DECISIONS.md entries); instrumenting it gets its
+own isolated checkpoint 3 rather than being bundled in here. See
+DECISIONS.md 2026-08-07 for why this event went to `@amplitude/
+analytics-browser` and not `@amplitude/unified` on the web side, and for
+this checkpoint's scope-cut rationale.
+
+- `src/analytics/amplitude.py` (new): Amplitude HTTP API V2 client,
+  mirrors `src/session/cloud_store.py`'s shape exactly — env-gated on
+  `AMPLITUDE_API_KEY`, async, every call swallows its own errors so
+  analytics can never take down a live session. `device_id_from_room()`
+  uses the LiveKit room name (padded if under Amplitude's 5-char
+  `min_id_length`, e.g. short console-mode room names); `track()` posts
+  one event, dropping `user_id` if present but too short rather than
+  sending a value Amplitude would silently reject.
+- `AMPLITUDE_API_KEY` added to root `.env`/`.env.example`, same
+  ingestion key as the web side's `NEXT_PUBLIC_AMPLITUDE_API_KEY` (no
+  server/client key distinction in Amplitude, unlike Supabase's anon/
+  service-role split), unprefixed since this is server-side not Next.js.
+- Five event types wired into `src/agent.py`:
+  - `session_started` / `session_ended` — DrillRunner (inherited by
+    SimulationRunner) and CoachRunner each fire both, guest sessions
+    included (`user_id` omitted, `device_id` always present) so
+    engagement counts match the web side's guest-inclusive
+    `Viewed Home Page`. `session_type` distinguishes drill/simulation/
+    coach; `session_ended` on CoachRunner tags `reason`
+    (`pack_generation_failed` vs `end_phrase`).
+  - `answer_graded` / `answer_grading_failed` — DrillRunner.
+    `_grade_and_feedback` and SimulationRunner._grade_rep (background
+    grading), both via new shared `_track_graded`/`_track_grading_failed`
+    helpers on DrillRunner. `answer_graded` carries `evidence_violations`
+    (the existing verbatim-quote guard in grader.py `_verify_evidence` —
+    the closest hallucination-rate proxy this codebase has) and per-
+    dimension levels. `answer_grading_failed` distinguishes
+    `llm_unavailable`/`daily_cap_reached` from a generic scoring `error`.
+  - `stt_metrics` / `tts_metrics` — new `register_voice_metrics()`
+    hooks LiveKit's own `session.on("metrics_collected")` (still emitted
+    in livekit-agents 1.6.4 despite being marked deprecated in favor of
+    `session_usage_updated`; revisit if a future upgrade drops it),
+    registered on both `AgentSession` instances (coach path and
+    interview path). The metrics' `label` field is the STT/TTS plugin's
+    class name, which means a `FallbackAdapter` switch (Deepgram Aura
+    <-> ElevenLabs, DECISIONS.md 2026-07-13) is visible in the event
+    stream for free, no extra code.
+- `tests/test_amplitude_analytics.py` (new, 6 tests): device_id padding,
+  no-op without a key, correct payload shape, short user_id dropped,
+  network failure never raises — same `httpx.MockTransport` pattern as
+  `tests/test_cloud_store.py`.
+- `tests/conftest.py` (new): autouse fixture clearing `AMPLITUDE_API_KEY`
+  for every test. Caught live during this pass: `src/agent.py` calls
+  `load_dotenv()` at import time, so the real key just added to `.env`
+  was leaking into every test that constructs a runner, firing real
+  fire-and-forget events at production Amplitude on every `pytest` run
+  (surfaced as `RuntimeWarning: coroutine ... was never awaited` for the
+  abandoned connections). Fixed before this was called done, not left as
+  a known issue.
+- One test fix: `_track_graded` used `getattr(scores, "evidence_violations",
+  [])` instead of a direct attribute access, so it doesn't break
+  `test_agent_runner.py`'s minimal `DummyScores` stub (which predates this
+  change and doesn't model every field of the real `RubricScores`).
+- Verified: full suite `python3 -m pytest` — 136 passed, 0 warnings.
+  `python3 -c "import src.agent"` and `py_compile` both clean. A live
+  manual event (`checkpoint2_server_verification`) posted with the real
+  `.env` key returned `{"code":200,"events_ingested":1}` from Amplitude's
+  API, confirming server-side delivery end-to-end (mirrors how checkpoint
+  1 was verified against the real endpoint on the web side).
+- Not yet committed to git; not yet deployed. `AMPLITUDE_API_KEY` still
+  needs adding to the LiveKit Cloud agent's deployed env vars when this
+  ships (same account noted in memory: LiveKit Cloud agent worker).
+
+Status: checkpoint 2 done-and-tested. Checkpoint 3 (per-LLM-call
+provider/latency/failover tracking in src/llm/client.py) not started.
+
+`docs/ANALYTICS.md` added (2026-08-07, user-requested): the event
+lookup table — every event type, its properties, and exact source
+line, kept separate from this file's checkpoint narrative. Update it
+in the same change whenever a track() call is added, renamed, or
+removed.
+
+## 2026-08-07 (later still): Scope item 16, checkpoint 3 — web engagement events
+
+User supplied a broader event wishlist (home visits, activation/log-ins,
+setup/resume upload, running a mock, question-attempt depth, time spent,
+saving suggestions, coach-mode saving, model output quality, TTS/STT
+latency, fallbacks, mode/history-page engagement, drop-off before
+attempting a mock, leaving mid-question, golden-dataset evals). Grounded
+against the actual code (via an Explore-agent survey) before building
+anything, and split into checkpoints: several items were already covered
+by checkpoints 1-2 (home visits, running a mock, time spent, model output
+quality via `evidence_violations`, TTS/STT latency, "attempted >=2
+questions" derivable as an Amplitude funnel on existing `answer_graded`
+events) — no new code needed for those, just Amplitude charts. This
+checkpoint covers the remaining low-risk web-side gaps.
+
+- `web/components/app/signed-in-tracker.tsx` (new): mounted once in
+  `web/app/layout.tsx` so it's on every route. Does two things: calls
+  `initAmplitude()` unconditionally (fixes a real gap found while wiring
+  this — `history/page.tsx`, `save-item-button.tsx`, and `setup-form.tsx`
+  could fire `track()` on a page a user lands on directly, e.g. a
+  bookmarked `/history`, without `app.tsx`'s `AppSetup` ever having run
+  init, since that component only mounts on `/`); and fires `Signed In`
+  when a `?signed_in=1` param is present, then strips it via
+  `router.replace`.
+- `web/app/auth/callback/route.ts`: appends `?signed_in=1` to the
+  post-OAuth redirect. This is a Route Handler (server-side); the browser
+  SDK can't fire from there, hence the redirect-param handoff.
+- `web/lib/supabase/documents.ts` `saveDocuments()`: fires `Saved Document`
+  with `{kinds}` after a successful upsert. One hook covers all three
+  call sites (`setup-form.tsx`, `setup-wizard.tsx`, `app/profile/page.tsx`)
+  since they all go through this shared function. Never sends document
+  content.
+- `web/components/app/save-item-button.tsx`: fires `Saved Suggestion` with
+  `{kind}` after a successful insert. The existing `kind` prop
+  (`rewrite`/`answer`/`gap`) already distinguishes the two placements in
+  `interview-overlay.tsx`.
+- `web/components/app/setup-form.tsx` `start()`: fires `Started Session`
+  at both the coach-mode and interview-mode exit paths, client-side,
+  before `onStartCall()` hands off to the LiveKit connection. Deliberately
+  not the same moment as the agent's `session_started` — see DECISIONS.md
+  2026-08-07 for why.
+- `web/app/history/page.tsx`: fires `History Tab Changed` with `{tab}` on
+  the tab `onClick`.
+- All five documented in `docs/ANALYTICS.md`.
+- Verified: `npm run build` clean (tsc + lint, after the same import-order
+  auto-fix pattern as checkpoint 1). Live-checked the signed-out path only
+  (home page loads, no console errors, `Viewed Home Page` still fires
+  correctly with the new init logic) — the other four events are gated
+  behind real Google OAuth sign-in, which I won't complete on the user's
+  behalf per the assistant's own rules, so those are code-reviewed and
+  build-verified but not live-event-verified. Flagged to the user
+  explicitly rather than silently skipped.
+
+Status: checkpoint 3 done, verification partial (signed-in-gated events
+not live-tested; user can verify live next time they sign in). Checkpoints
+4 (session abandonment), 5 (explicit fallback events), and 6 (golden-eval
+bridge) not started — all three need research before implementation per
+the plan agreed with the user.
+
+## 2026-08-07 (later still): Scope item 16, checkpoint 4 — session_abandoned
+
+Researched livekit-agents 1.6.4 source directly (no public hook existed
+for this before): `AgentSession` emits its own `"close"` event with a
+`CloseReason` enum (`ERROR`, `JOB_SHUTDOWN`, `PARTICIPANT_DISCONNECTED`,
+`USER_INITIATED`, `TASK_COMPLETED`). Confirmed by reading the call sites
+in `livekit/agents/voice/agent_session.py` and `voice/room_io/room_io.py`:
+`JOB_SHUTDOWN` is exactly our own `ctx.shutdown()` path (already covered
+by `session_ended`); `PARTICIPANT_DISCONNECTED` is genuinely "the
+participant left" — the signal the user asked for ("leaving a mock in the
+middle").
+
+- `register_abandonment_tracking(session)` (`src/agent.py`, next to
+  `register_voice_metrics`): registers the close handler, returns a
+  `bind(runner)` setter since the interview-path runner is constructed
+  well after the `AgentSession` (after queue compilation/LLM calls for
+  pack/intel generation). Wired at both `AgentSession` construction sites
+  and bound right after each of the three runner constructions
+  (`CoachRunner`, `SimulationRunner`/`DrillRunner`).
+- `DrillRunner.mark_abandoned()` / `CoachRunner.mark_abandoned()`: new
+  methods, guarded by a shared `self._ended_explicitly` flag (now also set
+  by `_end_session`/`_track_ended` on the normal path) so a close event
+  arriving after an explicit end can never double-fire as an abandonment.
+- Fully documented in `docs/ANALYTICS.md` under `session_abandoned`.
+- Verified: this is the first checkpoint-16 event with dedicated unit
+  tests rather than build-verify-only, since the conditional logic
+  (idempotency, reason-filtering) is real branching behavior worth
+  protecting, not a pass-through `track()` call. 4 new tests across
+  `tests/test_agent_runner.py` and `tests/test_coach_runner.py`
+  (idempotent firing, no-op after explicit end, reason-filtering via a
+  fake `session.on("close")`/`emit` harness). Full suite: 140 passed (136
+  + 4 new). `import src.agent` and `py_compile` both clean. Not live-event
+  verified — that needs an actual mid-session room disconnect, which isn't
+  practical to script safely; the unit tests cover the branching logic
+  directly instead.
+
+Status: checkpoint 4 done-and-tested (unit-level; no live E2E). Checkpoints
+5 (explicit fallback events) and 6 (golden-eval bridge) not started.
+
+## 2026-08-07 (later still): Scope item 16, checkpoint 5 — TTS fallback events
+
+Researched `livekit-agents`' `tts/fallback_adapter.py` directly (again, no
+public docs covered this): `FallbackAdapter` already emits its own
+`tts_availability_changed` event (`AvailabilityChangedEvent(tts, available)`)
+at the exact moment a provider goes down or recovers — a much better
+signal than diffing the `provider` label between consecutive `tts_metrics`
+events after the fact.
+
+- `register_tts_fallback_tracking(tts_adapter, room, session_type)`
+  (`src/agent.py`, next to `register_voice_metrics`): hooks
+  `tts_availability_changed` directly on the `FallbackAdapter` instance.
+  Fires `tts_fallback_triggered` when a provider goes unavailable,
+  `tts_fallback_recovered` when it comes back.
+- `build_tts()`'s return value is now captured into a local variable
+  (`coach_tts` / `interview_tts`) at both `AgentSession` construction
+  sites instead of being passed inline — nothing previously held a
+  reference to the adapter to hook events on.
+- Confirmed this app has no STT `FallbackAdapter` (raw `deepgram.STT(...)`
+  at both sites), so this checkpoint is TTS-only; documented as a note in
+  ANALYTICS.md rather than left implicit.
+- `tests/test_agent_runner.py`: new `FakeEmitter` helper class (small
+  `.on()`/`.emit()` double), used by the new
+  `test_tts_fallback_tracking_fires_triggered_and_recovered` test and
+  refactored into the checkpoint-4 close-event test too (which had
+  duplicated the same on/emit logic inline).
+- Verified: full suite 141 passed (140 + 1 new — checkpoint 4's 4 tests
+  plus this one). `import src.agent` and `py_compile` clean. Not
+  live-verified (would need a real provider outage or forced API-key
+  failure mid-session); the unit test exercises the actual event-wiring
+  logic directly instead.
+
+Status: checkpoint 5 done-and-tested (unit-level). Checkpoint 6
+(golden-eval bridge) not started.
+
+## 2026-08-07 (later still): Scope item 16, checkpoint 6 — golden-eval bridge
+
+Read `evaluation/scripts/analyze_results.py` in full (258 lines): pure
+computation over three checked-in result files
+(`llm_eval_results.json`/`probe_eval_results.json`/`voice_eval_results.json`),
+writes `evaluation/results/metrics_summary.json`, no LLM/API calls itself
+so safe to re-run any number of times. Confirmed via `.github/workflows/`
+that nothing runs this automatically — it's a manual reproduction script
+(per `evaluation/README.md`), run as `python -m
+evaluation.scripts.analyze_results` from the repo root.
+
+- Added `track_eval_run(summary)` at the end of `main()`, called right
+  after `metrics_summary.json` is written. Imports
+  `src.analytics.amplitude` directly (mirrors how `run_llm_eval.py`
+  already imports `src.grading.grader`/`src.llm.client` via the same
+  `sys.path.insert(0, str(ROOT))` + `# noqa: E402` pattern — this script
+  isn't part of the running product, so it reuses the same module rather
+  than duplicating the HTTP call). Added `load_dotenv(ROOT / ".env")`
+  too, since `src.analytics.amplitude` doesn't call it itself (by design,
+  same as `src/session/cloud_store.py` — the loading happens once at the
+  real entrypoint, `src/agent.py`, which this script isn't).
+- Fires `eval_run_completed` with `device_id="golden-eval-suite"` (no
+  LiveKit room or user exists for an offline batch run) and 19 headline
+  scalar properties (success rates, hallucination rate, consistency
+  Kappa, follow-up precision/recall/F1, voice WER/CER) — deliberately NOT
+  the full nested `metrics_summary.json`; the per-category breakdowns
+  stay in the JSON file and EVALUATION_REPORT.md for reading directly.
+  Documented the exact property list in `docs/ANALYTICS.md`.
+- No opt-out flag added: unsetting `AMPLITUDE_API_KEY` already suppresses
+  it, matching every other integration point in this project. Runs every
+  time someone deliberately re-runs the golden-dataset suite by hand.
+- Verified: ran the real script (`python -m
+  evaluation.scripts.analyze_results`) against the existing checked-in
+  result files — printed `posted eval_run_completed to Amplitude`
+  (real network round trip, not mocked). Re-ran with `AMPLITUDE_API_KEY=`
+  to confirm the no-op path prints the skip message instead of erroring.
+  `python3 -m pytest` still 141 passed (this script has no dedicated unit
+  tests — none of `evaluation/scripts/` does, consistent with the rest of
+  that directory, which is a reproduction pipeline verified by its own
+  live runs and checked-in report, not a pytest-covered module).
+
+Status: checkpoint 6 done-and-tested (live-verified, real network call).
+This closes every item from the user's 2026-08-07 wishlist: the remaining
+gap (per-LLM-call provider/latency tracking) is a deliberate, documented
+scope cut, not a missed item — see DECISIONS.md 2026-08-07.
+
+## 2026-08-07 (close): full end-to-end live verification, real session
+
+Found and fixed a real deploy gap first: root `.env` had `LIVEKIT_URL`
+and `LIVEKIT_API_SECRET` but not `LIVEKIT_API_KEY` (present only in
+`web/.env.local`), so `python -m src.agent dev` failed outright
+(`ValueError: api_key is required`). Copied the value over; agent worker
+then registered with LiveKit Cloud cleanly.
+
+Ran `npm run dev` and `python -m src.agent dev` together, user signed in
+live (real Google OAuth — not something the assistant will do on a
+user's behalf), ran a real drill session end to end. Checked Amplitude's
+Live Events feed and the resulting user activity timeline directly
+(not inferred from logs). Confirmed, in order, with real property
+values: `Viewed Home Page` -> `Signed In` -> `Started Session` (web) ->
+`session_started` (agent, `guest: false`) -> `stt_metrics` (repeating
+throughout) -> `tts_metrics` x2 (matching the two lines actually spoken;
+`provider: livekit.plugins.deepgram.tts.TTS`, `ttfb_s` ~0.39s) ->
+`answer_graded` (all 6 `dimension_levels`, `evidence_violations: 0`) ->
+`session_ended` (`questions_answered: 1`, `duration_s: 155`,
+`guest: false`). Also confirmed the checkpoint-4 idempotency guard for
+real: the agent log showed the room closing with
+`"reason": "participant_disconnected"` even on this normal explicit end
+(ctx.shutdown makes the agent's own participant leave, which the
+transport layer reports as a disconnect) — `session_abandoned` correctly
+did not double-fire, because `_end_session` had already set
+`_ended_explicitly` first. This is the same behavior the unit tests
+assert, now also seen in a live run rather than only synthetically.
+
+This upgrades every "not live-verified" caveat left over from checkpoints
+2-4: `session_started`/`session_ended`/`answer_graded`/`stt_metrics`/
+`tts_metrics` and the sign-in-gated web events (`Signed In`,
+`Started Session`) are now confirmed live, not just build-verified. Not
+exercised in this run (would need a provider outage or a mid-answer
+disconnect to trigger naturally): `tts_fallback_triggered`/
+`_recovered`, `session_abandoned`, `Saved Document`, `Saved Suggestion`,
+`History Tab Changed`.
