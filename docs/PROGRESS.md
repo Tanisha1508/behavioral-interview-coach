@@ -1076,3 +1076,35 @@ not exercised in any of the three sessions so far).
 
 Nothing from today's testing is committed or deployed yet — still just
 the `setUserId` fix in the working tree plus doc updates.
+
+## 2026-08-08 (close): committed and deployed — second real gap found and fixed on the way
+
+Committed the `setUserId` fix + doc updates (commit `eb73013`). Ran
+`vercel --prod` from `web/` per the standing deploy-and-verify workflow.
+
+**Second gap found, not assumed fixed:** verified the live production
+site (`behavioral-interview-coach-psi.vercel.app`) directly rather than
+trusting the deploy succeeding — `read_network_requests` showed zero
+Amplitude activity at all, no POST, no config fetch. Checked
+`vercel env ls`: `NEXT_PUBLIC_AMPLITUDE_API_KEY` had never been added to
+the Vercel project's environment variables — checkpoint 1's live
+verification back on 2026-08-07 was only ever done against `npm run dev`
+locally (which reads `.env.local`), never against the actual deployed
+site. Since `NEXT_PUBLIC_*` vars are inlined at build time, analytics has
+been silently disabled in production since checkpoint 1, the entire time.
+
+**Fixed:** `vercel env add NEXT_PUBLIC_AMPLITUDE_API_KEY production`
+(same key as `.env.local` — Amplitude ingestion keys aren't secrets, this
+is the same one already visible in any browser network tab), then
+redeployed so the build picks it up.
+
+**Verified on the actual production URL, not assumed:** `POST
+api2.amplitude.com/2/httpapi` returns 200; `Viewed Home Page` shows a
+real resolved User ID in Amplitude's Live Events feed (not "Anonymous
+User"). Note: production's user ID differs from every local-dev test
+session's ID today — production and local point at separate Supabase
+projects, so that's a different identity space by design, not a bug;
+what matters is it's real and resolved, not anonymous.
+
+Status: scope item 16 is now live, committed, deployed, and verified
+against production for the first time since this work started.
