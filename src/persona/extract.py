@@ -41,12 +41,15 @@ def _cited(field: str, value: str, signals: list[Signal], bio_norm: str) -> bool
     return False
 
 
-def extract_tags(bio_text: str) -> PersonaTags:
+def extract_tags(bio_text: str, *, device_id: str | None = None,
+                 user_id: str | None = None,
+                 session_type: str | None = None) -> PersonaTags:
     if not bio_text.strip():
         return PersonaTags()
 
     result = complete("persona_extract", {"bio_text": bio_text},
-                      json_schema={"type": "object"})
+                      json_schema={"type": "object"}, device_id=device_id,
+                      user_id=user_id, session_type=session_type)
     raw = result.parsed or {}
 
     signals = []

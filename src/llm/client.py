@@ -16,6 +16,8 @@ from typing import Any, Optional
 import yaml
 from dotenv import load_dotenv
 
+from src.analytics import amplitude
+
 load_dotenv()
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -38,6 +40,7 @@ class LLMResult:
     parsed: Optional[Any] = None
     provider: str = "gemini"
     failovers: int = 0
+    latency_ms: float = 0.0
 
 
 @dataclass
@@ -156,8 +159,11 @@ _failover_log: list[str] = []
 
 
 def complete(prompt_id: str, vars: dict[str, str],
-             json_schema: dict | None = None) -> LLMResult:
+             json_schema: dict | None = None, *,
+             device_id: str | None = None, user_id: str | None = None,
+             session_type: str | None = None) -> LLMResult:
     prompt = load_prompt(prompt_id, vars)
+    _started_at = time.monotonic()
 
     text = None
     provider, failovers = "gemini", 0
@@ -233,5 +239,22 @@ def complete(prompt_id: str, vars: dict[str, str],
             cleaned = cleaned.strip("`")
             cleaned = cleaned[4:] if cleaned.startswith("json") else cleaned
         parsed = json.loads(cleaned)
+
+    latency_ms = (time.monotonic() - _started_at) * 1000
+    # Fire-and-forget: complete() runs inside asyncio.to_thread on a worker
+    # thread (grader.py, coach modules, probes.py all call it that way), so
+    # there is no running event loop to await track() into. track_sync()
+    # swallows its own errors, same contract as track() elsewhere in this
+    # codebase: analytics can never take down a live session.
+    amplitude.track_sync(
+        "llm_call_completed", device_id=device_id or "llm-client-unlinked",
+        user_id=user_id,
+        event_properties={
+            "prompt_id": prompt_id,
+            "provider": provider,
+            "failovers": failovers,
+            "latency_ms": round(latency_ms, 1),
+            "session_type": session_type,
+        })
     return LLMResult(text=text, parsed=parsed, provider=provider,
-                     failovers=failovers)
+                     failovers=failovers, latency_ms=latency_ms)

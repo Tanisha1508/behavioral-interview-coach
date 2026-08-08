@@ -1,6 +1,7 @@
 """Queue compiling, context wall shape, ledger cap (items 3, 4)."""
 
 import json
+import time
 
 import pytest
 
@@ -202,3 +203,91 @@ class TestLedger:
         assert _is_rate_limit(Exception("429 RESOURCE_EXHAUSTED"))
         assert _is_rate_limit(Exception("Rate limit reached for model"))
         assert not _is_rate_limit(Exception("invalid api key"))
+
+
+class TestLLMCallTracking:
+    """complete() fires one llm_call_completed event per successful call,
+    fire-and-forget via track_sync (no running event loop inside
+    asyncio.to_thread, where every real call site invokes complete())."""
+
+    def _setup(self, tmp_path, monkeypatch, latency_s=0.0):
+        from src.llm import client
+        monkeypatch.setattr(client, "LEDGER_PATH", tmp_path / "ledger.json")
+        monkeypatch.setattr(client, "_settings", None)
+
+        def gemini_ok(prompt, schema, model=None):
+            if latency_s:
+                time.sleep(latency_s)
+            return "gemini says hi"
+
+        monkeypatch.setattr(client, "_call_gemini", gemini_ok)
+        calls = []
+        monkeypatch.setattr(client.amplitude, "track_sync",
+                            lambda *a, **kw: calls.append((a, kw)))
+        return client, calls
+
+    def test_fires_llm_call_completed_with_provider_and_prompt_id(
+            self, tmp_path, monkeypatch):
+        client, calls = self._setup(tmp_path, monkeypatch)
+        result = client.complete("probe_rewrite", {
+            "seed": "x", "probe_type": "SPECIFICITY",
+            "offending_phrase": "", "recent_context": "", "intensity": "3"})
+        assert result.provider == "gemini"
+        assert len(calls) == 1
+        args, kwargs = calls[0]
+        assert args[0] == "llm_call_completed"
+        assert kwargs["event_properties"]["prompt_id"] == "probe_rewrite"
+        assert kwargs["event_properties"]["provider"] == "gemini"
+        assert kwargs["event_properties"]["failovers"] == 0
+
+    def test_latency_ms_reflects_actual_call_time(self, tmp_path, monkeypatch):
+        client, calls = self._setup(tmp_path, monkeypatch, latency_s=0.05)
+        result = client.complete("probe_rewrite", {
+            "seed": "x", "probe_type": "SPECIFICITY",
+            "offending_phrase": "", "recent_context": "", "intensity": "3"})
+        assert result.latency_ms >= 50
+        assert calls[0][1]["event_properties"]["latency_ms"] >= 50
+
+    def test_device_id_defaults_when_caller_does_not_pass_one(
+            self, tmp_path, monkeypatch):
+        client, calls = self._setup(tmp_path, monkeypatch)
+        client.complete("probe_rewrite", {
+            "seed": "x", "probe_type": "SPECIFICITY",
+            "offending_phrase": "", "recent_context": "", "intensity": "3"})
+        assert calls[0][1]["device_id"] == "llm-client-unlinked"
+
+    def test_device_id_and_user_id_pass_through_when_caller_provides_them(
+            self, tmp_path, monkeypatch):
+        client, calls = self._setup(tmp_path, monkeypatch)
+        client.complete("probe_rewrite", {
+            "seed": "x", "probe_type": "SPECIFICITY",
+            "offending_phrase": "", "recent_context": "", "intensity": "3"},
+            device_id="room-xyz12", user_id="user-abc12",
+            session_type="drill")
+        assert calls[0][1]["device_id"] == "room-xyz12"
+        assert calls[0][1]["user_id"] == "user-abc12"
+        assert calls[0][1]["event_properties"]["session_type"] == "drill"
+
+    def test_daily_cap_raise_never_reaches_tracking(self, tmp_path, monkeypatch):
+        # Confirms the exception paths (unchanged control flow) still exit
+        # before the single tracked return point.
+        from src.llm import client
+        monkeypatch.setattr(client, "LEDGER_PATH", tmp_path / "ledger.json")
+        monkeypatch.setattr(client, "_settings", None)
+        monkeypatch.delenv("GROQ_API_KEY", raising=False)
+
+        def gemini_429(prompt, schema, model=None):
+            raise Exception("429 RESOURCE_EXHAUSTED")
+
+        monkeypatch.setattr(client, "_call_gemini", gemini_429)
+        calls = []
+        monkeypatch.setattr(client.amplitude, "track_sync",
+                            lambda *a, **kw: calls.append((a, kw)))
+        client.settings().daily_call_cap = 3
+        for _ in range(3):
+            client._ledger_bump()
+        with pytest.raises(client.DailyCapReached):
+            client.complete("probe_rewrite", {
+                "seed": "x", "probe_type": "SPECIFICITY",
+                "offending_phrase": "", "recent_context": "", "intensity": "3"})
+        assert calls == []

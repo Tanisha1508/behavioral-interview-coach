@@ -29,13 +29,16 @@ def _normalize(text: str) -> str:
     return " ".join(text.split()).lower()
 
 
-def coverage_map(stories_doc: str, questions: QuestionPack) -> CoverageReport:
+def coverage_map(stories_doc: str, questions: QuestionPack, *,
+                 device_id: str | None = None, user_id: str | None = None,
+                 session_type: str | None = None) -> CoverageReport:
     question_lines = "\n".join(
         f"{i + 1}. {q.text}" for i, q in enumerate(questions.questions))
     result = complete("coverage_map", {
         "stories": stories_doc,
         "questions": question_lines,
-    }, json_schema={"type": "object"})
+    }, json_schema={"type": "object"}, device_id=device_id, user_id=user_id,
+       session_type=session_type)
 
     stories_norm = _normalize(stories_doc)
     entries = []

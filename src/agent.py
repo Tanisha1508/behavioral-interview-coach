@@ -11,6 +11,7 @@ Run: python -m src.agent console
 from __future__ import annotations
 
 import asyncio
+import functools
 import json
 import logging
 import os
@@ -357,7 +358,10 @@ class DrillRunner:
             if key not in self._pregen_launched:
                 self._pregen_launched.add(key)
                 asyncio.get_event_loop().run_in_executor(
-                    None, probes.pregenerate, cand, self.state)
+                    None, functools.partial(
+                        probes.pregenerate, cand, self.state,
+                        device_id=self._device_id, user_id=self._user_id,
+                        session_type=self.session_type))
 
     def _retract_utterance(self, text: str) -> None:
         """Remove a non-answer utterance (e.g. a repeat request) so it
@@ -472,7 +476,9 @@ class DrillRunner:
         action = decision.on_endpoint(self.state)
 
         if action.kind == ActionKind.ASK and action.probe:
-            text = probes.select_probe(action.probe, self.state)
+            text = probes.select_probe(
+                action.probe, self.state, device_id=self._device_id,
+                user_id=self._user_id, session_type=self.session_type)
             self.state.pre_probe_transcript = self.state.transcript_partial
             self.state.probes_fired.append(ProbeRecord(
                 probe_type=action.probe.probe_type,
@@ -600,7 +606,8 @@ class DrillRunner:
             scores = await asyncio.to_thread(
                 grade, gctx.transcript, gctx.probes,
                 Timings(duration_s=gctx.duration_s), self.manager.round,
-                gctx.grader_notes)
+                gctx.grader_notes, device_id=self._device_id,
+                user_id=self._user_id, session_type=self.session_type)
         except (DailyCapReached, LLMUnavailable):
             # Grading needs the LLM; quota exhaustion must leave the user a
             # spoken way forward, not a dead session (live 2026-07-12).
@@ -628,7 +635,9 @@ class DrillRunner:
         self._track_graded(scores, duration_s, self.question_number)
         try:
             ammo = await asyncio.to_thread(
-                missed_ammo, gctx.transcript, gctx.docs, gctx.question_text)
+                missed_ammo, gctx.transcript, gctx.docs, gctx.question_text,
+                device_id=self._device_id, user_id=self._user_id,
+                session_type=self.session_type)
         except Exception:
             # Missed ammo is an enhancement; the card stands without it.
             logger.exception("missed-ammo pass failed; continuing without")
@@ -703,7 +712,8 @@ class DrillRunner:
                 return
             result = await asyncio.to_thread(
                 coach_rewrites.rewrite, gctx.question_text, answer,
-                self.manager.round, gctx.docs)
+                self.manager.round, gctx.docs, device_id=self._device_id,
+                user_id=self._user_id, session_type=self.session_type)
             self.publish_ui("rewrite", {
                 "question": gctx.question_text,
                 "notes": [n.model_dump() for n in result.notes],
@@ -802,7 +812,8 @@ class SimulationRunner(DrillRunner):
             rep.scores = await asyncio.to_thread(
                 grade, gctx.transcript, gctx.probes,
                 Timings(duration_s=gctx.duration_s), self.manager.round,
-                gctx.grader_notes)
+                gctx.grader_notes, device_id=self._device_id,
+                user_id=self._user_id, session_type=self.session_type)
             self._track_graded(rep.scores, gctx.duration_s,
                                self.reps.index(rep) + 1)
         except Exception as exc:
@@ -815,7 +826,9 @@ class SimulationRunner(DrillRunner):
             self._track_grading_failed(reason)
         try:
             rep.ammo = await asyncio.to_thread(
-                missed_ammo, gctx.transcript, gctx.docs, gctx.question_text)
+                missed_ammo, gctx.transcript, gctx.docs, gctx.question_text,
+                device_id=self._device_id, user_id=self._user_id,
+                session_type=self.session_type)
         except Exception:
             logger.exception("missed-ammo pass failed; continuing without")
 
@@ -965,7 +978,9 @@ class CoachRunner:
         try:
             self.pack = await asyncio.to_thread(
                 coach_questions.generate_pack, resume, jd,
-                self.cfg.round_profile(), self.cfg.background, self.cfg.goal)
+                self.cfg.round_profile(), self.cfg.background, self.cfg.goal,
+                device_id=self._device_id, user_id=self._user_id,
+                session_type="coach")
         except Exception:
             # LLM quota exhaustion must end the session with words, not an
             # unhandled crash the client reads as "agent left unexpectedly"
@@ -981,7 +996,9 @@ class CoachRunner:
         if stories.strip() and self.pack.questions:
             try:
                 self.coverage = await asyncio.to_thread(
-                    coach_coverage.coverage_map, stories, self.pack)
+                    coach_coverage.coverage_map, stories, self.pack,
+                    device_id=self._device_id, user_id=self._user_id,
+                    session_type="coach")
             except Exception:
                 # Coverage is an enhancement; the pack alone is a session.
                 logger.exception("coverage map failed; continuing without")
@@ -1108,7 +1125,8 @@ class CoachRunner:
                 "coverage_summary": coverage_summary or "(no stories doc)",
                 "history": history or "(start of conversation)",
                 "user_message": user_message,
-            }, json_schema=None)
+            }, json_schema=None, device_id=self._device_id,
+               user_id=self._user_id, session_type="coach")
             text = (result.text or "").strip()
         except Exception:
             logger.exception("coach reply failed")
@@ -1234,10 +1252,20 @@ async def entrypoint(ctx: agents.JobContext) -> None:
         await runner.start()
         return
 
+    # Runner (device_id/user_id) does not exist yet at this point, but the
+    # room already does; these three LLM calls all happen before the
+    # DrillRunner/SimulationRunner is constructed below.
+    _device_id = amplitude.device_id_from_room(ctx.room)
+    _user_id = user_id_from_room(ctx.room)
+    _session_type_label = ("simulation"
+                           if cfg.session_type == SessionType.SIMULATION
+                           else "drill")
+
     bio = cfg.materials.get("bio", "")
     if bio:
         from src.persona.extract import extract_tags
-        tags = extract_tags(bio)
+        tags = extract_tags(bio, device_id=_device_id, user_id=_user_id,
+                            session_type=_session_type_label)
     else:
         tags = PersonaTags()
     persona = resolve(tags, overrides=cfg.persona_overrides,
@@ -1289,14 +1317,17 @@ async def entrypoint(ctx: agents.JobContext) -> None:
                 coach_questions.generate_pack,
                 cfg.materials.get("resume", ""),
                 cfg.materials.get("jd", ""), manager.round,
-                cfg.background, cfg.goal)
+                cfg.background, cfg.goal, device_id=_device_id,
+                user_id=_user_id, session_type=_session_type_label)
             # A drill rep is a handful of questions, not a full prep list.
             pack_qs = [Question(id=f"pack_{i + 1:02d}", text=q.text,
                                 source="pack")
                        for i, q in enumerate(pack.questions[:6])]
         if cfg.source.intel_text.strip():
             intel_qs = await asyncio.to_thread(
-                coach_intel.extract_questions, cfg.source.intel_text)
+                coach_intel.extract_questions, cfg.source.intel_text,
+                device_id=_device_id, user_id=_user_id,
+                session_type=_session_type_label)
     except Exception:
         # LLM quota exhaustion (both providers rate-limited, live
         # 2026-07-12) lands in the empty-queue bank fallback below with a

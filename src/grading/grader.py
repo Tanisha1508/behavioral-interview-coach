@@ -104,7 +104,9 @@ def _apply_auto_rules(scores: dict, probes: list[ProbeRecord],
 
 
 def grade(transcript: str, probes: list[ProbeRecord], timings: Timings,
-          round: RoundProfile, grader_notes: list[str] | None = None) -> RubricScores:
+          round: RoundProfile, grader_notes: list[str] | None = None, *,
+          device_id: str | None = None, user_id: str | None = None,
+          session_type: str | None = None) -> RubricScores:
     grader_notes = grader_notes or []
     rubric = load_rubric()
 
@@ -128,7 +130,9 @@ def grade(transcript: str, probes: list[ProbeRecord], timings: Timings,
         "auto_rules": yaml.dump(rubric["auto_rules"], sort_keys=False),
     }
 
-    result = complete("grading_system", vars, json_schema={"type": "object"})
+    result = complete("grading_system", vars, json_schema={"type": "object"},
+                      device_id=device_id, user_id=user_id,
+                      session_type=session_type)
     raw = result.parsed
     scores = raw["dimensions"]
 

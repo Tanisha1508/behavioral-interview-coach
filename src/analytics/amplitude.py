@@ -67,3 +67,30 @@ async def track(event_type: str, *, device_id: str,
             resp.raise_for_status()
     except Exception:
         logger.exception("amplitude event %s failed to send", event_type)
+
+
+def track_sync(event_type: str, *, device_id: str,
+               user_id: str | None = None,
+               event_properties: dict[str, Any] | None = None) -> None:
+    """Synchronous counterpart to track(), for callers with no running event
+    loop to await into (e.g. src/llm/client.py's complete(), which always
+    runs inside asyncio.to_thread on a worker thread). Same never-raises
+    contract."""
+    key = _api_key()
+    if key is None:
+        return
+    event: dict[str, Any] = {
+        "event_type": event_type,
+        "device_id": device_id,
+        "time": int(time.time() * 1000),
+        "event_properties": event_properties or {},
+    }
+    if user_id and len(user_id) >= MIN_ID_LENGTH:
+        event["user_id"] = user_id
+    try:
+        with httpx.Client(timeout=TIMEOUT_S) as client:
+            resp = client.post(
+                INGEST_URL, json={"api_key": key, "events": [event]})
+            resp.raise_for_status()
+    except Exception:
+        logger.exception("amplitude event %s failed to send", event_type)

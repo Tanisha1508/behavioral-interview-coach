@@ -10,11 +10,14 @@ def _normalize(text: str) -> str:
     return " ".join(text.split()).lower()
 
 
-def extract_questions(pasted_text: str) -> list[Question]:
+def extract_questions(pasted_text: str, *, device_id: str | None = None,
+                      user_id: str | None = None,
+                      session_type: str | None = None) -> list[Question]:
     if not pasted_text.strip():
         return []
     result = complete("intel_extract", {"pasted_text": pasted_text},
-                      json_schema={"type": "object"})
+                      json_schema={"type": "object"}, device_id=device_id,
+                      user_id=user_id, session_type=session_type)
     pasted_norm = _normalize(pasted_text)
     out: list[Question] = []
     for i, raw in enumerate((result.parsed or {}).get("questions", [])):

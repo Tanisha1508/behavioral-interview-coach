@@ -241,7 +241,7 @@ def test_rewrite_request_speaks_and_uses_last_rep(monkeypatch):
 
     captured = {}
 
-    def fake_rewrite(question, answer, round, docs=None):
+    def fake_rewrite(question, answer, round, docs=None, **_kwargs):
         captured.update(question=question, answer=answer, docs=docs)
         return RewriteResult(
             notes=[RewriteNote(dimension="i_vs_we",

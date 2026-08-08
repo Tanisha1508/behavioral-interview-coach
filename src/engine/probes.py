@@ -118,7 +118,9 @@ def _trigger_context(candidate: ProbeCandidate) -> str:
     return detail
 
 
-def _llm_rewrite(seed: str, candidate: ProbeCandidate, state: AnswerState) -> str | None:
+def _llm_rewrite(seed: str, candidate: ProbeCandidate, state: AnswerState, *,
+                 device_id: str | None = None, user_id: str | None = None,
+                 session_type: str | None = None) -> str | None:
     try:
         from src.llm.client import complete
         result = complete("probe_rewrite", {
@@ -127,7 +129,8 @@ def _llm_rewrite(seed: str, candidate: ProbeCandidate, state: AnswerState) -> st
             "offending_phrase": _trigger_context(candidate),
             "recent_context": _recent_context(state),
             "intensity": str(state.persona.intensity),
-        }, json_schema=None)
+        }, json_schema=None, device_id=device_id, user_id=user_id,
+           session_type=session_type)
         text = (result.text or "").strip().strip('"')
         # Guard: a probe is at most 2 sentences (spec 5.4 hard rule).
         if text and text.count(".") + text.count("?") <= 3 and len(text) < 300:
@@ -138,7 +141,9 @@ def _llm_rewrite(seed: str, candidate: ProbeCandidate, state: AnswerState) -> st
 
 
 def select_probe(candidate: ProbeCandidate, state: AnswerState,
-                 rng: random.Random | None = None, use_llm: bool = True) -> str:
+                 rng: random.Random | None = None, use_llm: bool = True, *,
+                 device_id: str | None = None, user_id: str | None = None,
+                 session_type: str | None = None) -> str:
     rng = rng or random.Random()
 
     if candidate.detail == "reask_harder":
@@ -156,18 +161,22 @@ def select_probe(candidate: ProbeCandidate, state: AnswerState,
         return seed
 
     if use_llm:
-        rewritten = _llm_rewrite(seed, candidate, state)
+        rewritten = _llm_rewrite(seed, candidate, state, device_id=device_id,
+                                 user_id=user_id, session_type=session_type)
         if rewritten:
             return rewritten
     return seed
 
 
-def pregenerate(candidate: ProbeCandidate, state: AnswerState) -> None:
+def pregenerate(candidate: ProbeCandidate, state: AnswerState, *,
+                device_id: str | None = None, user_id: str | None = None,
+                session_type: str | None = None) -> None:
     """Speculative generation: fill the cache so firing costs ~0 LLM latency."""
     key = (state.question.id, candidate.probe_type.value)
     if key in _speculative:
         return
     seed = _seed(candidate.probe_type, state, random.Random())
-    text = _llm_rewrite(seed, candidate, state)
+    text = _llm_rewrite(seed, candidate, state, device_id=device_id,
+                        user_id=user_id, session_type=session_type)
     if text:
         _speculative[key] = text

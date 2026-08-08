@@ -30,7 +30,9 @@ def _normalize(text: str) -> str:
 
 
 def missed_ammo(transcript: str, user_docs: list[Doc],
-                question: str = "") -> list[AmmoItem]:
+                question: str = "", *, device_id: str | None = None,
+                user_id: str | None = None,
+                session_type: str | None = None) -> list[AmmoItem]:
     if not user_docs:
         return []
 
@@ -39,7 +41,8 @@ def missed_ammo(transcript: str, user_docs: list[Doc],
         "docs": docs_block,
         "transcript": transcript,
         "question": question or "(not recorded)",
-    }, json_schema={"type": "object"})
+    }, json_schema={"type": "object"}, device_id=device_id, user_id=user_id,
+       session_type=session_type)
 
     doc_norms = {d.name: _normalize(d.text) for d in user_docs}
     all_docs_norm = _normalize(docs_block)

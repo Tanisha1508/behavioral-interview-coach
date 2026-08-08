@@ -1108,3 +1108,308 @@ what matters is it's real and resolved, not anonymous.
 
 Status: scope item 16 is now live, committed, deployed, and verified
 against production for the first time since this work started.
+
+## 2026-08-08 (later): pending-items sweep — third gap found, LiveKit Cloud agent redeployed
+
+User asked for a verified (not assumed) sweep of anything left undone
+across scope item 16. Checked git status (clean, everything pushed after
+the previous checkpoint) and then checked the actual deployed LiveKit
+Cloud agent rather than assuming the code deploy covered it.
+
+**Third gap found:** `lk agent list` showed the production agent
+(`CA_XArKCjMhUecZ`) was still running a build from a month earlier —
+none of scope item 16's Python-side work (five new event types in
+`src/agent.py`, `src/analytics/amplitude.py`) had ever reached
+production. Compounding this, `lk agent secrets` did not include
+`AMPLITUDE_API_KEY`, so even a redeploy would have shipped code that
+silently no-ops on every `track()` call (the module is env-gated and
+swallows its own errors by design).
+
+**Fixed**, both explicitly approved by the user beforehand:
+- Pushed the local commit history to GitHub (`git push origin main`,
+  `e622c10..65145f2`).
+- `lk agent update-secrets --id CA_XArKCjMhUecZ --secrets-file ... --yes`
+  to add `AMPLITUDE_API_KEY` (first attempt failed on file format — the
+  secrets file needs `KEY=VALUE` lines, not a bare value; fixed and
+  retried, "Updated agent secrets").
+- `lk agent deploy` from the repo root (no `--id` flag — that flag
+  doesn't exist on `deploy`, unlike `secrets`/`update-secrets`/`list`;
+  it reads the target agent from `livekit.toml` instead, which already
+  pins `id = "CA_XArKCjMhUecZ"`). Build succeeded (~50s, "Deployed
+  agent").
+
+**Verified, not assumed:** `lk agent list` shows a new `Deployed At`
+timestamp (`2026-08-08T09:29:13Z`) and a new `Version`
+(`Fv29xeiBcGMP`), confirming the running agent is now the current code
+with the Amplitude secret present. Not yet live-voice-verified (a real
+spoken session against production would confirm `session_started` /
+`answer_graded` / etc. actually fire from the cloud agent, not just
+that the build shipped) — worth one real production session next time
+the user is testing, same pattern as the two production gaps found
+earlier in this scope item.
+
+Remaining open items, none blocking: `tts_fallback_triggered`/
+`_recovered` and `Saved Document` still await real-world/real-flow
+occurrences to verify live; per-LLM-call provider/latency tracking
+remains deferred to its own future checkpoint (`src/llm/client.py`,
+per DECISIONS.md).
+
+## 2026-08-08 (later still): both cosmetic gaps closed in the Amplitude UI
+
+Did these live in the browser rather than leaving them for the user:
+- `Home Page Views (daily)` added to the "AI Evals & Session Health"
+  dashboard via Add Content -> Existing content -> Add Item. The
+  button that failed to register clicks in the earlier session worked
+  this time with no code or workaround involved — likely a transient
+  UI state, not a real bug.
+- `eval_run_completed` added to the Tracking Plan (Data -> Events ->
+  the event -> "Add to plan"): status flipped from Unexpected to
+  **Live**, given a description ("Fired after each golden-eval suite
+  run with headline hallucination/grading metrics"), and filed under
+  a new **AI Evals** category (previously Uncategorized).
+
+Both verified visually in Amplitude after the change (screenshots
+confirmed the chart rendering on the dashboard and the event's Live
+status + category). No app code touched; nothing to redeploy.
+
+## 2026-08-08 (later still): remaining Unexpected events added to the Tracking Plan
+
+User asked why most events in the Amplitude Events list showed
+"Unexpected" (screenshot). Root cause: "Unexpected" only means an
+event isn't in the Tracking Plan yet — it fires and carries real data
+regardless. The original setup-wizard import (checkpoint 1) only
+registered a couple of events; everything scope item 16 added later
+in code was never individually added to the plan.
+
+Added to plan (same flow as `eval_run_completed`: open the event ->
+"Add to plan" -> status flips Unexpected -> Live), all via the
+browser, no code changes: `Started Session`, `Signed In`,
+`session_abandoned`, `Saved Suggestion`, `History Tab Changed`,
+`checkpoint2_server_verification`. "Review Unexpected" went from 7
+flagged events to 0.
+
+Left alone, deliberately: `Engagement Booted` — not one of our events
+at all, it's residue from `@amplitude/unified`'s auto-loaded
+Engagement bundle that this project moved away from early on (see
+`DECISIONS.md` 2026-08-07); it shows as historical data from before
+that switch and has no status because it's not something we'd ever
+add to our own plan.
+
+`checkpoint2_server_verification` removed per user confirmation
+("we can remove it"): Amplitude's delete flow stops future collection
+and drops it from the plan without touching historical data already
+recorded under that name — exactly right for one-off debug/test
+traffic. Events list now 14 real events, no Amplitude-side debris
+left from earlier smoke-testing.
+
+## 2026-08-08 (later still): latency metrics audit + quick-win charts (Amplitude-only, no code)
+
+User asked for p50/p95/p99 latency, time-to-respond by agent/model,
+cost per query, saving rate, and other voice-specific metrics (also
+shared a generic 5.5 Audio/Speech eval-metrics table for reference).
+Audited what actually exists against the code before answering:
+
+- **TTS/STT latency**: `tts_metrics.ttfb_s` and `stt_metrics.duration_s`
+  fire with real data but only ever had one Average chart built.
+- **LLM/agent response time**: not tracked at all —
+  `src/llm/client.py`'s `complete()` (the choke point for grading,
+  probing, coach replies, question gen) has zero latency/provider
+  logging. This was a deliberate scope cut in checkpoint 2 (see
+  DECISIONS.md 2026-08-07): the module is the most fragile in the
+  codebase (two live-incident entries against it already), so
+  instrumenting it needs its own isolated, carefully tested pass.
+- **End-to-end turn latency** (user-stops-talking to agent-speaks):
+  doesn't exist as a single number anywhere — it's STT-finalize +
+  LLM think-time + TTS-first-byte, and the middle piece is missing.
+- **Cost per query**: not tracked — `LLMResult` doesn't even capture
+  token counts, let alone a $ figure.
+- **True P50/P95/P99**: initially believed unbuildable in Amplitude
+  (the quick "Measured as" picker only offers Average/Median), but
+  live-checked the docs and found Amplitude DOES support real
+  percentiles via a `PERCENTILE(event, percentage)` Formula, grouped
+  by the numeric property — just not surfaced in the quick picker.
+- **Saving rate**: raw event counts existed (`Saved Suggestion`,
+  `Saved Document`) but no computed ratio.
+- **5.5 Audio/Speech table** (WER, Speaker Diarization, MOS,
+  Naturalness, Prosody Accuracy, Voice Similarity, Pronunciation
+  Accuracy): judged mostly not applicable — this product consumes
+  Deepgram/ElevenLabs/Aura as black-box vendors rather than
+  training/fine-tuning its own STT/TTS models, so most of that table
+  is for a different kind of team. Not built.
+
+**User's call**: build the quick, no-code wins first, verify nothing
+breaks, then tackle latency (the piece users actually feel) as its
+own careful pass with isolated localhost testing before any deploy.
+
+**Quick wins built, all in the browser, zero code touched, all added
+to the "AI Evals & Session Health" dashboard**:
+1. `STT Processing Duration (avg)` — Average of `duration_s`.
+2. `STT Processing Duration (median/P50)`.
+3. `TTS Time-to-First-Byte (median/P50)` — companion to the existing
+   average chart.
+4. `Rewrite Save Rate (Saved Suggestion / answer_graded)` — Formula
+   `TOTALS(A)/TOTALS(B)*100`, i.e. % of graded answers that get a
+   rewrite saved. First formula attempt failed twice on unbalanced
+   parens from the field's auto-close behavior; fixed by typing
+   without redundant outer parens.
+5. `TTS Time-to-First-Byte (P95)` and (6) `(P99)` — real
+   `PERCENTILE(A, 0.95)` / `PERCENTILE(A, 0.99)` grouped by `ttfb_s`.
+7. `STT Processing Duration (P95)` and (8) `(P99)` — same recipe,
+   grouped by `duration_s`.
+
+All 8 charts verified against real data before saving (not samples):
+STT avg ~4.86s, STT median ~5.05s, TTS P95 ~0.41s, TTS P99 ~0.41s
+(small sample size, P95≈P99 makes sense), save rate ~50% on the one
+day it fired. Small gotcha hit repeatedly: clicking the "Formula"
+toggle sometimes lands the next click on the wrong field (the "+ Add
+Event" search box) if the panel re-renders between actions — always
+screenshot after toggling before typing into a formula box.
+
+**Not yet done**, staged as the next (harder) piece per the user's
+explicit sequencing: LLM/agent-per-call provider + latency + token
+usage instrumentation in `src/llm/client.py` (unlocks true
+time-to-respond-by-model and cost-per-query), end-to-end turn
+latency, and interrupt-rate tracking. This next piece touches
+`client.py` directly, so it gets its own build -> local test ->
+verify -> only then deploy/push cycle, not bundled into this
+Amplitude-only pass.
+
+## 2026-08-08 (later still): LLM latency/provider tracking in `src/llm/client.py` — built, tested, live-verified, NOT yet deployed
+
+Started the harder piece flagged above, per user's explicit "start"
+after the quick wins. `docs/DECISIONS.md` (2026-08-07) had deliberately
+deferred this because `client.py`'s `complete()` is the single choke
+point for grading/probing/coach/question-gen and the most
+incident-prone module in the codebase. Kept the change as additive
+and low-risk as the fragility warranted:
+
+- **`src/analytics/amplitude.py`**: new `track_sync()`, a synchronous
+  twin of `track()`. Needed because `complete()` always runs inside
+  `asyncio.to_thread` (confirmed by grepping every real call site —
+  grader.py, coach modules, probes.py, agent.py all invoke it that
+  way), so there is no running event loop inside it to `await` an
+  async call into. Same never-raises, env-gated contract as `track()`,
+  just a sync `httpx.Client` instead of `httpx.AsyncClient`.
+- **`src/llm/client.py`**: `complete()` gained three new **optional**
+  keyword-only params (`device_id`, `user_id`, `session_type`, all
+  default `None`) and a `latency_ms` field on `LLMResult`. Zero changes
+  to the existing retry loop, ledger-cap logic, or failover chain —
+  timing wraps the whole function from the outside (`time.monotonic()`
+  at entry, computed at the function's single existing return point),
+  and the `amplitude.track_sync("llm_call_completed", ...)` call sits
+  right before that same return, after every raise-path has already
+  exited. `_call_gemini`/`_call_groq`'s return contracts were
+  deliberately left untouched (still plain `str`) specifically so the
+  three existing ledger tests (which mock those two functions to
+  return bare strings) keep passing unmodified — this also means
+  **token usage / cost-per-query is not captured yet**: that needs
+  those two functions to return `(text, usage)` tuples, a slightly
+  bigger change saved for a follow-up rather than bundled in here.
+- Tests: 8 new (3 in `test_amplitude_analytics.py` for `track_sync`,
+  5 in `test_session.py`'s new `TestLLMCallTracking` covering the
+  event fires with correct provider/prompt_id, latency_ms reflects
+  real elapsed time, device_id defaults to `"llm-client-unlinked"`
+  when the caller doesn't pass one, device_id/user_id/session_type
+  pass through correctly when they are passed, and the
+  `DailyCapReached` raise path never reaches tracking at all). Full
+  suite: 149 passing (was 141).
+- **Live-verified, not just unit-tested**: ran `complete()` directly
+  against the real Gemini API (scratchpad script, not committed) with
+  `device_id="verify-llm-tracking-room"`, `session_type="drill"`.
+  Confirmed in Amplitude Live Events: `llm_call_completed` fired with
+  exactly `latency_ms: 7213.4`, `provider: gemini`, `prompt_id:
+  probe_rewrite`, `failovers: 0`, `session_type: drill`, device ID
+  correctly attributed — every property matched what the code should
+  produce, not a sample.
+
+**Deliberately not done yet, next decision point**: none of the 9 real
+call sites (`grader.py`, `ammo.py`, `coach/rewrites.py`,
+`coach/intel.py`, `coach/coverage.py`, `persona/extract.py`,
+`coach/questions.py`, `engine/probes.py`, `agent.py`) pass
+`device_id`/`user_id`/`session_type` yet — every real production
+`llm_call_completed` event will land as `"llm-client-unlinked"`
+(anonymous) until that's wired. This still delivers real, immediately
+useful data (aggregate/percentile latency and provider mix across all
+LLM calls), just not yet session-attributable or cost-priced. Per
+checkpoint discipline: stopping here to confirm direction before
+touching the 9 call sites, since that's a wider-blast-radius change
+than this one. Nothing committed or deployed yet — this is still
+local-only, matching the user's "test locally, then deploy" order.
+
+## 2026-08-08 (later still): all 9 LLM call sites now session-attributed — built, tested, live-verified, NOT yet deployed
+
+User chose "wire the call sites next" from the three options offered.
+This is the wider-blast-radius piece flagged above: every function
+that ultimately calls `complete()` now accepts optional
+`device_id`/`user_id`/`session_type` keyword-only params (all default
+`None`, so nothing that doesn't pass them changes behavior) and
+forwards them straight through:
+
+- **7 wrapper functions** gained the params and forward them to
+  `complete()`: `grader.grade()`, `ammo.missed_ammo()`,
+  `coach_rewrites.rewrite()`, `coach_intel.extract_questions()`,
+  `coach_coverage.coverage_map()`, `persona_extract.extract_tags()`,
+  `coach_questions.generate_pack()`.
+- **`engine/probes.py`**: `_llm_rewrite()`, `select_probe()`, and
+  `pregenerate()` all gained the same params — `pregenerate()` in
+  particular required `functools.partial` at its call site since
+  `loop.run_in_executor()` (unlike `asyncio.to_thread`) does not
+  accept kwargs directly.
+- **`src/agent.py`**: every call site updated to pass real values —
+  `DrillRunner`/`SimulationRunner` methods pass `self._device_id`,
+  `self._user_id`, `self.session_type` (already `"drill"` or
+  `"simulation"` per-instance, set at construction); `CoachRunner`
+  methods pass its own `self._device_id`/`self._user_id` with
+  `session_type="coach"` hardcoded (no per-instance field needed,
+  CoachRunner is always coach). The three interview-mode calls that
+  run *before* the runner exists (pack/intel pregeneration,
+  `extract_tags(bio)` for persona resolution, all inside
+  `entrypoint()`) needed their own local `device_id`/`user_id`
+  (`amplitude.device_id_from_room(ctx.room)` /
+  `user_id_from_room(ctx.room)`, same helpers the runners themselves
+  use) and a `session_type` label computed early
+  (`"simulation" if cfg.session_type == SessionType.SIMULATION else
+  "drill"`) since the runner class that would normally carry that
+  distinction hasn't been constructed yet at that point in
+  `entrypoint()`.
+- **One regression caught by the test suite, not missed**: an existing
+  test's mock (`fake_rewrite(question, answer, round, docs=None)` in
+  `test_agent_runner.py`) had a signature too strict for the new
+  kwargs and failed with `TypeError: unexpected keyword argument
+  'device_id'` on the first full-suite run after wiring `send_rewrite`.
+  Fixed by adding `**_kwargs` to the mock, matching the pattern every
+  other mock of these functions in the test suite already used. Grepped
+  every other mock of the 8 changed functions across the whole test
+  suite afterward to confirm none of the others had the same strict-
+  signature problem (`select_probe`, `generate_pack`, `coverage_map`
+  mocks were all already `**kw`-tolerant).
+- Full suite: still 149 passing (no new tests added this pass — the
+  new kwargs are exercised implicitly by the existing agent-runner and
+  coach-runner tests, which already invoke every one of these call
+  sites through mocked LLM functions; a dedicated kwarg-value
+  assertion was covered instead by the live checks below, which are a
+  stronger signal than a mock could give).
+- **Live-verified twice, not just unit-tested**: (1) reran the
+  scratchpad `complete()` script from the prior checkpoint — unchanged,
+  still correct. (2) New check: called `grader.grade()` directly
+  (real, unmocked — not `complete()`) against a real fixture transcript
+  (`evals/fixtures/transcript_pm.txt`) with
+  `device_id="verify-grade-room"`, `user_id="verify-grade-user"`,
+  `session_type="drill"`. Confirmed in Amplitude: `llm_call_completed`
+  fired with `prompt_id: grading_system`, `provider: gemini`,
+  `session_type: drill`, `latency_ms: 12658.9`, User ID
+  `verify-grade-user`, Device ID `verify-grade-room` — the full chain
+  from a real call site (not just `complete()` itself) through to a
+  session-attributed event, confirmed against the actual product, not
+  assumed from the wrapper diffs looking correct.
+
+**Still not done**: token usage / cost-per-query (needs
+`_call_gemini`/`_call_groq` to return usage tuples, deliberately still
+deferred, see the 2026-08-08 checkpoint-1 entry above for why). End-
+to-end turn latency and interrupt-rate tracking remain unscoped.
+**Nothing committed or deployed yet** — per the user's explicit
+"isolated localhost testing... then deploy" order, this whole
+checkpoint (both the base `complete()` instrumentation and this
+call-site wiring) is still sitting in the working tree, verified
+locally against real APIs and real Amplitude, awaiting the
+commit-and-deploy step.

@@ -21,7 +21,9 @@ class RewriteResult(BaseModel):
 
 
 def rewrite(question: str, answer: str, round: RoundProfile,
-            docs: list[Doc] | None = None) -> RewriteResult:
+            docs: list[Doc] | None = None, *, device_id: str | None = None,
+            user_id: str | None = None,
+            session_type: str | None = None) -> RewriteResult:
     docs_block = "\n\n".join(f"[{d.name}]\n{d.text}" for d in (docs or []))
     band = round.length_band_s
     result = complete("answer_rewrite", {
@@ -30,7 +32,8 @@ def rewrite(question: str, answer: str, round: RoundProfile,
         "docs": docs_block or "(none supplied)",
         "length_band_low": str(band[0]),
         "length_band_high": str(band[1]),
-    }, json_schema={"type": "object"})
+    }, json_schema={"type": "object"}, device_id=device_id, user_id=user_id,
+       session_type=session_type)
 
     raw = result.parsed or {}
     notes = [RewriteNote(

@@ -27,6 +27,18 @@ def mock_http(monkeypatch, requests, status=200):
             transport=httpx.MockTransport(handler), **kw))
 
 
+def mock_http_sync(monkeypatch, requests, status=200):
+    def handler(request):
+        requests.append(request)
+        return httpx.Response(status, json={"code": status})
+
+    real_client = httpx.Client
+    monkeypatch.setattr(
+        amplitude.httpx, "Client",
+        lambda **kw: real_client(
+            transport=httpx.MockTransport(handler), **kw))
+
+
 def test_device_id_from_room_uses_room_name():
     assert amplitude.device_id_from_room(FakeRoom("room-abc123")) == "room-abc123"
 
@@ -99,3 +111,40 @@ def test_track_network_failure_never_raises(monkeypatch):
         await amplitude.track("session_started", device_id="device-1")
         assert requests, "the call was attempted"
     asyncio.run(run())
+
+
+def test_track_sync_noop_without_api_key(monkeypatch):
+    monkeypatch.delenv("AMPLITUDE_API_KEY", raising=False)
+    requests = []
+    mock_http_sync(monkeypatch, requests)
+    amplitude.track_sync("llm_call_completed", device_id="device-1")
+    assert not requests, "no network call without an API key configured"
+
+
+def test_track_sync_posts_the_right_payload(monkeypatch):
+    monkeypatch.setenv("AMPLITUDE_API_KEY", "unit-key")
+    requests = []
+    mock_http_sync(monkeypatch, requests)
+    amplitude.track_sync(
+        "llm_call_completed", device_id="device-1", user_id="user-1",
+        event_properties={"provider": "gemini", "latency_ms": 812.3})
+    assert len(requests) == 1
+    req = requests[0]
+    assert req.url == httpx.URL(amplitude.INGEST_URL)
+    import json
+    body = json.loads(req.content)
+    assert body["api_key"] == "unit-key"
+    event = body["events"][0]
+    assert event["event_type"] == "llm_call_completed"
+    assert event["device_id"] == "device-1"
+    assert event["user_id"] == "user-1"
+    assert event["event_properties"] == {"provider": "gemini",
+                                         "latency_ms": 812.3}
+
+
+def test_track_sync_network_failure_never_raises(monkeypatch):
+    monkeypatch.setenv("AMPLITUDE_API_KEY", "unit-key")
+    requests = []
+    mock_http_sync(monkeypatch, requests, status=500)
+    amplitude.track_sync("llm_call_completed", device_id="device-1")
+    assert requests, "the call was attempted"
