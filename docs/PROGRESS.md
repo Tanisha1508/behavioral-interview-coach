@@ -1407,9 +1407,29 @@ forwards them straight through:
 `_call_gemini`/`_call_groq` to return usage tuples, deliberately still
 deferred, see the 2026-08-08 checkpoint-1 entry above for why). End-
 to-end turn latency and interrupt-rate tracking remain unscoped.
-**Nothing committed or deployed yet** — per the user's explicit
-"isolated localhost testing... then deploy" order, this whole
-checkpoint (both the base `complete()` instrumentation and this
-call-site wiring) is still sitting in the working tree, verified
-locally against real APIs and real Amplitude, awaiting the
-commit-and-deploy step.
+
+## 2026-08-08 (close): LLM tracking committed, pushed, and deployed
+
+Committed both this-session pieces (base `complete()` instrumentation
++ full call-site wiring) as one commit after the user confirmed ready
+to deploy: `e42533e`, pushed to `origin/main` (`65145f2..e42533e`).
+16 files, 599 insertions.
+
+Agent redeployed: `lk agent deploy` from repo root succeeded
+("Deployed agent"). Verified via `lk agent list`: new version
+`REzhdEyaSUNE`, `Deployed At: 2026-08-08T14:58:17Z`. Cloud-verified via
+`lk room join verify-llm-tracking-deploy --identity probe-user`: the
+redeployed agent (`agent-AJ_xtGC67VniNnv`) joined and dispatched
+correctly — confirms the build shipped and the worker is live, matching
+the pattern used for every other cloud verification in this project
+(a full voice exchange to re-verify the LLM tracking itself in
+production isn't practical to script; the tracking logic was already
+live-verified against real Gemini + real Amplitude twice, at the
+`complete()` level and the `grade()` call-site level, before this
+deploy — see the two entries above).
+
+Status: scope item 16's LLM latency/provider/session tracking is now
+live in production. Remaining open items for this thread: token usage
+/ cost-per-query (deferred, needs `_call_gemini`/`_call_groq` contract
+change), end-to-end turn latency, interrupt-rate tracking — none
+scheduled yet.
