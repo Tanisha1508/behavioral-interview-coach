@@ -954,3 +954,125 @@ exercised in this run (would need a provider outage or a mid-answer
 disconnect to trigger naturally): `tts_fallback_triggered`/
 `_recovered`, `session_abandoned`, `Saved Document`, `Saved Suggestion`,
 `History Tab Changed`.
+
+## 2026-08-08: Scope item 16 — identity-stitching bug found and fixed, first real metric charts built
+
+User asked to see actual computed metrics (numbers/percentages), not just
+raw event capture — correctly pointing out that everything built through
+checkpoint 6 was plumbing, with only one demo chart (`Home Page Views`)
+ever built on top of it. Built real charts for the first time, and in
+doing so found a genuine identity bug, not a chart-config problem.
+
+**Bug found:** the web SDK (`web/lib/amplitude/client.ts` and every
+`amplitude.track()` call site) never called `amplitude.setUserId()`.
+Confirmed with `grep -rn "setUserId" web/` returning zero matches. Every
+web event was tracked under Amplitude's own anonymous browser device ID,
+completely disconnected from the Supabase `user_id` the agent side uses
+(`user_id_from_room` in `cloud_store.py`). Surfaced concretely as a
+funnel (`Started Session` -> `session_started`) showing 0% conversion for
+a session that, per the agent logs and Supabase, definitely happened.
+
+**Fix:** `web/components/app/signed-in-tracker.tsx` now also calls
+`useUser()` and, in a separate `useEffect`, calls
+`amplitude.setUserId(user.id)` whenever a signed-in user is present. This
+component was already mounted once in the root layout for every route
+(checkpoint 3), so this covers every web event going forward with no
+other call sites touched.
+
+**Verified live, twice:**
+1. After the fix, `History Tab Changed` (a fresh web event) showed the
+   real Supabase user ID in Amplitude's Live Events feed, matching the
+   agent-side events exactly — before the fix these showed "Anonymous
+   User".
+2. Rebuilt the `Started Session -> session_started -> answer_graded ->
+   session_ended` funnel: 100% conversion, all 4 steps, for the one real
+   session — including the *original* session from before the fix. This
+   is Amplitude's own identity-merge behavior (a device's full anonymous
+   history gets retroactively attributed to a user once that same device
+   calls `setUserId`), not something built here, but it means no
+   historical data was lost by fixing this late.
+
+**Charts built and saved** (all real data, not samples):
+- `Hallucination Rate (avg evidence violations per answer)` —
+  `answer_graded`, Average of Property Value on `evidence_violations`.
+- `TTS Time-to-First-Byte (latency)` — `tts_metrics`, Average of Property
+  Value on `ttfb_s`.
+- `Golden-Eval Headline Metrics (hallucination % + grading success %)` —
+  two lines on `eval_run_completed`, Average of Property Value on
+  `hallucination_items_with_violation_pct` and `grading_success_rate`.
+- `Session Completion Funnel (web start -> agent connect -> graded ->
+  ended)` — the 4-step funnel described above.
+- All four pinned to a new dashboard, **"AI Evals & Session Health"**.
+
+**Known gap, not fixed:** tried to build a grading-failure-rate chart on
+`answer_grading_failed`, but that event has zero real occurrences so far
+(our one verification session never hit a grading failure) — Amplitude's
+chart-builder event picker only lists events with actual data, so this
+literally cannot be built yet. Documented rather than faked with a 0%
+placeholder. Also: `eval_run_completed` was never added to the Amplitude
+Tracking Plan CSV from the earlier import (checkpoint-adjacent gap,
+shows as "Uncategorized" in the picker) — cosmetic, doesn't affect data.
+`Home Page Views (daily)` could not be added to the dashboard via
+automation after several attempts (an "Add Item" hover button that
+wouldn't register a click); left out rather than forcing it — the user
+can add it with one click in Amplitude's UI directly.
+
+## 2026-08-08 (later): real testing session — session_abandoned confirmed live
+
+User ran a real second session: heard question 1, said "Sure, that's my
+answer" (no real content, deliberately or not), got graded (all 6
+dimensions Gap, correctly — `evidence_violations: 0` since there was
+nothing to hallucinate about), then closed out of the room directly
+rather than saying "end" or "next". This is exactly the abandonment path
+checkpoint 4 was built for and, until now, had only unit-tested.
+
+Confirmed via the agent log: LiveKit reported `reason: CLIENT_INITIATED`
+-> `session closed {"reason": "participant_disconnected"}`, and the
+interviewer never spoke "Ending the session" (proof `_end_session` never
+ran). Confirmed via Amplitude: `session_abandoned` fired with exactly
+correct properties — `mid_answer: false` (they were between the Q1
+feedback and the verdict prompt, not mid-answer), `questions_answered: 1`,
+`questions_total: 2`, `duration_s: 83`, `session_type: drill`,
+`guest: false`. Searched `session_ended` across the user's full history:
+"1 of 1" result, and it's timestamped to the *first* test session
+(checkpoint verification, Aug 7) — today's abandoned session correctly
+produced no `session_ended`, confirming no double-fire.
+
+Also confirmed the identity fix holds up across multiple independent
+sessions, not just one: the User Profile's "Device ID(s)" field now
+lists three merged IDs (the browser's device ID plus two different
+LiveKit room names from the two separate test sessions), all correctly
+attributed to the one real Supabase user.
+
+This closes out live verification for every scope-16 event except
+`tts_fallback_triggered`/`_recovered` (needs a real provider outage) and
+the web actions that need a populated score card first
+(`Saved Suggestion`, `Saved Document` — not exercised in either test
+session).
+
+## 2026-08-08 (later still): third test session — Saved Suggestion confirmed live, real content sample
+
+Ran on localhost deliberately (today's `setUserId` fix is uncommitted and
+undeployed; production still has the old code). User gave a real,
+substantive STAR-structured answer this time instead of a done-phrase
+only. Grading matched the spoken/printed card exactly: Structure/
+Specificity/I-vs-We/Length Solid, Quantification/Reflection Gap,
+`evidence_violations: 7` (printed as "7 non-verbatim quotes dropped by
+the evidence check"), `duration_s: 120.872` (~121s, matches the spoken
+feedback). This is the first real non-zero hallucination-rate sample —
+the two earlier ones were both 0 (nothing to hallucinate about in a
+one-line non-answer, or a clean grade).
+
+User then opened the rewrite and clicked "Save to my account" before
+closing the tab. **`Saved Suggestion` fired live for the first time**,
+`kind: rewrite` — correct. Session ended via `CLIENT_INITIATED` disconnect
+again (viewing the rewrite screen, not mid-answer) — `session_abandoned`
+fired a second time, same correct shape as the first.
+
+Remaining not-live-verified: `tts_fallback_triggered`/`_recovered` (needs
+a real Deepgram/ElevenLabs outage — not something to force in a test),
+`Saved Document` (needs the setup form's document-save flow specifically,
+not exercised in any of the three sessions so far).
+
+Nothing from today's testing is committed or deployed yet — still just
+the `setUserId` fix in the working tree plus doc updates.
