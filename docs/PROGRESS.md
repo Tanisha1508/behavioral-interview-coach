@@ -1616,3 +1616,50 @@ category-controlled crosstab, p99 everywhere latency is reported, all
 unedited this pass (charts + underlying data are current and correct;
 the written narrative referencing old numbers is a separate,
 not-yet-scheduled follow-up, not blocking this commit).
+
+## 2026-08-09 (later): written report + summary refreshed with real 2026-08-09 numbers
+
+User asked to also update `EVALUATION_REPORT.md`/`EXECUTIVE_SUMMARY.md`
+(deferred in the previous checkpoint). Updated both, section by
+section, against the real regenerated `metrics_summary.json` rather
+than guessing at numbers:
+
+- Both files now cite two run dates (2026-08-04 original, 2026-08-09
+  LLM-grading re-run) and are explicit about which sections reflect
+  which date — probe/follow-up and voice results weren't re-run this
+  pass, so those sections correctly still cite 2026-08-04.
+- Updated every LLM-grading-derived number (reliability, schema
+  validity, hallucination rate, rubric-by-category, construct
+  validity, consistency, latency) with real 2026-08-09 figures,
+  presented alongside the original 2026-08-04 numbers as a
+  before/after rather than a silent overwrite — this incidentally
+  strengthens the report: several findings (category rank ordering,
+  order-invariance Structure-Solid rates, Kappa/Pearson r) now have
+  two independent days' confirmation instead of one.
+- Rewrote Section 6.1's mechanism explanation accurately for
+  2026-08-09: confirmed via `call_log` and the final ledger state
+  (`calls_today() == 100` right after the run) that this run's 97.7%
+  fallback rate came from a mix of real Gemini 429s early in the run
+  (retry_rate 64.7%, proving Gemini was actually being contacted, not
+  skipped) and the internal 100/day ledger cap being reached by the
+  end — a different mechanism than 2026-08-04's story (ledger already
+  at cap before the pass even started, 0% retries). Did not guess at
+  the exact transition point between the two mechanisms since the
+  data doesn't cleanly distinguish it.
+- Added new Section 6.8.1 (Accuracy vs Latency by Provider) with the
+  new chart and both the confounded raw numbers and the
+  category-controlled fair comparison, explained in the same careful,
+  non-overclaiming voice as the rest of the report.
+- Full metric index (Section 7) expanded from 27 to 33 rows to cover
+  both dates plus the new provider metrics.
+- **Caught and fixed two now-stale claims while in there**, not asked
+  for but clearly wrong now: Section 6.1 and Section 9 both said "no
+  session-analytics or telemetry system exists in this codebase" —
+  true when written 2026-08-04, false since scope item 16 (Amplitude
+  tracking, built 2026-08-07 onward, this whole multi-day thread of
+  work). Corrected to state telemetry now exists in production, while
+  preserving the real, still-true distinction that this offline
+  batch-transcript suite structurally can't produce a completion-rate
+  number itself regardless.
+- `pytest tests/` reconfirmed clean (149 passing; these are docs-only
+  changes, no code touched this pass) before committing.

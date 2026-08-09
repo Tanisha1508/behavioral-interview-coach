@@ -1,20 +1,22 @@
 # Behavioral Interview Coach — Evaluation Report
 
-**Run date:** 2026-08-04 · **Evaluator role:** AI Evaluation Engineer (pre-ship product evaluation, not a code review) · **Repo:** Voice Behavioral Interview Coach (LiveKit + Deepgram + Gemini/Groq + Supabase)
+**Run dates:** 2026-08-04 (all four instruments) · 2026-08-09 (LLM grading pass independently re-run in full, 133/133 real calls) · **Evaluator role:** AI Evaluation Engineer (pre-ship product evaluation, not a code review) · **Repo:** Voice Behavioral Interview Coach (LiveKit + Deepgram + Gemini/Groq + Supabase)
 
-Every number in this report was computed by running the actual production code in `src/` against real API calls made today. Nothing is estimated. Where a metric could not be measured, that is stated explicitly instead of a number. Raw data backing every table: `evaluation/results/*.json`. Reproduction: `evaluation/README.md`.
+Every number in this report was computed by running the actual production code in `src/` against real API calls. Nothing is estimated. Where a metric could not be measured, that is stated explicitly instead of a number. The LLM-grading numbers below (Sections 6.1–6.4, 6.6, 6.8) reflect the most recent run (2026-08-09) unless a section explicitly compares it against the original 2026-08-04 pass; the probe/follow-up (6.5, 6.7) and voice (6.9) instruments were not re-run and still reflect 2026-08-04, since nothing in this codebase's probe engine or voice pipeline changed between the two dates. Raw data backing every table: `evaluation/results/*.json`. Reproduction: `evaluation/README.md`.
 
 ---
 
 ## 1. Executive Summary
 
-This evaluates a voice-based behavioral interview coach as a product, not as a codebase. The system's core AI capability — a 6-dimension rubric grader over spoken answers — is **reliable in the sense that matters most for shipping**: 101/101 real grading calls succeeded, JSON output was always usable (repaired in code when the raw model output drifted), and the automated evidence-verification layer measurably prevents hallucinated quotes from reaching users (11.9%–7.3% of generated quotes are caught and dropped, depending on which model tier served the call).
+This evaluates a voice-based behavioral interview coach as a product, not as a codebase. The system's core AI capability — a 6-dimension rubric grader over spoken answers — is **reliable in the sense that matters most for shipping**: 101/101 real grading calls succeeded (confirmed independently twice, five days apart), JSON output was always usable (repaired in code when the raw model output drifted), and the automated evidence-verification layer measurably prevents hallucinated quotes from reaching users (10.4% of generated quotes caught and dropped in the most recent run; 7.3%–11.9% across two 2026-08-04 passes — Section 6.3 explains why this moves with which model tier served the call).
 
-The grader also shows strong **construct validity**: a mean rubric score computed from real LLM grading correlates at **Pearson r = 0.968** with the quality tier I designed each golden-set answer to represent (n=38). Repeated grading of the same transcript agrees at **Cohen's κ = 0.859** ("almost perfect" on the standard interpretation scale).
+The grader also shows strong **construct validity**: a mean rubric score computed from real LLM grading correlates at **Pearson r = 0.974** with the quality tier I designed each golden-set answer to represent (n=38). Repeated grading of the same transcript agrees at **Cohen's κ = 0.869** ("almost perfect" on the standard interpretation scale). Both numbers reconfirmed, not just measured once — the 2026-08-04 run (Pearson r = 0.968, κ = 0.859) landed within a few points of the 2026-08-09 re-run on identical golden-set items, which is itself evidence the grader's behavior is stable day-to-day, not a one-off result.
 
 The most important finding is not a headline metric — it's an architectural gap this evaluation surfaced by design: the product's own documented rule ("never penalize an answer for deviating from the canonical story order," `config/rubric.yaml`) **is honored by the LLM grader but violated by the rule-based probe engine**. The same facts, told in a different order, trigger a live follow-up probe 0% of the time in canonical order and **100% of the time reordered** — the opposite of the documented intent. This is a real, reproducible product bug, not a fabricated finding (Section 6.5).
 
-Two capability gaps also surfaced honestly rather than being papered over: the product has **no fabrication/fact-checking detector** (a golden-set answer claiming "12 billion signups in one day" scores no worse on average than a plausible one — Section 6.3), and **no topical-relevance detector** at all (off-topic answers trigger zero probes, by design gap, not by test error).
+Two capability gaps also surfaced honestly rather than being papered over: the product has **no fabrication/fact-checking detector** (a golden-set answer claiming "12 billion signups in one day" scored a 61.1% Solid rate this run, 47.2% on 2026-08-04 — a swing large enough that "fabricated answers grade like mediocre-but-plausible ones" is the safer claim than any single percentage; either way, nowhere close to `weak`'s consistent near-zero — Section 6.3), and **no topical-relevance detector** at all (off-topic answers trigger zero probes, by design gap, not by test error).
+
+A second, methodologically important finding came out of extending this suite to compare **accuracy against latency by LLM provider** (Section 6.8.1, added 2026-08-09): free-tier rate limits routed 130/133 of this run's calls to Gemini Flash-Lite and only 3 to primary Gemini Flash. A naive comparison of raw accuracy across providers would have shown Gemini-lite scoring dramatically worse (49% vs 100% Solid rate) — but that gap was almost entirely a category-mix confound, not a real accuracy difference: Gemini's 3 calls all happened to be the easiest (`excellent`) category, while Gemini-lite covered the full mix including every intentionally-low-quality category. Controlled for category, the gap nearly disappears (100% vs 93.3%), while the latency gap is real and large (Gemini-lite is roughly 4–5x faster). This is reported as a caution about this evaluation's own methodology, not just a finding about the product — see Section 6.8.1 for the full breakdown and how it's controlled for.
 
 ## 2. System Architecture
 
@@ -73,7 +75,7 @@ Full dataset: `evaluation/GOLDEN_DATASET.json` / `.csv`. Generator: `evaluation/
 | Voice sample | 24 items, 3 per category, stratified |
 | TTS model | `aura-2-thalia-en` (the `brisk_neutral` preset's Deepgram voice — `src/persona/resolve.py`) |
 | STT model | `nova-3` (identical to `src/agent.py`'s production config) |
-| Daily LLM ledger state at run start | Already at the configured cap (100/day, `config/settings.yaml`) from this same evaluation session's earlier calls — **this materially shapes Section 6.1's fallback numbers; see the caveat there** |
+| Daily LLM ledger state at run start | 2026-08-04 run: already at the configured cap (100/day, `config/settings.yaml`) from earlier same-day calls. 2026-08-09 run: started well under cap (~10, from an earlier small smoke-test run the same session), reached the cap partway through this run's 133 calls — **both runs' fallback numbers are shaped by ledger/quota state, for different reasons; see Section 6.1** |
 
 ## 6. Evaluation Results
 
@@ -83,13 +85,19 @@ Full dataset: `evaluation/GOLDEN_DATASET.json` / `.csv`. Generator: `evaluation/
 |---|---|---|---|
 | Grading success rate | **100%** | 101/101 items | Fraction of golden items that received a complete `RubricScores` object with no unhandled exception |
 | LLM call success rate | **100%** | 133/133 calls | Fraction of `complete()` invocations that returned without raising |
-| Fallback invocation rate (this run) | **100%** | 133/133 calls | `provider != "gemini"` in the returned `LLMResult` |
-| Fallback invocation rate (earlier same-day run, different ledger state) | **84.8%** | 56/66 calls | Measured in an earlier evaluation pass today, before the daily ledger reached its cap |
-| Retry rate | **0%** | 0/133 calls | Calls where `src.llm.client._call_gemini` was invoked >1 time within one `complete()` call |
+| Fallback invocation rate (2026-08-09 run) | **97.7%** | 130/133 calls | `provider != "gemini"` in the returned `LLMResult` |
+| Fallback invocation rate (2026-08-04, cap already hit at run start) | **100%** | 133/133 calls | Same measurement, ledger already at cap before this pass began |
+| Fallback invocation rate (2026-08-04, earlier same-day pass, cap not yet hit) | **84.8%** | 56/66 calls | Measured before the daily ledger reached its cap that day |
+| Retry rate (2026-08-09 run) | **64.7%** | 86/133 calls | Calls where `src.llm.client._call_gemini` was invoked >1 time within one `complete()` call; mean 1.66 attempts/call |
+| Retry rate (2026-08-04 run) | **0%** | 0/133 calls | Same measurement — see interpretation below for why this differs so much between the two runs |
 
-**Interpretation — read this before trusting the 100% fallback number at face value:** `config/settings.yaml` caps Gemini-primary attempts at 100/day (`daily_call_cap`). By the time this evaluation's main LLM pass started, this same session's earlier work (the voice/probe evals plus a first, interrupted grading attempt) had already pushed `data/llm_ledger.json`'s `2026-08-04` count to exactly 100. Every one of this run's 133 calls therefore skipped the primary tier entirely and went straight to Gemini Flash-Lite (115 calls) or Groq (18 calls) — that's *why* retry rate is 0% too (retries only happen inside the primary-tier loop, which never executed). The 84.8% figure from earlier the same day, before the cap was hit, is the more representative "typical fallback rate under real free-tier load" number. Both are real, both are correctly labeled by which ledger state produced them — this is not cherry-picking, it's reporting the actual mechanism.
+**Interpretation — the two runs failed over for different reasons, and the data distinguishes them:** `config/settings.yaml` caps Gemini-primary *attempts* at 100/day (`daily_call_cap`); this ledger persists across process runs in `data/llm_ledger.json`. On 2026-08-04, the ledger was already at exactly 100 before this pass started (earlier same-day voice/probe evals plus an interrupted grading attempt), so every one of that day's 133 calls skipped the primary tier entirely without even attempting it — zero retries, because retries only happen inside a primary-tier attempt that never ran.
 
-**Interview completion rate — not measured, and cannot be from this repo.** There is no session-analytics or telemetry system anywhere in the codebase (confirmed by inspection: no analytics events, no funnel tracking). "Completion rate" in the product sense (fraction of started live sessions that reach a final score) would require production usage logs that don't exist for this project. Reported here as a limitation, not a number.
+On 2026-08-09, the ledger started near-empty (~10, from an unrelated small smoke test earlier the same session) and the run made real attempts against primary Gemini for most of its calls — confirmed by the retry-rate data itself: a mean of 1.66 `_call_gemini` invocations per `complete()` call and 86/133 calls with more than one attempt is only possible if Gemini was actually being contacted, not skipped. Only 3 of those real attempts succeeded (Section 6.8.1); the rest hit real 429/transient errors and fell over to Gemini Flash-Lite within the same `complete()` call. By the end of the run the ledger had also reached its 100-call cap (confirmed: `calls_today() == 100` immediately after), so a final handful of calls skipped primary entirely too — both mechanisms (real rate-limiting early, ledger cap late) contributed to this run's 97.7% fallback rate, and the data doesn't cleanly separate exactly where the transition happened, only that both occurred.
+
+**The practical takeaway across three independent measurements (84.8%, 97.7%, 100%):** under any realistic free-tier usage pattern, this product's actual traffic is dominated by fallback-tier (Gemini Flash-Lite or Groq) responses, not primary Gemini — which is exactly why Section 6.8.1's per-provider accuracy/latency breakdown matters more than the aggregate latency number: for this product, "fallback-tier behavior" effectively *is* production behavior, not an edge case.
+
+**Interview completion rate — not measured by this batch suite, though it's no longer true that this repo can't measure it at all.** At the time of the original 2026-08-04 evaluation there was no session-analytics or telemetry system in the codebase; that gap was closed afterward (scope item 16, 2026-08-07 onward — Amplitude event tracking now covers `session_started`/`session_ended`/`session_abandoned` and a live "Session Completion Funnel" dashboard, see `docs/PROGRESS.md`). What's still true: this batch golden-set suite grades static transcripts, not live `AgentSession`s, so it structurally cannot produce a completion-rate number itself — that data now lives in production Amplitude, not in this evaluation's output. Reported here as an evaluation-suite limitation, not a product gap.
 
 ![Provider distribution](charts/provider_distribution.png)
 
@@ -97,40 +105,43 @@ Full dataset: `evaluation/GOLDEN_DATASET.json` / `.csv`. Generator: `evaluation/
 
 | Metric | Value | n | Method |
 |---|---|---|---|
-| Raw output strictly schema-valid, pre-repair (this run) | **100%** | 133/133 | Checked before `grade()`'s own null/mistype sanitization logic runs |
-| Raw output strictly schema-valid, pre-repair (earlier run, 15% primary-tier traffic) | **97.0%** | 64/66 | Both failures came from the *primary* Gemini tier, not a fallback tier |
+| Raw output strictly schema-valid, pre-repair (2026-08-09 run) | **100%** | 133/133 | Checked before `grade()`'s own null/mistype sanitization logic runs |
+| Raw output strictly schema-valid, pre-repair (2026-08-04, cap already hit) | **100%** | 133/133 | Same measurement, ledger-capped run |
+| Raw output strictly schema-valid, pre-repair (2026-08-04, earlier pass, 15% primary-tier traffic) | **97.0%** | 64/66 | Both failures came from the *primary* Gemini tier, not a fallback tier |
 
-Schema-repair failures are not evenly distributed across model tiers in the data collected so far — both observed failures came from primary Gemini, none from Lite or Groq across 133+66 calls. Sample size is too small to claim this generalizes; it's reported as observed, not extrapolated.
+Schema-repair failures are not evenly distributed across model tiers in the data collected so far — the only two observed failures (out of 330 total calls across all three passes) came from primary Gemini, none from Lite or Groq. Sample size for primary-tier calls specifically is small and inconsistent across runs (fallback dominates every run — Section 6.1), so this is reported as observed, not extrapolated.
 
 ### 6.3 Hallucination / Evidence-Verification Rate
 
 Uses the exact production mechanism: `grader.py:_verify_evidence` checks every evidence quote the LLM attaches to a rubric dimension as a verbatim substring of the transcript; non-matching quotes are dropped and logged before the score card is built.
 
-| Metric | This run (0% primary tier) | Earlier run (15% primary tier) |
-|---|---|---|
-| Items with ≥1 dropped non-verbatim quote | 88/101 = **87.1%** | 36/50 = 72.0% |
-| Per-quote-attempt violation rate | 140/(140+1034) = **11.9%** | 47/646 = 7.3% |
+| Metric | 2026-08-09 (2.3% primary tier) | 2026-08-04, cap-hit run (0% primary tier) | 2026-08-04, earlier pass (15% primary tier) |
+|---|---|---|---|
+| Items with ≥1 dropped non-verbatim quote | 89/101 = **88.1%** | 88/101 = 87.1% | 36/50 = 72.0% |
+| Per-quote-attempt violation rate | 129/(129+1114) = **10.4%** | 140/(140+1034) = 11.9% | 47/646 = 7.3% |
 
-**This is a real, model-tier-correlated finding, not noise:** the run with zero primary-Gemini traffic produced meaningfully more hallucinated evidence quotes than the run with some primary-tier traffic. Directionally consistent with the general expectation that a smaller fallback model (Gemini Flash-Lite, Llama-3.3-70B) hallucinates supporting quotes more often than the primary model — worth a dedicated study before treating as fact, but two independent runs today point the same direction.
+**Directionally consistent across three independent runs, not noise:** every run with little-to-no primary-Gemini traffic (2026-08-09 at 2.3%, 2026-08-04's cap-hit run at 0%) produced a meaningfully higher hallucination rate than the one run with substantial primary-tier traffic (15%). This is consistent with the general expectation that a smaller fallback model (Gemini Flash-Lite, Llama-3.3-70B) hallucinates supporting quotes more often than the primary model — three independent runs now point the same direction, though a dedicated study isolating provider as the only variable (rather than provider mix as a side effect of quota state) would be needed to treat this as more than a strong signal.
 
-**Fabrication detection: not implemented, confirmed by direct test.** The `fabricated` category (12 items with impossible claims like "12 billion signups in one day") scored a **47.2% Solid rate** — closer to the `average` category (34.6%) than to `weak` (4.2%) or `off_topic` (16.7%). The grader has no mechanism to fact-check claims; it only verifies that evidence quotes are things the candidate *actually said*, never whether what they said is *true*. An answer can be internally impossible and still grade reasonably well if it's well-structured and specific. This is a genuine, measured product gap, not a hypothetical one.
+**Fabrication detection: not implemented, confirmed by direct test — though the exact number moves.** The `fabricated` category (12 items with impossible claims like "12 billion signups in one day") scored a **61.1% Solid rate** on 2026-08-09, versus **47.2%** on 2026-08-04 — a large enough swing across the *same* 12 transcripts that neither number alone should be treated as precise. What's stable across both runs: `fabricated` never scores anywhere near `weak`'s (0.0%/4.2%, 2026-08-09/2026-08-04) or `off_topic`'s (20.8%/16.7%) low end, and is closer to `average`'s tier both times. The grader has no mechanism to fact-check claims; it only verifies that evidence quotes are things the candidate *actually said*, never whether what they said is *true*. An answer can be internally impossible and still grade reasonably well if it's well-structured and specific. This is a genuine, measured product gap, not a hypothetical one — the day-to-day variance in the exact percentage doesn't change that conclusion, it just means the precise number shouldn't be over-trusted.
 
 ### 6.4 Rubric Scoring: Discriminative Validity
 
 ![Solid rate by category](charts/solid_rate_by_category.png)
 
-| Category | n | Solid rate (6 dims) |
-|---|---|---|
-| excellent | 13 | 93.6% |
-| star_explicit | 13 | 89.7% |
-| non_star | 13 | 83.3% |
-| fabricated | 12 | 47.2% |
-| average | 13 | 34.6% |
-| off_topic | 12 | 16.7% |
-| incomplete | 13 | 15.4% |
-| weak | 12 | 4.2% |
+| Category | n | Solid rate (6 dims), 2026-08-09 | Solid rate (6 dims), 2026-08-04 |
+|---|---|---|---|
+| excellent | 13 | 94.9% | 93.6% |
+| star_explicit | 13 | 91.0% | 89.7% |
+| non_star | 13 | 82.1% | 83.3% |
+| fabricated | 12 | 61.1% | 47.2% |
+| average | 13 | 37.2% | 34.6% |
+| off_topic | 12 | 20.8% | 16.7% |
+| incomplete | 13 | 14.1% | 15.4% |
+| weak | 12 | 0.0% | 4.2% |
 
-**Construct validity (Section 4 of the original request's "which metric is most appropriate" question — Pearson, not Kappa, is the right tool here):** Cohen's Kappa needs two independent raters producing categorical labels on the *same* items; I don't have a second rater, so I did not force a Kappa here (Section 6.6 uses Kappa correctly, on repeated model runs instead). What *is* available and legitimate: does the grader's continuous mean score track the ordinal quality I designed into the dataset? Computed as **Pearson r = 0.968** (n=38, `weak`=1 / `average`=2 / `excellent`=3 vs. mean dimension score on a Gap=0/NeedsWork=1/Solid=2 scale). This is a construct-validity check against my own authoring intent, explicitly not a human-agreement statistic — see Section 9 for why the latter isn't available.
+Every category holds its relative rank in both runs — the category ordering (excellent > star_explicit > non_star > fabricated > average > off_topic ≈ incomplete > weak) is identical across two independent days, which is stronger evidence of discriminative validity than either single run alone: the exact percentages move a few points day-to-day, but which categories the grader treats as better or worse doesn't.
+
+**Construct validity (Pearson, not Kappa, is the right tool here):** Cohen's Kappa needs two independent raters producing categorical labels on the *same* items; I don't have a second rater, so I did not force a Kappa here (Section 6.6 uses Kappa correctly, on repeated model runs instead). What *is* available and legitimate: does the grader's continuous mean score track the ordinal quality I designed into the dataset? Computed as **Pearson r = 0.974** (2026-08-09; 0.968 on 2026-08-04) (n=38, `weak`=1 / `average`=2 / `excellent`=3 vs. mean dimension score on a Gap=0/NeedsWork=1/Solid=2 scale). This is a construct-validity check against my own authoring intent, explicitly not a human-agreement statistic — see Section 9 for why the latter isn't available.
 
 ### 6.5 Structural Order-Invariance — the headline finding
 
@@ -142,7 +153,7 @@ Uses the exact production mechanism: `grader.py:_verify_evidence` checks every e
 | `star_explicit` (canonical S-T-A-R) | 13 | 100% | 0% |
 | `non_star` (same facts, reordered) | 13 | **76.9%** | **100%** |
 
-`config/rubric.yaml` states outright: *"Any order that flows naturally counts; never penalize an answer for deviating from the canonical sequence."* `DECISIONS.md` (2026-07-11) documents this as a deliberate product decision.
+`config/rubric.yaml` states outright: *"Any order that flows naturally counts; never penalize an answer for deviating from the canonical sequence."* `DECISIONS.md` (2026-07-11) documents this as a deliberate product decision. These exact Structure-Solid-rate figures reconfirmed byte-for-byte on the independent 2026-08-09 grading re-run — the finding isn't a one-off artifact of a single day's model behavior.
 
 The **LLM grader mostly honors this** (100%→76.9% is a real but modest drop). The **rule-based probe engine does not honor it at all** — it flips from 0% to 100% probe-triggered. Reading `src/engine/decision.py` and `src/engine/analyzers.py` explains why: `track_hscarr` marks HSCARR sections SEEN based on discourse markers appearing anywhere in the growing transcript and never unmarks them; when `non_star` states the Result before the Situation, `detect_skip` sees a later-arc marker (resolution language) appear before an earlier one (situation language) and fires a DEPTH probe — 26 total triggers across the 13 `non_star` items (roughly 2 per item), 0 across all 13 `star_explicit` items with identical underlying facts. **This is a live, reproducible contradiction between the product's documented behavior and its shipped rule engine**, found because the golden set was deliberately built as a matched pair to make it visible — not a fabricated or hypothetical bug.
 
@@ -150,12 +161,12 @@ The **LLM grader mostly honors this** (100%→76.9% is a real but modest drop). 
 
 16 items, 3 grading runs each (96 dimension-slots, 288 pairwise comparisons), real repeated LLM calls on identical input.
 
-| Metric | Value | Method |
-|---|---|---|
-| Modal-stable dimension-slots (≥2/3 runs agree) | 100% (96/96) | Same weak bar as `evals/consistency.py`'s existing "4+/5" pattern, scaled to n=3 |
-| Solid↔Gap span violations | 4.2% (4/96) | Both extreme levels appeared across the 3 runs for that dimension |
-| **Cohen's Kappa, inter-run** | **0.859** | Unweighted κ over all 288 pairwise (run A level, run B level) comparisons — "almost perfect" agreement (Landis & Koch scale) |
-| **MAE, inter-run** | **0.118** | Mean absolute difference on a Gap=0/NeedsWork=1/Solid=2 ordinal scale, same 288 pairs |
+| Metric | 2026-08-09 | 2026-08-04 | Method |
+|---|---|---|---|
+| Modal-stable dimension-slots (≥2/3 runs agree) | 100% (96/96) | 100% (96/96) | Same weak bar as `evals/consistency.py`'s existing "4+/5" pattern, scaled to n=3 |
+| Solid↔Gap span violations | 2.1% (2/96) | 4.2% (4/96) | Both extreme levels appeared across the 3 runs for that dimension |
+| **Cohen's Kappa, inter-run** | **0.869** | 0.859 | Unweighted κ over all 288 pairwise (run A level, run B level) comparisons — "almost perfect" agreement both times (Landis & Koch scale) |
+| **MAE, inter-run** | **0.097** | 0.118 | Mean absolute difference on a Gap=0/NeedsWork=1/Solid=2 ordinal scale, same 288 pairs |
 
 **Why Kappa here and not against human labels:** no independent human ratings exist for this dataset (Section 9). The methodologically honest use of Kappa/MAE with the data actually available is inter-run self-consistency — does grading the same transcript twice more produce the same verdict? — which is exactly what's reported. This is evaluator (self-)consistency, one of the metrics the original request explicitly listed as an acceptable substitute.
 
@@ -192,17 +203,42 @@ The **LLM grader mostly honors this** (100%→76.9% is a real but modest drop). 
 
 ![Grading latency](charts/grading_latency.png)
 
-| Metric | Value | n | Note |
-|---|---|---|---|
-| Mean grading latency | 3.68s | 133 | text-in / JSON-out only |
-| Median (p50) | 2.97s | 133 | |
-| P95 | 8.27s | 133 | |
-| Max | 13.72s | 133 | |
-| Stdev | 2.03s | 133 | |
-| **TTFT** | **Not applicable** | — | `src/llm/client.py` uses non-streaming `generate_content`/`chat.completions.create` throughout; there is no token-stream in this codebase's LLM path to measure a first-token time from |
-| End-to-end interview latency (turn-taking, voice-to-voice) | **Not measured** | — | Requires a live `AgentSession` with real audio I/O; a batch script cannot exercise this. A reproduction script for measuring it live is described in Section 10/README. |
+| Metric | 2026-08-09 | 2026-08-04 (cap-hit run) | n | Note |
+|---|---|---|---|---|
+| Mean grading latency | 4.38s | 3.68s | 133 | text-in / JSON-out only |
+| Median (p50) | 4.06s | 2.97s | 133 | |
+| P95 | 4.76s | 8.27s | 133 | |
+| **P99** | **17.79s** | not computed in the original run | 133 | added this pass; see caveat below |
+| Max | 20.84s | 13.72s | 133 | |
+| Stdev | 2.25s | 2.03s | 133 | |
+| **TTFT** | **Not applicable** | — | — | `src/llm/client.py` uses non-streaming `generate_content`/`chat.completions.create` throughout; there is no token-stream in this codebase's LLM path to measure a first-token time from |
+| End-to-end interview latency (turn-taking, voice-to-voice) | **Not measured** | — | — | Requires a live `AgentSession` with real audio I/O; a batch script cannot exercise this. A reproduction script for measuring it live is described in Section 10/README. |
 
-**A note on what "P95: 8.27s" means for the product:** since fallback tiers served 100% of this run's traffic, this P95 already reflects fallback-tier latency, not best-case primary-tier latency — which is itself informative: the tail latency a user actually experiences under real free-tier load conditions is closer to this number than to the primary tier's typical ~2–4s.
+**Why p50/p95 went *down* this run while p99 is dramatically higher — this is the same mechanism as Section 6.1, seen from the latency side:** the 2026-08-04 run's fallback traffic was a mix of Gemini-lite and Groq (18 Groq calls, a differently-shaped latency profile); 2026-08-09's fallback traffic was almost entirely Gemini-lite (130/133), which happens to respond faster and more consistently than that mix, pulling p50/p95 down. But p99 tells the opposite story: it's dominated by the rare calls that *did* reach primary Gemini (only 3 this run) before falling over, which run 18-21s each — rare enough not to move p50/p95, common enough to dominate the tail. **Caveat on p99 specifically: at n=133, p99 is really just an interpolated estimate near the 2nd-highest value in the whole sample — treat it as "there is a slow tail and here's roughly how slow," not a statistically stable percentile.** Section 6.8.1 breaks this down by provider directly, which explains the mechanism far better than the aggregate number can.
+
+### 6.8.1 Accuracy vs Latency, by Provider — and a methodology confound caught before shipping it
+
+![Accuracy vs latency by provider](charts/accuracy_vs_latency_by_provider.png)
+
+Added 2026-08-09 by attaching each graded item's own `provider`/latency directly (not re-joined afterward by list position against a separate call log, which would silently misalign if `grade()` ever calls `complete()` more than once per item in the future).
+
+**Latency by provider (not confounded — latency isn't affected by category mix):**
+
+| Provider | n | Mean | p50 | p95 | p99 |
+|---|---|---|---|---|---|
+| gemini | 3 | 18.62s | 18.29s | 20.59s | 20.79s |
+| gemini-lite | 98 | 4.17s | 4.17s | 4.71s | 6.63s |
+
+**Accuracy by provider — the raw number is a trap, read this before the table:** naively comparing Solid rate across all of each provider's items gives gemini 100% (n=3) vs gemini-lite 49% (n=98) — a huge, alarming gap. It's almost entirely an artifact of *which categories each provider happened to grade*, not a real accuracy difference: Gemini's free-tier quota exhausted after exactly 3 calls, all of which happened to be `excellent`-category (the easiest category — Section 6.4); Gemini-lite then handled the other 98 calls, including every intentionally-low-quality category (`weak`, `off_topic`, `incomplete`, `fabricated`, all of which are *supposed* to score low). Averaging Gemini-lite's solid_rate across that full mix and comparing it to Gemini's easy-only sample answers a different question than "which provider grades more accurately."
+
+**The fair comparison — restricted to the one category both providers actually covered:**
+
+| Provider | Category | n | Solid rate |
+|---|---|---|---|
+| gemini | excellent | 3 | 100% |
+| gemini-lite | excellent | 10 | 93.3% |
+
+On this controlled comparison, Gemini-lite is close to primary Gemini's accuracy — though n=3 for Gemini is too small to call this conclusive either way. What's unambiguous is the latency gap: Gemini-lite is roughly 4–5x faster across every percentile measured. **Practical reading for this product:** since free-tier quota routes the overwhelming majority of real traffic to Gemini-lite anyway (Section 6.1), the accuracy this product actually delivers to most users is much closer to Gemini-lite's numbers than to primary Gemini's — which, per the one comparable category here, doesn't look like a large accuracy sacrifice for a substantial latency win. This should be treated as a lead worth more data, not a settled conclusion: a single category with n=3 on one side is not enough to certify that gemini-lite matches primary Gemini's accuracy in general.
 
 ### 6.9 Voice Pipeline (WER / CER)
 
@@ -237,35 +273,41 @@ Transcription latency and end-to-end speech latency in the *live, streaming* sen
 |---|---|---|---|---|
 | 1 | Grading success rate | 100% | 101 | 6.1 |
 | 2 | LLM call success rate | 100% | 133 | 6.1 |
-| 3 | Fallback invocation rate (capped-ledger run) | 100% | 133 | 6.1 |
-| 4 | Fallback invocation rate (pre-cap run) | 84.8% | 66 | 6.1 |
-| 5 | Retry rate | 0% | 133 | 6.1 |
-| 6 | JSON schema validity, pre-repair (this run) | 100% | 133 | 6.2 |
-| 7 | JSON schema validity, pre-repair (earlier run) | 97.0% | 66 | 6.2 |
-| 8 | Hallucination rate, per-quote (this run) | 11.9% | 1174 quotes | 6.3 |
-| 9 | Hallucination rate, per-quote (earlier run) | 7.3% | 646 quotes | 6.3 |
-| 10 | Fabricated-category Solid rate | 47.2% | 12 | 6.3 |
-| 11 | Quality-rank construct-validity (Pearson r) | 0.968 | 38 | 6.4 |
-| 12 | Order-invariance, grader Structure Solid (canonical) | 100% | 13 | 6.5 |
-| 13 | Order-invariance, grader Structure Solid (reordered) | 76.9% | 13 | 6.5 |
-| 14 | Order-invariance, probe trigger (canonical) | 0% | 13 | 6.5 |
-| 15 | Order-invariance, probe trigger (reordered) | 100% | 13 | 6.5 |
-| 16 | Consistency, Cohen's Kappa (inter-run) | 0.859 | 288 pairs | 6.6 |
-| 17 | Consistency, MAE (inter-run) | 0.118 | 288 pairs | 6.6 |
-| 18 | Consistency, Solid↔Gap span violations | 4.2% | 96 slots | 6.6 |
-| 19 | Follow-up trigger Precision | 1.0 | 50 | 6.7 |
-| 20 | Follow-up trigger Recall | 1.0 | 50 | 6.7 |
-| 21 | Follow-up trigger F1 | 1.0 | 50 | 6.7 |
-| 22 | Grading latency, mean | 3.68s | 133 | 6.8 |
-| 23 | Grading latency, P95 | 8.27s | 133 | 6.8 |
-| 24 | TTFT | N/A (not applicable) | — | 6.8 |
-| 25 | Voice round-trip call success | 91.7% | 24 | 6.9 |
-| 26 | WER, mean | 3.69% | 22 | 6.9 |
-| 27 | CER, mean | 3.81% | 22 | 6.9 |
+| 3 | Fallback invocation rate (2026-08-09) | 97.7% | 133 | 6.1 |
+| 4 | Fallback invocation rate (2026-08-04, capped-ledger run) | 100% | 133 | 6.1 |
+| 5 | Fallback invocation rate (2026-08-04, pre-cap run) | 84.8% | 66 | 6.1 |
+| 6 | Retry rate (2026-08-09) | 64.7% | 133 | 6.1 |
+| 7 | Retry rate (2026-08-04) | 0% | 133 | 6.1 |
+| 8 | JSON schema validity, pre-repair (2026-08-09) | 100% | 133 | 6.2 |
+| 9 | JSON schema validity, pre-repair (2026-08-04, earlier pass) | 97.0% | 66 | 6.2 |
+| 10 | Hallucination rate, per-quote (2026-08-09) | 10.4% | 1243 quotes | 6.3 |
+| 11 | Hallucination rate, per-quote (2026-08-04, cap-hit run) | 11.9% | 1174 quotes | 6.3 |
+| 12 | Hallucination rate, per-quote (2026-08-04, earlier pass) | 7.3% | 646 quotes | 6.3 |
+| 13 | Fabricated-category Solid rate (2026-08-09) | 61.1% | 12 | 6.3 |
+| 14 | Fabricated-category Solid rate (2026-08-04) | 47.2% | 12 | 6.3 |
+| 15 | Quality-rank construct-validity, Pearson r (2026-08-09) | 0.974 | 38 | 6.4 |
+| 16 | Quality-rank construct-validity, Pearson r (2026-08-04) | 0.968 | 38 | 6.4 |
+| 17 | Order-invariance, grader Structure Solid (canonical) | 100% | 13 | 6.5 |
+| 18 | Order-invariance, grader Structure Solid (reordered) | 76.9% | 13 | 6.5 |
+| 19 | Order-invariance, probe trigger (canonical) | 0% | 13 | 6.5 |
+| 20 | Order-invariance, probe trigger (reordered) | 100% | 13 | 6.5 |
+| 21 | Consistency, Cohen's Kappa (2026-08-09) | 0.869 | 288 pairs | 6.6 |
+| 22 | Consistency, Cohen's Kappa (2026-08-04) | 0.859 | 288 pairs | 6.6 |
+| 23 | Consistency, MAE (2026-08-09) | 0.097 | 288 pairs | 6.6 |
+| 24 | Follow-up trigger Precision / Recall / F1 | 1.0 / 1.0 / 1.0 | 50 | 6.7 |
+| 25 | Grading latency, mean (2026-08-09) | 4.38s | 133 | 6.8 |
+| 26 | Grading latency, p50 / p95 / p99 (2026-08-09) | 4.06s / 4.76s / 17.79s | 133 | 6.8 |
+| 27 | TTFT | N/A (not applicable) | — | 6.8 |
+| 28 | Accuracy vs latency, gemini (all-category, confounded) | 100% solid / p50 18.29s | 3 | 6.8.1 |
+| 29 | Accuracy vs latency, gemini-lite (all-category, confounded) | 49.3% solid / p50 4.17s | 98 | 6.8.1 |
+| 30 | Accuracy, gemini vs gemini-lite (category-controlled, `excellent` only) | 100% vs 93.3% | 3 vs 10 | 6.8.1 |
+| 31 | Voice round-trip call success | 91.7% | 24 | 6.9 |
+| 32 | WER, mean | 3.69% | 22 | 6.9 |
+| 33 | CER, mean | 3.81% | 22 | 6.9 |
 
 ## 8. Charts
 
-All in `evaluation/charts/`: `solid_rate_by_category.png`, `star_order_invariance.png`, `provider_distribution.png`, `grading_latency.png`, `voice_wer_cer.png`, `probe_trigger_rate.png`.
+All in `evaluation/charts/`: `solid_rate_by_category.png`, `star_order_invariance.png`, `provider_distribution.png`, `grading_latency.png`, `accuracy_vs_latency_by_provider.png` (added 2026-08-09), `voice_wer_cer.png`, `probe_trigger_rate.png`.
 
 ## 9. Limitations
 
@@ -273,9 +315,10 @@ All in `evaluation/charts/`: `solid_rate_by_category.png`, `star_order_invarianc
 - **The golden dataset is hand-authored, not sourced from real candidates.** Real behavioral-interview answers are messier — false starts, filler words, cross-talk, genuine ambiguity about intent — than any of the 101 items here.
 - **Voice evaluation measures synthetic speech, not human speech.** WER/CER here are a floor, not a production-representative number (Section 6.9).
 - **TTS/STT latency was measured via non-streaming REST calls**, not the actual streaming plugin path production uses — these numbers cannot be read as "how long a user waits."
-- **End-to-end interview latency and true interview completion rate were not measured** — both require live-session infrastructure (a running `AgentSession`, real usage telemetry) that doesn't exist in this repository today.
+- **End-to-end interview latency and true interview completion rate were not measured by this batch suite.** Completion rate is now measurable in production (Amplitude session funnel, added after the original 2026-08-04 run — see the Section 6.1 note above), just not by this offline harness, which grades static transcripts, not live sessions. True end-to-end turn latency (mic-stop to audio-start) is a narrower gap: production now tracks LLM call latency (`llm_call_completed`) and TTS/STT component latency (`tts_metrics`/`stt_metrics`) separately, but nothing yet stitches those into one turn-latency number — that specific metric genuinely isn't captured anywhere yet, live or offline.
 - **Sample sizes for some splits are small** (12–13 items per category, 16 items for consistency, 2–3 items per category for voice) — category-level percentages should be read as directional, not as tight confidence intervals.
-- **This evaluation ran entirely on one calendar day**, which means the "fallback invocation rate" and "hallucination rate" numbers are both entangled with a single day's ledger/quota state (Section 6.1). Repeating this across multiple days would separate "typical" from "cap-exhausted" behavior more cleanly.
+- **The LLM-grading portion has now run on two separate calendar days (2026-08-04, 2026-08-09)**, partially addressing the original single-day limitation — the "fallback invocation rate" and "hallucination rate" numbers are still entangled with each day's own ledger/quota state (Section 6.1), but now there are three independent (day, ledger-state) data points instead of one, which is why Sections 6.1–6.4, 6.6, and 6.8 report ranges rather than single numbers. The probe/follow-up (6.5, 6.7) and voice (6.9) instruments have still only run once, on 2026-08-04.
+- **The new provider accuracy comparison (Section 6.8.1) is under-powered on the primary-Gemini side.** Free-tier quota gave only 3 primary-Gemini calls to compare against 98 Gemini-lite calls this run; the one category-controlled comparison available (`excellent`, n=3 vs n=10) is a real, honest data point, not a confident conclusion. This needs either a dedicated run against a paid/higher-quota Gemini tier, or accumulating more days of free-tier data before "Gemini-lite matches primary Gemini's accuracy" can be said with real confidence.
 
 ## 10. Future Improvements
 
@@ -284,5 +327,7 @@ All in `evaluation/charts/`: `solid_rate_by_category.png`, `star_order_invarianc
 - **Build a small human-labeled subset** (even 20–30 items, 2 independent raters) specifically to compute a real human-vs-model Kappa/agreement number — everything in this report is honest about not having that yet.
 - **Add a fact-consistency check** to at least catch internally-impossible claims (Section 6.3) — doesn't need to be a full fact-checker, even an order-of-magnitude sanity check on numeric claims would catch the `fabricated` category's worst cases.
 - **Instrument a live `AgentSession` run** for true end-to-end voice latency and TTFT-equivalent metrics — a reproduction script stub for this is in `evaluation/scripts/` (see README); running it needs a live LiveKit room and either a human tester or piped pre-recorded audio.
-- **Repeat this evaluation across multiple days** to separate "typical" fallback/hallucination behavior from single-day ledger-cap artifacts (Section 9).
+- **Continue repeating the LLM-grading pass across more days** (two done so far, Section 9) to keep separating "typical" fallback/hallucination behavior from single-day ledger-cap or quota artifacts — and re-run the probe/follow-up and voice instruments at least once more too, since they've only ever run once.
+- **Get more primary-Gemini data for the accuracy-vs-latency-by-provider comparison** (Section 6.8.1) — n=3 is not enough to confidently claim Gemini-lite matches primary Gemini's accuracy; either a paid-tier run with guaranteed primary-Gemini quota, or enough repeated free-tier days to accumulate a larger primary-tier sample organically, would settle this.
+- **Capture token usage and real dollar cost per provider** — `accuracy_vs_latency_by_provider` currently reports accuracy and latency only; `src/llm/client.py`'s `_call_gemini`/`_call_groq` would need to return usage data alongside the response text to compute cost-per-query per provider (deliberately deferred when latency tracking was added — see `docs/DECISIONS.md`/`docs/PROGRESS.md`, scope item 16).
 - **Widen the voice sample** past 24 items and past synthetic speech — ideally with real recorded human answers, even a handful, to get a production-representative WER/CER instead of a floor.
