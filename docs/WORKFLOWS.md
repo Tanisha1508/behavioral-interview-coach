@@ -1,6 +1,6 @@
 # User workflows
 
-Every path a user can take through the product as of 2026-07-12. The web app is the primary surface; the console paths remain for development and offline use.
+Every path a user can take through the product. Written 2026-07-12, workflow 7c (Simulation) added 2026-08-09 when this doc's "Not built yet" section was caught out of date — check `docs/PROGRESS.md` for anything shipped after that if a workflow described here doesn't match current behavior. The web app is the primary surface; the console paths remain for development and offline use.
 
 ## The full map
 
@@ -74,6 +74,8 @@ flowchart TD
 
 **7b. The rewrite.** On any score card, press "Show me the rewrite". The coach produces dimension-tagged notes (your words, then the fix) plus a full rewritten answer built from your transcript and documents, on screen; the biggest fix is spoken. Read it, say "retry", and deliver the better version while it is fresh.
 
+**7c. Simulation mode (the timed mock, shipped 2026-07-13).** Session type: Simulation, 15 to 60 minutes. A planner computes how many questions fit the time budget from the round's depth style, minus a wrap reserve, and drops questions live if an answer runs long (with a spoken note when it happens). No per-question feedback: the interviewer banks each answer ("Thank you. Next question.") and grades it in the background while you're mid-way through the next one. The session ends in one debrief: per-question grades, code-computed cross-answer patterns (e.g. "we-heavy in 2 of 2 answers"), missed ammo deduplicated across the whole set, and a count of any dropped questions. Only "end" is accepted after the debrief; retry/next stay Drill-only.
+
 ## Coach workflows in words
 
 **8. Prep-map session.** Coach mode with resume + JD. The pack (8 to 12 likely questions, each tied to a resume line) and the coverage map (STRONG / PARTIAL / GAP per question, needs a stories doc) render in the side panel. The coach speaks a standing summary: how many questions, how many gaps.
@@ -100,5 +102,8 @@ flowchart TD
 
 ## Not built yet
 
-- **Simulation**: the timed 15 to 60 minute full mock with question pacing, no per-question feedback, and one end-of-session debrief. Config plumbing exists; the session loop does not.
-- **Hosting**: everything above currently runs locally (scope items 12 to 14).
+Corrected 2026-08-09 — this section previously listed Simulation and Hosting as not built; both shipped 2026-07-13 (Simulation: workflow 7c above; hosting: `docs/PROGRESS.md` item 12, live at behavioral-interview-coach-psi.vercel.app) and this section was never updated. Actually still not built, as of the same date:
+
+- **Turn-level cost per query**: no token usage or dollar cost is captured anywhere in the pipeline (`src/llm/client.py`'s `_call_gemini`/`_call_groq` return text only, no usage data).
+- **True end-to-end turn latency**: LLM, TTS, and STT latency are each tracked separately in production (Amplitude); nothing stitches mic-stop-to-audio-start into one number yet.
+- **Human-vs-model grading agreement**: every consistency/construct-validity number in `evaluation/EVALUATION_REPORT.md` is self-consistency or agreement against authoring intent; no independent human rater has ever scored this dataset.

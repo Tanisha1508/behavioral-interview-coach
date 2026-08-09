@@ -1663,3 +1663,44 @@ than guessing at numbers:
   number itself regardless.
 - `pytest tests/` reconfirmed clean (149 passing; these are docs-only
   changes, no code touched this pass) before committing.
+
+## 2026-08-09 (later): working through the open-items list from the portfolio investigation
+
+User asked to close out the remaining open items one by one, after a
+thorough repo investigation (README, spec, DECISIONS.md, CONSTRAINTS.md,
+FALLBACKS.md, git log, eval reports) surfaced several stale-documentation
+and unverified-live items alongside the two genuinely unbuilt features.
+
+1. **`README.md`'s test count fixed**: said 130, actual `pytest tests/`
+   count re-verified at 149 before editing. Description also updated
+   to mention the Amplitude/LLM-call analytics tests, which didn't
+   exist when that line was last written.
+2. **`docs/WORKFLOWS.md` stale "Not built yet" section fixed**: it
+   listed Simulation mode and Hosting as not built; both shipped
+   2026-07-13 and this doc was never updated after. Added the missing
+   Simulation workflow (7c) — it had no entry anywhere in this doc at
+   all, not even the mermaid map — and replaced the section with what's
+   actually still not built (cost-per-query, end-to-end turn latency,
+   human-vs-model agreement).
+3. **`Saved Document` live-verified** (previously blocked as "needs
+   that specific save flow exercised" — closed it out): browser was
+   already signed in from earlier session work, so no OAuth was
+   needed. Clicked "Save Changes" on the real Profile page (resume +
+   stories fields already populated, JD + bio empty) and confirmed in
+   Amplitude Live Events: `Saved Document` fired with
+   `kinds: ["resume","stories"]` — exact match to what was actually in
+   the form, correct user ID resolved, Platform: Web.
+4. **`tts_fallback_triggered`/`_recovered` left open, correctly**: this
+   needs a real Deepgram or ElevenLabs provider outage to fire
+   naturally; nothing safe to do here without faking a fallback event,
+   which would defeat the point of it being a live-verified metric.
+   Stays logged as blocked on a real-world occurrence, not attempted.
+
+Remaining from the list, not yet started: the `accuracy_vs_latency_by_provider`
+n=3-for-gemini underpowered-sample gap (would need another full
+eval run, real API cost, to add more primary-Gemini data points), and
+the two genuinely unbuilt features (cost-per-query, end-to-end turn
+latency) — both real feature work, not verification, sized for their
+own checkpoints rather than folded into this doc-fix pass.
+`pytest tests/` reconfirmed clean (149 passing) before committing items
+1-2 (docs-only); item 3 required no code changes, only a live click.

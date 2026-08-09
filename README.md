@@ -59,7 +59,7 @@ npm run dev
 
 Keys needed (all free tier): `GOOGLE_API_KEY` (AI Studio), `GROQ_API_KEY`, `DEEPGRAM_API_KEY`, `ELEVENLABS_API_KEY`, LiveKit credentials, and a Supabase project (run `supabase/schema.sql` in its SQL editor) if you want accounts.
 
-Tests: `python -m pytest tests/` (130 tests cover the turn-end decision loop, probe queueing, the interrupt-then-command flow, grading handoff, simulation pacing, and cloud persistence).
+Tests: `python -m pytest tests/` (149 tests cover the turn-end decision loop, probe queueing, the interrupt-then-command flow, grading handoff, simulation pacing, cloud persistence, and Amplitude/LLM-call analytics tracking).
 
 ## Eval results
 
