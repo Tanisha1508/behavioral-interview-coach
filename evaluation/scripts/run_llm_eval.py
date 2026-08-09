@@ -9,6 +9,7 @@ Writes evaluation/results/llm_eval_results.json.
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 import time
@@ -61,11 +62,12 @@ def _strict_schema_ok(raw) -> bool:
     return isinstance(raw.get("spoken_summary"), list)
 
 
-def _instrumented_complete(prompt_id, vars, json_schema=None):
+def _instrumented_complete(prompt_id, vars, json_schema=None, **kwargs):
     t0 = time.perf_counter()
     entry = {"prompt_id": prompt_id}
     try:
-        result = _original_complete(prompt_id, vars, json_schema=json_schema)
+        result = _original_complete(prompt_id, vars, json_schema=json_schema,
+                                    **kwargs)
         t1 = time.perf_counter()
         entry["latency_s"] = t1 - t0
         entry["provider"] = result.provider
@@ -96,6 +98,7 @@ def grade_item(item) -> dict:
     t0 = time.perf_counter()
     result = {"id": item.id, "category": item.category,
               "duration_s": item.duration_s, "word_count": item.word_count}
+    calls_before = len(call_log)
     try:
         scores = grader_mod.grade(item.rendered_transcript, [],
                                   Timings(duration_s=item.duration_s), ROUND)
@@ -114,12 +117,32 @@ def grade_item(item) -> dict:
         result["status"] = "other_error"
         result["error"] = f"{type(exc).__name__}: {exc}"
     result["wall_s"] = time.perf_counter() - t0
+    # grade() calls complete() exactly once per invocation today, so the
+    # call(s) appended to call_log during this grade_item() are this item's
+    # own -- attached directly rather than left to be re-joined later by
+    # list position against call_log, which breaks once anything (a future
+    # retry-with-repair, the consistency-repeat pass appending more entries
+    # afterward) changes how many complete() calls happen per item.
+    new_calls = call_log[calls_before:]
+    if new_calls:
+        result["provider"] = new_calls[-1].get("provider")
+        result["call_latency_s"] = new_calls[-1].get("latency_s")
     return result
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--limit", type=int, default=None,
+                        help="Grade only the first N items (cheap smoke "
+                             "test; omit for the full golden set).")
+    args = parser.parse_args()
+
     items = build_full_dataset()
-    print(f"golden set: {len(items)} items", flush=True)
+    if args.limit is not None:
+        items = items[:args.limit]
+    print(f"golden set: {len(items)} items"
+          + (f" (limited from full set)" if args.limit is not None else ""),
+          flush=True)
 
     partial_path = RESULTS_PATH.parent / "llm_eval_partial.jsonl"
     RESULTS_PATH.parent.mkdir(exist_ok=True)

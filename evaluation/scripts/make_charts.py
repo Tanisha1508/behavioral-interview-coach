@@ -82,8 +82,8 @@ def chart_fallback_distribution(data):
 def chart_latency(data):
     lat = data["grading_latency_s"]
     fig, ax = plt.subplots(figsize=(8, 5))
-    labels = ["mean", "median (p50)", "p95", "max"]
-    values = [lat["mean"], lat["p50"], lat["p95"], lat["max"]]
+    labels = ["mean", "median (p50)", "p95", "p99", "max"]
+    values = [lat["mean"], lat["p50"], lat["p95"], lat["p99"], lat["max"]]
     bars = ax.bar(labels, values, color="#00838f")
     ax.set_ylabel("seconds")
     ax.set_title(f"Grading-call latency, text-in/JSON-out (n={lat['n']} real LLM calls)")
@@ -91,6 +91,62 @@ def chart_latency(data):
         ax.text(bar.get_x() + bar.get_width() / 2, v + 0.15, f"{v:.2f}s", ha="center")
     fig.tight_layout()
     fig.savefig(CHARTS / "grading_latency.png", dpi=150)
+    plt.close(fig)
+
+
+def chart_accuracy_vs_latency_by_provider(data):
+    block = data.get("accuracy_vs_latency_by_provider")
+    if not block or not block.get("by_provider"):
+        return
+    by_prov = block["by_provider"]
+    by_prov_cat = block["by_provider_and_category"]
+    comparable = block["categories_covered_by_every_provider"]
+    providers = sorted(by_prov.keys(), key=lambda p: by_prov[p]["latency_s_p50"])
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+
+    # Left: latency by provider (not confounded by category mix).
+    x = range(len(providers))
+    width = 0.25
+    p50s = [by_prov[p]["latency_s_p50"] for p in providers]
+    p95s = [by_prov[p]["latency_s_p95"] for p in providers]
+    p99s = [by_prov[p]["latency_s_p99"] for p in providers]
+    ax1.bar([i - width for i in x], p50s, width, label="p50", color="#00838f")
+    ax1.bar([i for i in x], p95s, width, label="p95", color="#4db6ac")
+    ax1.bar([i + width for i in x], p99s, width, label="p99", color="#b2dfdb")
+    ax1.set_xticks(list(x))
+    ax1.set_xticklabels([f"{p}\n(n={by_prov[p]['n']})" for p in providers])
+    ax1.set_ylabel("seconds")
+    ax1.set_title("Latency by provider (all calls)")
+    ax1.legend()
+
+    # Right: solid_rate, but ONLY on categories every provider actually
+    # covered -- the raw all-category solid_rate is confounded whenever
+    # providers didn't see the same category mix (see note in
+    # metrics_summary.json). If nothing is comparable, say so instead of
+    # plotting a misleading number.
+    if comparable:
+        cat = comparable[0]  # this run: only "excellent" overlaps
+        rates = [by_prov_cat[p][cat]["solid_rate"] * 100 for p in providers]
+        ns = [by_prov_cat[p][cat]["n"] for p in providers]
+        bars = ax2.bar(providers, rates, color="#3949ab")
+        ax2.set_ylim(0, 122)
+        ax2.set_yticks(range(0, 101, 20))
+        ax2.set_ylabel("Solid rate (%)")
+        ax2.set_title(f'Accuracy by provider\n(category-controlled: "{cat}" only)')
+        for bar, v, n in zip(bars, rates, ns):
+            ax2.text(bar.get_x() + bar.get_width() / 2, v + 4,
+                     f"{v:.1f}%\n(n={n})", ha="center", fontsize=9)
+    else:
+        ax2.text(0.5, 0.5, "No category was covered\nby every provider this run",
+                 ha="center", va="center", transform=ax2.transAxes)
+        ax2.set_title("Accuracy by provider (not comparable this run)")
+        ax2.axis("off")
+
+    fig.suptitle("LLM accuracy vs latency, by provider "
+                 "(real free-tier routing determines who gets which calls)")
+    fig.tight_layout()
+    fig.savefig(CHARTS / "accuracy_vs_latency_by_provider.png", dpi=150)
     plt.close(fig)
 
 
@@ -140,7 +196,8 @@ def main():
     chart_latency(data)
     chart_voice_wer_cer(data)
     chart_probe_trigger_rate(data)
-    print(f"wrote 6 charts to {CHARTS}")
+    chart_accuracy_vs_latency_by_provider(data)
+    print(f"wrote 7 charts to {CHARTS}")
 
 
 if __name__ == "__main__":

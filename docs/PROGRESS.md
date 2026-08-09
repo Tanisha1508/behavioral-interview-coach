@@ -1433,3 +1433,186 @@ live in production. Remaining open items for this thread: token usage
 / cost-per-query (deferred, needs `_call_gemini`/`_call_groq` contract
 change), end-to-end turn latency, interrupt-rate tracking — none
 scheduled yet.
+
+## 2026-08-09: LLM accuracy-vs-latency benchmarking — harness fixed, code verified on a 6-item smoke test, full 101-item run pending
+
+User asked for "benchmarking LLM accuracy vs latency." Audited the
+existing golden-eval suite first rather than building fresh: it
+already computes `grading_latency_s` (p50/p95, aggregate) and
+`rubric_by_category`'s `solid_rate` (the closest thing to an accuracy
+signal this project has — author-intended category agreement, not
+independent human-verified correctness; no ground-truth per-item label
+exists, documented as such in `generate_golden_dataset.py`). The real
+gap: latency and the accuracy proxy were never broken down together
+*by provider* (gemini / gemini-lite / groq), and the join between
+`call_log` (has provider+latency) and `grading_results` (has
+category+dimensions) was implicit list-position alignment, not an
+explicit per-item link — correct today only because `grade()` happens
+to call `complete()` exactly once per item, with no ID tying a
+specific call to a specific graded item.
+
+**Fixed the join**: `evaluation/scripts/run_llm_eval.py`'s
+`grade_item()` now reads `call_log[calls_before:]` right after its own
+`grade()` call and attaches that call's `provider`/`latency_s` (as
+`call_latency_s`) directly onto the `grading_results` entry, so the
+link no longer depends on position/ordering staying stable across
+future changes (a retry-with-repair feature, more consistency-repeat
+calls, etc.).
+
+**Added `accuracy_vs_latency_by_provider`** to
+`evaluation/scripts/analyze_results.py`: per provider, n / solid_rate /
+latency p50/p95/mean, using the exact same solid_rate definition as
+`rubric_by_category` (same caveat carried in a note field). Deliberately
+NOT pushed to the `eval_run_completed` Amplitude event — matches the
+existing convention there (deeply-nested breakdowns stay in
+`metrics_summary.json`/`EVALUATION_REPORT.md`, Amplitude gets only
+flat headline properties).
+
+**Also added**: `--limit N` CLI flag to `run_llm_eval.py` so a cheap
+subset run is possible without spending the full ~133-call budget —
+used it immediately, which is how the next bug was caught.
+
+**Real bug caught by the smoke test, not by `pytest tests/`**: the
+first 6-item run failed every single item in 0.01s
+(`TypeError: _instrumented_complete() got an unexpected keyword
+argument 'device_id'`). Root cause: the previous checkpoint's call-site
+threading work added `device_id`/`user_id`/`session_type` kwargs to
+`grader.grade()` → `complete()`, but this eval script's
+`_instrumented_complete()` monkeypatch (which stands in for
+`grader_mod.complete` to observe provider/latency without touching
+production code) had a strict `(prompt_id, vars, json_schema=None)`
+signature that didn't accept them. `pytest tests/` never caught this
+because these eval scripts live outside `tests/` entirely. Grepped for
+the same pattern across every other eval script and found one more:
+`evals/golden/run_eval.py` (the earlier 50-item pilot script) had an
+identical strict monkeypatch, fixed the same way even though it wasn't
+being run today — leaving a known-broken script behind would have been
+sloppy given this session introduced the breakage. `run_probe_eval.py`
+and `run_voice_eval.py` don't touch `complete()`/`select_probe`, so
+they were never at risk. Fix in both places: `**kwargs` added to the
+monkeypatch signature, forwarded through to the real `complete()`.
+
+**Verified on the 6-item subset** (real Gemini calls, real cost, not
+mocked): all 6 succeeded (previously all failed instantly), correct
+`provider`/`call_latency_s` attached to every item, and
+`analyze_results.py`'s new block produced real numbers: `gemini: n=6,
+solid_rate=1.0, latency_s_mean=14.55, p50=14.03, p95=19.94`. Also
+incidentally re-verified the whole call-site-threading fix from the
+previous checkpoint still works correctly under real load. Full
+`pytest tests/` suite (149) re-run clean afterward, confirming the
+eval-script fixes didn't touch anything `tests/` covers.
+
+**Left the repo clean**: the smoke test's 6-item results would have
+overwritten the committed 101-item production `llm_eval_results.json`
+/ `metrics_summary.json` / `llm_eval_partial.jsonl` (the real numbers
+documented in `EVALUATION_REPORT.md`); restored those via `git
+checkout` immediately after confirming the code path worked, so only
+the three code fixes remain in the working tree. One side effect not
+undone: the smoke test's `analyze_results.py` run did post a real (if
+tiny, honestly n=6-labeled) `eval_run_completed` event to production
+Amplitude — consistent with this project's standing practice of never
+faking or hiding test data, just noting it here so it's not mistaken
+for a full-set run if anyone checks that chart's history.
+
+User approved the full run. Ran to completion: 101/101 items + all 32
+consistency-repeat calls succeeded, zero failures (133/133 real LLM
+calls).
+
+**Second bug caught by the real data, this time a methodology bug in
+the new metric itself, not a code crash**: raw `by_provider` solid_rate
+came back `gemini: 1.0 (n=3), gemini-lite: 0.49 (n=98)` — a shockingly
+large gap. Checked the category breakdown before reporting it and found
+why: primary Gemini's real free-tier quota exhausted after exactly 3
+calls (all happened to be `excellent` category), so Gemini-lite
+absorbed the other 98 calls -- including every intentionally-low-
+quality category (`weak`, `off_topic`, `incomplete`, `fabricated`,
+etc., which SHOULD grade low). The raw comparison was conflating
+category difficulty with provider quality, not measuring provider
+quality at all. Caught this before presenting the number, per this
+project's standing discipline against overclaiming from confounded
+data (same spirit as the existing `quality_rank_correlation`/
+`consistency` notes already in this file, which are equally careful
+about what they don't prove).
+
+**Fixed properly, not just noted**: added
+`by_provider_and_category` (solid_rate per provider, per category) and
+`categories_covered_by_every_provider` to
+`accuracy_vs_latency_by_provider`, so a reader can see exactly which
+comparisons are category-controlled and fair. The one category both
+providers actually covered in this run: `excellent` -- gemini `1.0`
+(n=3) vs gemini-lite `0.933` (n=10). Real finding, appropriately
+caveated by the tiny n on gemini's side (3 calls is not a statistically
+solid basis for "gemini is more accurate"): on the one fair
+comparison available, gemini-lite is close to primary Gemini on
+accuracy while being roughly 4.5x faster (mean latency 4.17s vs
+18.62s; p50 4.17s vs 18.29s). The aggregate (uncontrolled)
+`grading_latency_s` for the whole run: p50 4.06s, p95 4.76s, mean
+4.38s -- dominated by gemini-lite since it handled 98/101 items, which
+is itself informative: real-world grading latency in this system is
+overwhelmingly gemini-lite's latency, not primary Gemini's, because
+free-tier quota routes almost everything there in practice.
+
+Full `pytest tests/` suite re-run clean (149 passing) after both the
+harness fix and the metric fix. `grading_success_rate`: 1.0 (101/101).
+
+**Not yet done**: `EVALUATION_REPORT.md`/`EXECUTIVE_SUMMARY.md`/
+`charts/*.png` still reflect the pre-this-checkpoint numbers and don't
+mention `accuracy_vs_latency_by_provider` at all -- decision on
+whether to update those (and add a chart) not yet made. Nothing
+committed yet; `evaluation/results/*.json` now hold the real regenerated
+133-call run (this is the correct, publishable state to commit, not a
+smoke test).
+
+User caught a real gap on review: only p50/p95 were computed anywhere
+in this eval harness, no p99 (aggregate `grading_latency_s`, the new
+`by_provider` breakdown, and the `eval_run_completed` Amplitude event
+all missed it). Added `p99` to all three, reusing the existing
+`pctile()` helper (trivial addition, no new logic). Noted honestly in
+`grading_latency_s`'s note field that p99 on a 133-call sample is
+really just an interpolated 2nd-highest value -- a rough tail
+indicator, not statistically stable yet. Real numbers, regenerated:
+aggregate p99 = 17.79s (vs p50 4.06s, p95 4.76s) -- the big jump from
+p95 to p99 is the rare primary-Gemini calls (18-21s each) sitting in
+the tail even though gemini-lite dominates by volume (98/101 calls).
+Per-provider: gemini p99 20.79s (n=3, not meaningful at this n),
+gemini-lite p99 6.63s (n=98). `pytest tests/` re-run clean (149
+passing) after this addition too.
+
+## 2026-08-09 (later): charts regenerated, whole benchmarking piece committed
+
+User asked for updated charts before committing. `make_charts.py`
+changes:
+- `chart_latency`: added p99 alongside mean/median/p95/max (was
+  missing it, same gap as the JSON metrics).
+- New `chart_accuracy_vs_latency_by_provider`: two-panel figure —
+  left, latency (p50/p95/p99) by provider, directly comparable since
+  latency isn't affected by category mix the same way accuracy is;
+  right, solid_rate by provider but restricted to
+  `categories_covered_by_every_provider` only (this run: `"excellent"`
+  alone), with n annotated on each bar so the tiny gemini sample (n=3)
+  is visible on the chart itself, not just in a caption. Deliberately
+  does NOT plot the raw all-category solid_rate — that would silently
+  re-introduce the confound this checkpoint's whole methodology fix
+  was about. If a future run has zero categories in common between
+  providers, the panel says so explicitly instead of leaving a
+  misleading blank or fabricated bar.
+- Regenerating from the real 101-item run also refreshed
+  `solid_rate_by_category.png`, `grading_latency.png`, and
+  `provider_distribution.png` (their underlying data changed too,
+  since the whole grading pass reran). `star_order_invariance.png`,
+  `voice_wer_cer.png`, `probe_trigger_rate.png` unchanged — their
+  source data (`probe_eval_results.json`, `voice_eval_results.json`)
+  wasn't touched this checkpoint.
+- One rendering bug caught before shipping: the accuracy panel's
+  100%-tall bar collided with its own subplot title. Fixed by widening
+  y-axis headroom (0-122 instead of 0-105) and capping tick labels at
+  100 so the visible scale still reads as a clean 0-100% chart.
+
+Committed as one commit: harness fixes (both eval scripts' monkeypatch
+signatures), the new `accuracy_vs_latency_by_provider` metric with its
+category-controlled crosstab, p99 everywhere latency is reported, all
+7 regenerated charts, and the real 101-item `evaluation/results/*.json`.
+`EVALUATION_REPORT.md`/`EXECUTIVE_SUMMARY.md` text intentionally left
+unedited this pass (charts + underlying data are current and correct;
+the written narrative referencing old numbers is a separate,
+not-yet-scheduled follow-up, not blocking this commit).

@@ -10,16 +10,27 @@
       "dimensions": {
         "structure": "Solid",
         "specificity": "Solid",
-        "i_vs_we": "NeedsWork",
+        "i_vs_we": "Solid",
         "quantification": "Solid",
         "length": "Solid",
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: '92 seconds'"
+        "specificity: non-verbatim quote dropped: 'pulled 14 session recordings'",
+        "i_vs_we: non-verbatim quote dropped: 'I had already tried a couple of quick fixes myself'",
+        "i_vs_we: non-verbatim quote dropped: 'I knew this needed a real investigation'",
+        "i_vs_we: non-verbatim quote dropped: 'what I did was pull 14 session recordings and I found mobile users hit a 9-field address form'",
+        "i_vs_we: non-verbatim quote dropped: 'I built a proposal and I went to Priya'",
+        "i_vs_we: non-verbatim quote dropped: 'I also walked Priya through exactly how each option would land'",
+        "i_vs_we: non-verbatim quote dropped: 'I decided to ship a single-page flow'",
+        "i_vs_we: non-verbatim quote dropped: 'I wrote the rollout plan myself'",
+        "i_vs_we: non-verbatim quote dropped: 'I checked in with Priya twice a week'",
+        "i_vs_we: non-verbatim quote dropped: 'what I learned is to size the fix to the evidence I actually had, and I have used that rule 3 times since.'"
       ],
-      "evidence_count": 12,
-      "wall_s": 3.8759918748401105
+      "evidence_count": 24,
+      "wall_s": 16.73436850029975,
+      "provider": "gemini",
+      "call_latency_s": 16.727355459239334
     },
     {
       "id": "excellent_02",
@@ -30,20 +41,18 @@
       "dimensions": {
         "structure": "Solid",
         "specificity": "Solid",
-        "i_vs_we": "Solid",
+        "i_vs_we": "NeedsWork",
         "quantification": "Solid",
         "length": "Solid",
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "structure: non-verbatim quote dropped: 'I decided to cap frequency at 2 sends per user with a holdout on a third slot'",
-        "i_vs_we: non-verbatim quote dropped: 'I built a proposal'",
-        "i_vs_we: non-verbatim quote dropped: 'I decided to cap frequency'",
-        "i_vs_we: non-verbatim quote dropped: 'I wrote the rollout plan myself'",
-        "length: non-verbatim quote dropped: 'answer duration 95 seconds'"
+        "length: non-verbatim quote dropped: '95 seconds'"
       ],
-      "evidence_count": 14,
-      "wall_s": 3.450600833632052
+      "evidence_count": 16,
+      "wall_s": 4.49210916692391,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.479405625257641
     },
     {
       "id": "excellent_03",
@@ -59,11 +68,11 @@
         "length": "Solid",
         "reflection": "Solid"
       },
-      "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 94 seconds'"
-      ],
-      "evidence_count": 16,
-      "wall_s": 2.966725166887045
+      "evidence_violations": [],
+      "evidence_count": 17,
+      "wall_s": 18.303799082990736,
+      "provider": "gemini",
+      "call_latency_s": 18.290631209034473
     },
     {
       "id": "excellent_04",
@@ -74,19 +83,29 @@
       "dimensions": {
         "structure": "Solid",
         "specificity": "Solid",
-        "i_vs_we": "NeedsWork",
+        "i_vs_we": "Solid",
         "quantification": "Solid",
         "length": "Solid",
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "specificity: non-verbatim quote dropped: 'I went to Alex, our search engineer, with 2 specific options'",
-        "i_vs_we: non-verbatim quote dropped: 'I decided to roll back ranking for long-tail queries only'",
-        "i_vs_we: non-verbatim quote dropped: 'I wrote the rollout plan myself'",
-        "length: non-verbatim quote dropped: 'answer duration 94 seconds'"
+        "structure: non-verbatim quote dropped: '[   0.0s] CANDIDATE: the situation was I was the PM on search at a marketplace app, which had 500 thousand monthly searches at the time. the problem was click-through rate had dropped 12 percent after a ranking change, and it had been getting worse for 2 weeks.'",
+        "structure: non-verbatim quote dropped: '[  18.0s] CANDIDATE: so what i did was pull 200 top queries before and after the change and I found the drop concentrated almost entirely in long-tail queries. i built a proposal and i went to Alex, our search engineer, with 2 specific options.'",
+        "structure: non-verbatim quote dropped: '[  76.0s] CANDIDATE: what i learned is to segment a metric before trusting the aggregate number, and i have used that rule 5 times since.'",
+        "specificity: non-verbatim quote dropped: '[   0.0s] CANDIDATE: PM on search at a marketplace app, which had 500 thousand monthly searches at the time. the problem was click-through rate had dropped 12 percent after a ranking change'",
+        "specificity: non-verbatim quote dropped: '[  18.0s] CANDIDATE: pull 200 top queries before and after the change and I found the drop concentrated almost entirely in long-tail queries. i built a proposal and i went to Alex, our search engineer, with 2 specific options.'",
+        "specificity: non-verbatim quote dropped: '[  46.0s] CANDIDATE: i decided to roll back ranking for long-tail queries only, keep it for head queries, and i wrote the rollout plan myself with a daily CTR alert split by query length.'",
+        "i_vs_we: non-verbatim quote dropped: '[  46.0s] CANDIDATE: i decided to roll back ranking for long-tail queries only, keep it for head queries, and i wrote the rollout plan myself with a daily CTR alert split by query length. i checked in with Alex twice a week during the rollout so we could react fast if anything looked off.'",
+        "i_vs_we: non-verbatim quote dropped: '[  76.0s] CANDIDATE: what i learned is to segment a metric before trusting the aggregate number, and i have used that rule 5 times since.'",
+        "quantification: non-verbatim quote dropped: '[   0.0s] CANDIDATE: 500 thousand monthly searches at the time. the problem was click-through rate had dropped 12 percent after a ranking change, and it had been getting worse for 2 weeks.'",
+        "quantification: non-verbatim quote dropped: '[  18.0s] CANDIDATE: pull 200 top queries before and after the change'",
+        "quantification: non-verbatim quote dropped: '[  76.0s] CANDIDATE: click-through rate improved to its prior baseline within 9 days, and we verified it across all query segments. what i learned is to segment a metric before trusting the aggregate number, and i have used that rule 5 times since.'",
+        "reflection: non-verbatim quote dropped: '[  76.0s] CANDIDATE: what i learned is to segment a metric before trusting the aggregate number, and i have used that rule 5 times since.'"
       ],
-      "evidence_count": 10,
-      "wall_s": 2.7669587917625904
+      "evidence_count": 2,
+      "wall_s": 20.854919250123203,
+      "provider": "gemini",
+      "call_latency_s": 20.843939583282918
     },
     {
       "id": "excellent_05",
@@ -103,11 +122,12 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "i_vs_we: non-verbatim quote dropped: 'i already tried a couple of quick fixes'",
-        "length: non-verbatim quote dropped: '94 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 94 seconds'"
       ],
-      "evidence_count": 14,
-      "wall_s": 2.9561873329803348
+      "evidence_count": 15,
+      "wall_s": 4.428686500061303,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.418820667080581
     },
     {
       "id": "excellent_06",
@@ -127,10 +147,12 @@
         "i_vs_we: non-verbatim quote dropped: 'I already tried a couple of quick fixes'",
         "i_vs_we: non-verbatim quote dropped: 'I built a proposal'",
         "i_vs_we: non-verbatim quote dropped: 'I wrote the rollout plan myself'",
-        "length: non-verbatim quote dropped: '94 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 94 seconds'"
       ],
       "evidence_count": 12,
-      "wall_s": 2.9515156657435
+      "wall_s": 4.374042833223939,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.364581124857068
     },
     {
       "id": "excellent_07",
@@ -149,8 +171,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: 'answer duration 94 seconds'"
       ],
-      "evidence_count": 13,
-      "wall_s": 2.675343499984592
+      "evidence_count": 14,
+      "wall_s": 4.711825457867235,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.696804333012551
     },
     {
       "id": "excellent_08",
@@ -167,12 +191,12 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "i_vs_we: non-verbatim quote dropped: 'I built a proposal and i went to Grace, our mobile lead'",
-        "i_vs_we: non-verbatim quote dropped: 'I decided to ship the filter back in a patch release'",
         "length: non-verbatim quote dropped: '96 seconds'"
       ],
-      "evidence_count": 16,
-      "wall_s": 3.156669874675572
+      "evidence_count": 15,
+      "wall_s": 4.642683625221252,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.62959499983117
     },
     {
       "id": "excellent_09",
@@ -191,8 +215,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '96 seconds'"
       ],
-      "evidence_count": 14,
-      "wall_s": 2.7561371247284114
+      "evidence_count": 16,
+      "wall_s": 4.5097499578259885,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.496468792203814
     },
     {
       "id": "excellent_10",
@@ -209,11 +235,12 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "specificity: non-verbatim quote dropped: 'I went to Ben, our support lead'",
-        "length: non-verbatim quote dropped: '94 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 94 seconds'"
       ],
-      "evidence_count": 15,
-      "wall_s": 4.44604866579175
+      "evidence_count": 16,
+      "wall_s": 4.825247750151902,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.811844790820032
     },
     {
       "id": "excellent_11",
@@ -230,12 +257,12 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "i_vs_we: non-verbatim quote dropped: 'i was the PM'",
-        "length: non-verbatim quote dropped: 'answer duration 93 seconds'",
-        "length: non-verbatim quote dropped: 'Round length band: 90 to 150 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 93 seconds'"
       ],
       "evidence_count": 16,
-      "wall_s": 2.9646954173222184
+      "wall_s": 4.684206958394498,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.672216041013598
     },
     {
       "id": "excellent_12",
@@ -254,8 +281,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '95 seconds'"
       ],
-      "evidence_count": 16,
-      "wall_s": 4.848606291692704
+      "evidence_count": 17,
+      "wall_s": 4.283400458283722,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.268870333675295
     },
     {
       "id": "excellent_13",
@@ -272,12 +301,15 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "specificity: non-verbatim quote dropped: 'I went to Layla, our product designer, with 2 specific options'",
-        "specificity: non-verbatim quote dropped: 'I checked in with Layla twice a week'",
-        "length: non-verbatim quote dropped: 'answer duration 96 seconds'"
+        "i_vs_we: non-verbatim quote dropped: 'I decided to replace the date picker'",
+        "i_vs_we: non-verbatim quote dropped: 'I wrote the rollout plan myself'",
+        "i_vs_we: non-verbatim quote dropped: 'I checked in with Layla twice a week'",
+        "length: non-verbatim quote dropped: '96 seconds'"
       ],
-      "evidence_count": 9,
-      "wall_s": 3.073332999832928
+      "evidence_count": 14,
+      "wall_s": 4.613582458812743,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.600379416253418
     },
     {
       "id": "weak_01",
@@ -296,8 +328,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '36 seconds'"
       ],
-      "evidence_count": 13,
-      "wall_s": 3.2473111669532955
+      "evidence_count": 10,
+      "wall_s": 4.11147241666913,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.097400458995253
     },
     {
       "id": "weak_02",
@@ -316,8 +350,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '36 seconds'"
       ],
-      "evidence_count": 13,
-      "wall_s": 2.7672966248355806
+      "evidence_count": 12,
+      "wall_s": 4.302022833377123,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.290187040809542
     },
     {
       "id": "weak_03",
@@ -331,13 +367,15 @@
         "i_vs_we": "Gap",
         "quantification": "Gap",
         "length": "Gap",
-        "reflection": "Gap"
+        "reflection": "NeedsWork"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 36 seconds'"
+        "length: non-verbatim quote dropped: '36 seconds'"
       ],
       "evidence_count": 10,
-      "wall_s": 2.594439208973199
+      "wall_s": 4.404599207919091,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.391672540921718
     },
     {
       "id": "weak_04",
@@ -346,21 +384,67 @@
       "word_count": 90,
       "status": "success",
       "dimensions": {
-        "structure": "Solid",
+        "structure": "NeedsWork",
         "specificity": "NeedsWork",
         "i_vs_we": "Gap",
         "quantification": "Gap",
         "length": "Gap",
-        "reflection": "NeedsWork"
+        "reflection": "Gap"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 36 seconds'"
+        "length: non-verbatim quote dropped: '36 seconds'"
       ],
       "evidence_count": 11,
-      "wall_s": 2.314951959066093
+      "wall_s": 4.29836833383888,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.2849334590137005
     },
     {
       "id": "weak_05",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "Gap",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 12,
+      "wall_s": 4.288521625101566,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.275793334003538
+    },
+    {
+      "id": "weak_06",
+      "category": "weak",
+      "duration_s": 36.0,
+      "word_count": 90,
+      "status": "success",
+      "dimensions": {
+        "structure": "NeedsWork",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Gap",
+        "quantification": "Gap",
+        "length": "Gap",
+        "reflection": "Gap"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '36 seconds'"
+      ],
+      "evidence_count": 10,
+      "wall_s": 4.620961416978389,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.606734000146389
+    },
+    {
+      "id": "weak_07",
       "category": "weak",
       "duration_s": 36.0,
       "word_count": 90,
@@ -377,50 +461,9 @@
         "length: non-verbatim quote dropped: '36 seconds'"
       ],
       "evidence_count": 12,
-      "wall_s": 3.246261874679476
-    },
-    {
-      "id": "weak_06",
-      "category": "weak",
-      "duration_s": 36.0,
-      "word_count": 90,
-      "status": "success",
-      "dimensions": {
-        "structure": "Solid",
-        "specificity": "NeedsWork",
-        "i_vs_we": "Gap",
-        "quantification": "Gap",
-        "length": "Gap",
-        "reflection": "NeedsWork"
-      },
-      "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 36 seconds'"
-      ],
-      "evidence_count": 11,
-      "wall_s": 1.8297052499838173
-    },
-    {
-      "id": "weak_07",
-      "category": "weak",
-      "duration_s": 36.0,
-      "word_count": 90,
-      "status": "success",
-      "dimensions": {
-        "structure": "Solid",
-        "specificity": "NeedsWork",
-        "i_vs_we": "Gap",
-        "quantification": "Gap",
-        "length": "Gap",
-        "reflection": "NeedsWork"
-      },
-      "evidence_violations": [
-        "specificity: non-verbatim quote dropped: '[  0.0s] CANDIDATE: what we did was we aligned stakeholders and drove consensus across the teams involved'",
-        "i_vs_we: non-verbatim quote dropped: '[  0.0s] CANDIDATE: what we did was we aligned stakeholders and drove consensus across the teams involved'",
-        "i_vs_we: non-verbatim quote dropped: '[ 17.0s] CANDIDATE: we took ownership of the overall outcome together'",
-        "quantification: non-verbatim quote dropped: '[  0.0s] CANDIDATE: it needed a lot of work honestly'"
-      ],
-      "evidence_count": 5,
-      "wall_s": 2.5466694589704275
+      "wall_s": 4.395418208092451,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.381676208227873
     },
     {
       "id": "weak_08",
@@ -437,10 +480,12 @@
         "reflection": "Gap"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 36 seconds. Round length band: 90 to 150 seconds.'"
+        "length: non-verbatim quote dropped: '36 seconds'"
       ],
-      "evidence_count": 12,
-      "wall_s": 2.5785643751733005
+      "evidence_count": 14,
+      "wall_s": 4.27573937503621,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.263008958194405
     },
     {
       "id": "weak_09",
@@ -459,8 +504,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '36 seconds'"
       ],
-      "evidence_count": 14,
-      "wall_s": 2.9648405420593917
+      "evidence_count": 12,
+      "wall_s": 6.8713438753038645,
+      "provider": "gemini-lite",
+      "call_latency_s": 6.858748542144895
     },
     {
       "id": "weak_10",
@@ -479,8 +526,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '36 seconds'"
       ],
-      "evidence_count": 10,
-      "wall_s": 4.668682999908924
+      "evidence_count": 12,
+      "wall_s": 3.8947439999319613,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.884522832930088
     },
     {
       "id": "weak_11",
@@ -490,7 +539,7 @@
       "status": "success",
       "dimensions": {
         "structure": "NeedsWork",
-        "specificity": "Gap",
+        "specificity": "NeedsWork",
         "i_vs_we": "Gap",
         "quantification": "Gap",
         "length": "Gap",
@@ -499,8 +548,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '36 seconds'"
       ],
-      "evidence_count": 12,
-      "wall_s": 2.961461125407368
+      "evidence_count": 10,
+      "wall_s": 4.597938292194158,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.583709500264376
     },
     {
       "id": "weak_12",
@@ -517,10 +568,12 @@
         "reflection": "Gap"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 36 seconds'"
+        "length: non-verbatim quote dropped: '36 seconds'"
       ],
       "evidence_count": 14,
-      "wall_s": 2.4797570002265275
+      "wall_s": 3.5414115828461945,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.5297180409543216
     },
     {
       "id": "average_01",
@@ -532,17 +585,18 @@
         "structure": "Solid",
         "specificity": "NeedsWork",
         "i_vs_we": "NeedsWork",
-        "quantification": "NeedsWork",
+        "quantification": "Gap",
         "length": "NeedsWork",
         "reflection": "NeedsWork"
       },
       "evidence_violations": [
-        "specificity: non-verbatim quote dropped: \"i don't remember the exact number offhand\"",
-        "quantification: non-verbatim quote dropped: \"i don't remember the exact number offhand\"",
+        "specificity: non-verbatim quote dropped: \"i don't remember the exact number offhand.\"",
         "length: non-verbatim quote dropped: '76 seconds'"
       ],
       "evidence_count": 8,
-      "wall_s": 3.4635683340020478
+      "wall_s": 4.473864959087223,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.457939333282411
     },
     {
       "id": "average_02",
@@ -561,8 +615,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '75 seconds'"
       ],
-      "evidence_count": 9,
-      "wall_s": 2.9755673753097653
+      "evidence_count": 10,
+      "wall_s": 4.442644000053406,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.428448416292667
     },
     {
       "id": "average_03",
@@ -582,8 +638,10 @@
         "i_vs_we: non-verbatim quote dropped: 'i consolidated the most-asked topics into one space'",
         "length: non-verbatim quote dropped: 'answer duration 73 seconds'"
       ],
-      "evidence_count": 7,
-      "wall_s": 3.881623040884733
+      "evidence_count": 8,
+      "wall_s": 4.719986584037542,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.706614833790809
     },
     {
       "id": "average_04",
@@ -602,8 +660,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '76 seconds'"
       ],
-      "evidence_count": 9,
-      "wall_s": 2.664203833322972
+      "evidence_count": 10,
+      "wall_s": 4.209917458239943,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.196898499969393
     },
     {
       "id": "average_05",
@@ -621,10 +681,12 @@
       },
       "evidence_violations": [
         "i_vs_we: non-verbatim quote dropped: 'i set up a shared checklist between the two teams'",
-        "length: non-verbatim quote dropped: 'answer duration 76 seconds'"
+        "length: non-verbatim quote dropped: '76 seconds'"
       ],
       "evidence_count": 8,
-      "wall_s": 3.074385750107467
+      "wall_s": 3.782649874687195,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.76703195925802
     },
     {
       "id": "average_06",
@@ -635,7 +697,7 @@
       "dimensions": {
         "structure": "Solid",
         "specificity": "NeedsWork",
-        "i_vs_we": "Solid",
+        "i_vs_we": "NeedsWork",
         "quantification": "Solid",
         "length": "NeedsWork",
         "reflection": "NeedsWork"
@@ -643,8 +705,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '74 seconds'"
       ],
-      "evidence_count": 8,
-      "wall_s": 2.979460542090237
+      "evidence_count": 9,
+      "wall_s": 4.524829457979649,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.510630750097334
     },
     {
       "id": "average_07",
@@ -661,10 +725,12 @@
         "reflection": "NeedsWork"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 74 seconds'"
+        "length: non-verbatim quote dropped: '74 seconds'"
       ],
-      "evidence_count": 11,
-      "wall_s": 3.015513415914029
+      "evidence_count": 9,
+      "wall_s": 4.0340007077902555,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.021600499749184
     },
     {
       "id": "average_08",
@@ -682,10 +748,12 @@
       },
       "evidence_violations": [
         "i_vs_we: non-verbatim quote dropped: 'i worked with support to cut it down to one form'",
-        "length: non-verbatim quote dropped: 'answer duration 76 seconds'"
+        "length: non-verbatim quote dropped: '76 seconds'"
       ],
-      "evidence_count": 10,
-      "wall_s": 2.5636724587529898
+      "evidence_count": 11,
+      "wall_s": 4.072841000277549,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.057386875152588
     },
     {
       "id": "average_09",
@@ -705,13 +773,61 @@
         "length: non-verbatim quote dropped: '76 seconds'"
       ],
       "evidence_count": 9,
-      "wall_s": 2.967020916286856
+      "wall_s": 4.439473083708435,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.367215209174901
     },
     {
       "id": "average_10",
       "category": "average",
       "duration_s": 75.6,
       "word_count": 189,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 76 seconds'"
+      ],
+      "evidence_count": 10,
+      "wall_s": 4.463203750085086,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.451547208242118
+    },
+    {
+      "id": "average_11",
+      "category": "average",
+      "duration_s": 77.2,
+      "word_count": 193,
+      "status": "success",
+      "dimensions": {
+        "structure": "Solid",
+        "specificity": "NeedsWork",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
+        "length": "NeedsWork",
+        "reflection": "NeedsWork"
+      },
+      "evidence_violations": [
+        "i_vs_we: non-verbatim quote dropped: 'i cut it down to the 12 questions leadership actually acted on'",
+        "quantification: non-verbatim quote dropped: 'i cut it down to the 12 questions leadership actually acted on'",
+        "length: non-verbatim quote dropped: 'answer duration 77 seconds'"
+      ],
+      "evidence_count": 8,
+      "wall_s": 3.9535826672799885,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.9410305828787386
+    },
+    {
+      "id": "average_12",
+      "category": "average",
+      "duration_s": 76.0,
+      "word_count": 190,
       "status": "success",
       "dimensions": {
         "structure": "Solid",
@@ -724,49 +840,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: 'answer duration 76 seconds'"
       ],
-      "evidence_count": 8,
-      "wall_s": 3.1604116251692176
-    },
-    {
-      "id": "average_11",
-      "category": "average",
-      "duration_s": 77.2,
-      "word_count": 193,
-      "status": "success",
-      "dimensions": {
-        "structure": "Solid",
-        "specificity": "NeedsWork",
-        "i_vs_we": "Solid",
-        "quantification": "NeedsWork",
-        "length": "NeedsWork",
-        "reflection": "NeedsWork"
-      },
-      "evidence_violations": [
-        "i_vs_we: non-verbatim quote dropped: 'i cut it down to the 12 questions'",
-        "length: non-verbatim quote dropped: '77 seconds'"
-      ],
-      "evidence_count": 8,
-      "wall_s": 2.5957280420698225
-    },
-    {
-      "id": "average_12",
-      "category": "average",
-      "duration_s": 76.0,
-      "word_count": 190,
-      "status": "success",
-      "dimensions": {
-        "structure": "Solid",
-        "specificity": "NeedsWork",
-        "i_vs_we": "Solid",
-        "quantification": "Gap",
-        "length": "NeedsWork",
-        "reflection": "NeedsWork"
-      },
-      "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 76 seconds. Round length band: 90 to 150 seconds.'"
-      ],
-      "evidence_count": 9,
-      "wall_s": 2.088038290850818
+      "evidence_count": 10,
+      "wall_s": 4.78268325002864,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.771382791921496
     },
     {
       "id": "average_13",
@@ -777,17 +854,19 @@
       "dimensions": {
         "structure": "Solid",
         "specificity": "NeedsWork",
-        "i_vs_we": "NeedsWork",
+        "i_vs_we": "Solid",
         "quantification": "Solid",
         "length": "NeedsWork",
         "reflection": "NeedsWork"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 74 seconds'",
-        "length: non-verbatim quote dropped: 'Round length band: 90 to 150 seconds'"
+        "i_vs_we: non-verbatim quote dropped: 'i moved the writing step to a week before each release'",
+        "length: non-verbatim quote dropped: 'answer duration 74 seconds'"
       ],
-      "evidence_count": 9,
-      "wall_s": 1.809689374640584
+      "evidence_count": 8,
+      "wall_s": 4.688760624732822,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.676634541712701
     },
     {
       "id": "off_topic_01",
@@ -807,8 +886,10 @@
         "i_vs_we: non-verbatim quote dropped: 'i tried a new pasta recipe'",
         "length: non-verbatim quote dropped: '19 seconds'"
       ],
-      "evidence_count": 6,
-      "wall_s": 2.568630165886134
+      "evidence_count": 7,
+      "wall_s": 3.40252499980852,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.388981082942337
     },
     {
       "id": "off_topic_02",
@@ -818,18 +899,19 @@
       "status": "success",
       "dimensions": {
         "structure": "Gap",
-        "specificity": "Solid",
+        "specificity": "Gap",
         "i_vs_we": "Solid",
         "quantification": "Gap",
         "length": "Gap",
         "reflection": "Gap"
       },
       "evidence_violations": [
-        "i_vs_we: non-verbatim quote dropped: '[   0.0s] CANDIDATE: i was actually just thinking about this recipe i tried last night'",
-        "length: non-verbatim quote dropped: 'The answer duration is 16 seconds, which is more than 25 percent outside the target band of 90 to 150 seconds.'"
+        "length: non-verbatim quote dropped: '16 seconds'"
       ],
-      "evidence_count": 4,
-      "wall_s": 2.401129625272006
+      "evidence_count": 7,
+      "wall_s": 3.681157459039241,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.6725792922079563
     },
     {
       "id": "off_topic_03",
@@ -838,7 +920,7 @@
       "word_count": 34,
       "status": "success",
       "dimensions": {
-        "structure": "NeedsWork",
+        "structure": "Gap",
         "specificity": "Solid",
         "i_vs_we": "Solid",
         "quantification": "Solid",
@@ -846,8 +928,10 @@
         "reflection": "Gap"
       },
       "evidence_violations": [],
-      "evidence_count": 6,
-      "wall_s": 1.8634285000152886
+      "evidence_count": 8,
+      "wall_s": 4.05426966631785,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.040758041199297
     },
     {
       "id": "off_topic_04",
@@ -859,15 +943,17 @@
         "structure": "Gap",
         "specificity": "Gap",
         "i_vs_we": "Gap",
-        "quantification": "Gap",
+        "quantification": "Solid",
         "length": "Gap",
         "reflection": "Gap"
       },
       "evidence_violations": [
         "length: non-verbatim quote dropped: '14 seconds'"
       ],
-      "evidence_count": 7,
-      "wall_s": 2.987797582987696
+      "evidence_count": 5,
+      "wall_s": 4.043403833173215,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.026089208200574
     },
     {
       "id": "off_topic_05",
@@ -887,7 +973,9 @@
         "length: non-verbatim quote dropped: '16 seconds'"
       ],
       "evidence_count": 5,
-      "wall_s": 2.6798760825768113
+      "wall_s": 3.4149490417912602,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.401694041211158
     },
     {
       "id": "off_topic_06",
@@ -904,8 +992,10 @@
         "reflection": "Gap"
       },
       "evidence_violations": [],
-      "evidence_count": 8,
-      "wall_s": 2.879531292244792
+      "evidence_count": 7,
+      "wall_s": 3.4176985411904752,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.4067903328686953
     },
     {
       "id": "off_topic_07",
@@ -916,14 +1006,18 @@
       "dimensions": {
         "structure": "Gap",
         "specificity": "Gap",
-        "i_vs_we": "Gap",
-        "quantification": "Gap",
+        "i_vs_we": "Solid",
+        "quantification": "Solid",
         "length": "Gap",
         "reflection": "Gap"
       },
-      "evidence_violations": [],
-      "evidence_count": 6,
-      "wall_s": 3.1715572918765247
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '15 seconds'"
+      ],
+      "evidence_count": 4,
+      "wall_s": 3.8676350000314415,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.8555589159950614
     },
     {
       "id": "off_topic_08",
@@ -935,13 +1029,15 @@
         "structure": "Gap",
         "specificity": "Gap",
         "i_vs_we": "Solid",
-        "quantification": "Gap",
+        "quantification": "Solid",
         "length": "Gap",
         "reflection": "Gap"
       },
       "evidence_violations": [],
       "evidence_count": 8,
-      "wall_s": 2.4767170841805637
+      "wall_s": 3.923071749974042,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.909382499754429
     },
     {
       "id": "off_topic_09",
@@ -957,9 +1053,13 @@
         "length": "Gap",
         "reflection": "Gap"
       },
-      "evidence_violations": [],
-      "evidence_count": 9,
-      "wall_s": 3.0885060830041766
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '14 seconds'"
+      ],
+      "evidence_count": 6,
+      "wall_s": 4.080353708006442,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.068141540978104
     },
     {
       "id": "off_topic_10",
@@ -978,8 +1078,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '14 seconds'"
       ],
-      "evidence_count": 6,
-      "wall_s": 2.6686392086558044
+      "evidence_count": 7,
+      "wall_s": 4.069466291926801,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.057185041718185
     },
     {
       "id": "off_topic_11",
@@ -999,7 +1101,9 @@
         "length: non-verbatim quote dropped: '13 seconds'"
       ],
       "evidence_count": 7,
-      "wall_s": 2.798158457968384
+      "wall_s": 3.7425804170779884,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.7296418747864664
     },
     {
       "id": "off_topic_12",
@@ -1019,7 +1123,9 @@
         "length: non-verbatim quote dropped: '15 seconds'"
       ],
       "evidence_count": 5,
-      "wall_s": 3.770557917188853
+      "wall_s": 4.088215082883835,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.071893500164151
     },
     {
       "id": "star_explicit_01",
@@ -1036,10 +1142,12 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 92 seconds'"
+        "length: non-verbatim quote dropped: '92 seconds'"
       ],
       "evidence_count": 16,
-      "wall_s": 3.4879330419935286
+      "wall_s": 4.060358750168234,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.046745541971177
     },
     {
       "id": "star_explicit_02",
@@ -1058,8 +1166,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '94 seconds'"
       ],
-      "evidence_count": 18,
-      "wall_s": 3.7628952502273023
+      "evidence_count": 16,
+      "wall_s": 4.2916534170508385,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.283229417167604
     },
     {
       "id": "star_explicit_03",
@@ -1076,11 +1186,13 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 93 seconds'",
-        "length: non-verbatim quote dropped: 'Round length band: 90 to 150 seconds'"
+        "specificity: non-verbatim quote dropped: 'I pulled 120 denied claim files'",
+        "length: non-verbatim quote dropped: '93 seconds'"
       ],
-      "evidence_count": 15,
-      "wall_s": 3.477661665994674
+      "evidence_count": 16,
+      "wall_s": 3.729290417395532,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.715235833078623
     },
     {
       "id": "star_explicit_04",
@@ -1100,7 +1212,9 @@
         "length: non-verbatim quote dropped: '93 seconds'"
       ],
       "evidence_count": 17,
-      "wall_s": 3.7655536248348653
+      "wall_s": 4.333059125114232,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.2347100409679115
     },
     {
       "id": "star_explicit_05",
@@ -1119,8 +1233,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '94 seconds'"
       ],
-      "evidence_count": 15,
-      "wall_s": 3.1761725419200957
+      "evidence_count": 13,
+      "wall_s": 4.880999708082527,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.448402207810432
     },
     {
       "id": "star_explicit_06",
@@ -1139,8 +1255,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '93 seconds'"
       ],
-      "evidence_count": 10,
-      "wall_s": 3.074459374882281
+      "evidence_count": 14,
+      "wall_s": 4.3610616670921445,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.3487703343853354
     },
     {
       "id": "star_explicit_07",
@@ -1157,10 +1275,12 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: '94 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 94 seconds'"
       ],
       "evidence_count": 13,
-      "wall_s": 2.5735579999163747
+      "wall_s": 6.634180000051856,
+      "provider": "gemini-lite",
+      "call_latency_s": 6.621824624948204
     },
     {
       "id": "star_explicit_08",
@@ -1171,22 +1291,18 @@
       "dimensions": {
         "structure": "Solid",
         "specificity": "Solid",
-        "i_vs_we": "Gap",
+        "i_vs_we": "Solid",
         "quantification": "Solid",
         "length": "Solid",
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "specificity: non-verbatim quote dropped: '[ 24.0s] CANDIDATE: I pulled 400 one- and two-star reviews and I found 80 percent of complaints named a single missing filter option.'",
-        "specificity: non-verbatim quote dropped: '[ 44.0s] CANDIDATE: I went to Grace, our mobile lead, with 2 specific options,'",
-        "i_vs_we: non-verbatim quote dropped: '[ 44.0s] CANDIDATE: I decided to ship the filter back in a patch release ahead of the next milestone, writing the rollout plan myself'",
-        "quantification: non-verbatim quote dropped: '[ 24.0s] CANDIDATE: I pulled 400 one- and two-star reviews and I found 80 percent of complaints named a single missing filter option.'",
-        "length: non-verbatim quote dropped: 'Answer duration: 95 seconds'",
-        "length: non-verbatim quote dropped: 'Round length band: 90 to 150 seconds'",
-        "reflection: non-verbatim quote dropped: '[ 80.0s] CANDIDATE: What I learned is to read the actual complaints before proposing a fix, and I have used that rule 4 times since.'"
+        "length: non-verbatim quote dropped: '95 seconds'"
       ],
-      "evidence_count": 7,
-      "wall_s": 2.828031833283603
+      "evidence_count": 18,
+      "wall_s": 4.092755208723247,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.078656374942511
     },
     {
       "id": "star_explicit_09",
@@ -1203,10 +1319,12 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: '95 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 95 seconds'"
       ],
       "evidence_count": 19,
-      "wall_s": 2.63975195819512
+      "wall_s": 4.225552749820054,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.210934292059392
     },
     {
       "id": "star_explicit_10",
@@ -1217,17 +1335,16 @@
       "dimensions": {
         "structure": "Solid",
         "specificity": "Solid",
-        "i_vs_we": "Gap",
+        "i_vs_we": "NeedsWork",
         "quantification": "Solid",
         "length": "Solid",
         "reflection": "Solid"
       },
-      "evidence_violations": [
-        "specificity: non-verbatim quote dropped: 'I pulled ticket logs for 3 months and I found a single ticket category, password resets, made up 22 percent of volume.'",
-        "length: non-verbatim quote dropped: 'The answer duration is 94 seconds, which is within the target band of 90 to 150 seconds.'"
-      ],
-      "evidence_count": 12,
-      "wall_s": 2.8391817500814795
+      "evidence_violations": [],
+      "evidence_count": 16,
+      "wall_s": 4.194032040890306,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.180742332711816
     },
     {
       "id": "star_explicit_11",
@@ -1244,15 +1361,12 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "structure: non-verbatim quote dropped: '[ 22.0s] CANDIDATE: Action: what I did was pull usage logs across every account tier and I found the setup flow required 7 manual steps most admins abandoned.'",
-        "specificity: non-verbatim quote dropped: '[ 22.0s] CANDIDATE: Action: what I did was pull usage logs across every account tier and I found the setup flow required 7 manual steps most admins abandoned.'",
-        "i_vs_we: non-verbatim quote dropped: '[ 22.0s] CANDIDATE: Action: what I did was pull usage logs across every account tier and I found the setup flow required 7 manual steps most admins abandoned.'",
-        "quantification: non-verbatim quote dropped: '[  0.0s] CANDIDATE: Task: the problem was only 15 percent of customers had activated any integration, and it had been getting worse for 2 quarters,'",
-        "length: non-verbatim quote dropped: 'The answer duration is 93 seconds, which is within the target band of 90 to 150 seconds.'",
-        "reflection: non-verbatim quote dropped: '[ 77.0s] CANDIDATE: What I learned is to fix the top 5 before trying to fix all 60, and I have used that rule 2 times since.'"
+        "length: non-verbatim quote dropped: '93 seconds'"
       ],
-      "evidence_count": 6,
-      "wall_s": 2.392971375025809
+      "evidence_count": 18,
+      "wall_s": 4.174328458029777,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.16285766614601
     },
     {
       "id": "star_explicit_12",
@@ -1272,7 +1386,9 @@
         "length: non-verbatim quote dropped: '95 seconds'"
       ],
       "evidence_count": 18,
-      "wall_s": 2.7959377076476812
+      "wall_s": 4.1402442920953035,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.128224499989301
     },
     {
       "id": "star_explicit_13",
@@ -1283,20 +1399,19 @@
       "dimensions": {
         "structure": "Solid",
         "specificity": "Solid",
-        "i_vs_we": "Gap",
+        "i_vs_we": "NeedsWork",
         "quantification": "Solid",
         "length": "Solid",
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "specificity: non-verbatim quote dropped: '[ 22.0s] CANDIDATE: Action: what I did was pull 60 recorded mobile sessions and I found the date picker required 6 taps most users gave up on.'",
-        "i_vs_we: non-verbatim quote dropped: '[ 42.0s] CANDIDATE: ...and I checked in with Layla twice a week during the rollout so we could react fast if anything looked off.'",
-        "quantification: non-verbatim quote dropped: '[  0.0s] CANDIDATE: ...which had 200 thousand monthly bookings at the time.'",
-        "quantification: non-verbatim quote dropped: '[ 22.0s] CANDIDATE: ...mobile conversion was 40 percent below desktop,'",
-        "reflection: non-verbatim quote dropped: '[ 78.0s] CANDIDATE: What I learned is that the smallest UI element can gate the whole funnel, and I have used that rule 3 times since.'"
+        "specificity: non-verbatim quote dropped: 'I pulled 60 recorded mobile sessions and I found the date picker required 6 taps'",
+        "length: non-verbatim quote dropped: '95 seconds'"
       ],
-      "evidence_count": 7,
-      "wall_s": 7.316186500247568
+      "evidence_count": 9,
+      "wall_s": 4.410770250018686,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.397731292061508
     },
     {
       "id": "non_star_01",
@@ -1313,10 +1428,12 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: '88 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 88 seconds'"
       ],
       "evidence_count": 12,
-      "wall_s": 4.1808847091160715
+      "wall_s": 4.419737999793142,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.406491624657065
     },
     {
       "id": "non_star_02",
@@ -1333,10 +1450,12 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: '90 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 90 seconds'"
       ],
-      "evidence_count": 12,
-      "wall_s": 4.177986916620284
+      "evidence_count": 13,
+      "wall_s": 4.447192583698779,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.436339458916336
     },
     {
       "id": "non_star_03",
@@ -1356,7 +1475,9 @@
         "length: non-verbatim quote dropped: '89 seconds'"
       ],
       "evidence_count": 13,
-      "wall_s": 3.128996375016868
+      "wall_s": 4.465752582997084,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.455427750013769
     },
     {
       "id": "non_star_04",
@@ -1375,8 +1496,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '89 seconds'"
       ],
-      "evidence_count": 12,
-      "wall_s": 6.06353749986738
+      "evidence_count": 9,
+      "wall_s": 4.1093876250088215,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.081161959096789
     },
     {
       "id": "non_star_05",
@@ -1393,10 +1516,12 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 90 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 90 seconds. Round length band: 90 to 150 seconds.'"
       ],
       "evidence_count": 13,
-      "wall_s": 3.4583271252922714
+      "wall_s": 4.408729291986674,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.395346750039607
     },
     {
       "id": "non_star_06",
@@ -1416,7 +1541,9 @@
         "length: non-verbatim quote dropped: '89 seconds'"
       ],
       "evidence_count": 12,
-      "wall_s": 2.787556500174105
+      "wall_s": 3.8266236246563494,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.8140568751841784
     },
     {
       "id": "non_star_07",
@@ -1427,7 +1554,7 @@
       "dimensions": {
         "structure": "Solid",
         "specificity": "Solid",
-        "i_vs_we": "Solid",
+        "i_vs_we": "NeedsWork",
         "quantification": "Solid",
         "length": "Solid",
         "reflection": "Solid"
@@ -1436,8 +1563,10 @@
         "length: non-verbatim quote dropped: 'answer duration 90 seconds'",
         "length: non-verbatim quote dropped: 'Round length band: 90 to 150 seconds'"
       ],
-      "evidence_count": 14,
-      "wall_s": 2.9716596249490976
+      "evidence_count": 16,
+      "wall_s": 4.276326207909733,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.265699999872595
     },
     {
       "id": "non_star_08",
@@ -1457,7 +1586,9 @@
         "length: non-verbatim quote dropped: '91 seconds'"
       ],
       "evidence_count": 13,
-      "wall_s": 3.084890624973923
+      "wall_s": 4.61652991687879,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.603820541407913
     },
     {
       "id": "non_star_09",
@@ -1476,8 +1607,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '91 seconds'"
       ],
-      "evidence_count": 12,
-      "wall_s": 2.87943245889619
+      "evidence_count": 13,
+      "wall_s": 4.410861874930561,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.397474874742329
     },
     {
       "id": "non_star_10",
@@ -1494,10 +1627,13 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 90 seconds. Round length band: 90 to 150 seconds.'"
+        "length: non-verbatim quote dropped: 'answer duration 90 seconds'",
+        "length: non-verbatim quote dropped: 'Round length band: 90 to 150 seconds'"
       ],
-      "evidence_count": 14,
-      "wall_s": 3.5749531658366323
+      "evidence_count": 15,
+      "wall_s": 4.618261250201613,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.6059101251885295
     },
     {
       "id": "non_star_11",
@@ -1514,10 +1650,12 @@
         "reflection": "Solid"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: '89 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 89 seconds'"
       ],
       "evidence_count": 14,
-      "wall_s": 3.0374529170803726
+      "wall_s": 4.770459791179746,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.757475333288312
     },
     {
       "id": "non_star_12",
@@ -1536,8 +1674,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '91 seconds'"
       ],
-      "evidence_count": 11,
-      "wall_s": 2.6782410829328
+      "evidence_count": 15,
+      "wall_s": 4.664053917396814,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.651227333117276
     },
     {
       "id": "non_star_13",
@@ -1553,11 +1693,11 @@
         "length": "Solid",
         "reflection": "Solid"
       },
-      "evidence_violations": [
-        "length: non-verbatim quote dropped: '91 seconds'"
-      ],
-      "evidence_count": 13,
-      "wall_s": 3.09897099994123
+      "evidence_violations": [],
+      "evidence_count": 15,
+      "wall_s": 4.1754374592565,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.162130166310817
     },
     {
       "id": "incomplete_01",
@@ -1577,7 +1717,9 @@
         "length: non-verbatim quote dropped: '28 seconds'"
       ],
       "evidence_count": 6,
-      "wall_s": 2.5853585000149906
+      "wall_s": 3.6164617920294404,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.6041411668993533
     },
     {
       "id": "incomplete_02",
@@ -1594,8 +1736,10 @@
         "reflection": "Gap"
       },
       "evidence_violations": [],
-      "evidence_count": 7,
-      "wall_s": 2.4787708749063313
+      "evidence_count": 9,
+      "wall_s": 4.2817701660096645,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.266393666155636
     },
     {
       "id": "incomplete_03",
@@ -1615,7 +1759,9 @@
         "length: non-verbatim quote dropped: '22 seconds'"
       ],
       "evidence_count": 8,
-      "wall_s": 2.4828833332285285
+      "wall_s": 3.7904066247865558,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.7776488750241697
     },
     {
       "id": "incomplete_04",
@@ -1634,8 +1780,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '20 seconds'"
       ],
-      "evidence_count": 7,
-      "wall_s": 2.694348792079836
+      "evidence_count": 6,
+      "wall_s": 4.150950916111469,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.1367264171130955
     },
     {
       "id": "incomplete_05",
@@ -1653,7 +1801,9 @@
       },
       "evidence_violations": [],
       "evidence_count": 5,
-      "wall_s": 2.887986999936402
+      "wall_s": 3.7414254997856915,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.7277397918514907
     },
     {
       "id": "incomplete_06",
@@ -1664,14 +1814,18 @@
       "dimensions": {
         "structure": "Gap",
         "specificity": "NeedsWork",
-        "i_vs_we": "Gap",
+        "i_vs_we": "NeedsWork",
         "quantification": "NeedsWork",
         "length": "Gap",
         "reflection": "Gap"
       },
-      "evidence_violations": [],
-      "evidence_count": 7,
-      "wall_s": 3.0807138751260936
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '19 seconds'"
+      ],
+      "evidence_count": 5,
+      "wall_s": 4.147000333294272,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.134806499816477
     },
     {
       "id": "incomplete_07",
@@ -1691,7 +1845,9 @@
         "length: non-verbatim quote dropped: '19 seconds'"
       ],
       "evidence_count": 7,
-      "wall_s": 2.512829250190407
+      "wall_s": 3.85338949970901,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.8380683748982847
     },
     {
       "id": "incomplete_08",
@@ -1701,15 +1857,17 @@
       "status": "success",
       "dimensions": {
         "structure": "Gap",
-        "specificity": "Solid",
+        "specificity": "NeedsWork",
         "i_vs_we": "Gap",
         "quantification": "Solid",
         "length": "Gap",
         "reflection": "Gap"
       },
       "evidence_violations": [],
-      "evidence_count": 5,
-      "wall_s": 2.3100244998931885
+      "evidence_count": 7,
+      "wall_s": 3.6924961251206696,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.67935570795089
     },
     {
       "id": "incomplete_09",
@@ -1728,8 +1886,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '18 seconds'"
       ],
-      "evidence_count": 7,
-      "wall_s": 2.9156528753228486
+      "evidence_count": 6,
+      "wall_s": 4.203144874889404,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.188700249884278
     },
     {
       "id": "incomplete_10",
@@ -1747,7 +1907,9 @@
       },
       "evidence_violations": [],
       "evidence_count": 6,
-      "wall_s": 2.796048041898757
+      "wall_s": 4.2055218745954335,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.191438542213291
     },
     {
       "id": "incomplete_11",
@@ -1764,8 +1926,10 @@
         "reflection": "Gap"
       },
       "evidence_violations": [],
-      "evidence_count": 7,
-      "wall_s": 2.883652084041387
+      "evidence_count": 5,
+      "wall_s": 4.116203334182501,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.097586249932647
     },
     {
       "id": "incomplete_12",
@@ -1777,15 +1941,17 @@
         "structure": "Gap",
         "specificity": "NeedsWork",
         "i_vs_we": "Gap",
-        "quantification": "Gap",
+        "quantification": "NeedsWork",
         "length": "Gap",
         "reflection": "Gap"
       },
       "evidence_violations": [
         "length: non-verbatim quote dropped: '19 seconds'"
       ],
-      "evidence_count": 5,
-      "wall_s": 4.964574417099357
+      "evidence_count": 7,
+      "wall_s": 3.9554717079736292,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.941604415886104
     },
     {
       "id": "incomplete_13",
@@ -1805,7 +1971,9 @@
         "length: non-verbatim quote dropped: '18 seconds'"
       ],
       "evidence_count": 5,
-      "wall_s": 2.6893156659789383
+      "wall_s": 4.0442842920310795,
+      "provider": "gemini-lite",
+      "call_latency_s": 4.031858957838267
     },
     {
       "id": "fabricated_01",
@@ -1815,7 +1983,7 @@
       "status": "success",
       "dimensions": {
         "structure": "Solid",
-        "specificity": "Gap",
+        "specificity": "Solid",
         "i_vs_we": "Solid",
         "quantification": "Solid",
         "length": "Gap",
@@ -1824,8 +1992,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: 'answer duration 32 seconds'"
       ],
-      "evidence_count": 11,
-      "wall_s": 3.186708000022918
+      "evidence_count": 10,
+      "wall_s": 3.832387125119567,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.817714249715209
     },
     {
       "id": "fabricated_02",
@@ -1839,13 +2009,15 @@
         "i_vs_we": "Solid",
         "quantification": "Solid",
         "length": "Gap",
-        "reflection": "Gap"
+        "reflection": "NeedsWork"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: '31 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 31 seconds. Round length band: 90 to 150 seconds.'"
       ],
-      "evidence_count": 9,
-      "wall_s": 2.488728541880846
+      "evidence_count": 10,
+      "wall_s": 3.5823430423624814,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.572237541899085
     },
     {
       "id": "fabricated_03",
@@ -1862,10 +2034,12 @@
         "reflection": "NeedsWork"
       },
       "evidence_violations": [
-        "length: non-verbatim quote dropped: '36 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 36 seconds. Round length band: 90 to 150 seconds.'"
       ],
       "evidence_count": 9,
-      "wall_s": 3.172916540876031
+      "wall_s": 3.5196521249599755,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.509807042311877
     },
     {
       "id": "fabricated_04",
@@ -1882,11 +2056,13 @@
         "reflection": "NeedsWork"
       },
       "evidence_violations": [
-        "i_vs_we: non-verbatim quote dropped: 'I rewrote the entire codebase'",
-        "length: non-verbatim quote dropped: '34 seconds'"
+        "length: non-verbatim quote dropped: 'answer duration 34 seconds'",
+        "length: non-verbatim quote dropped: 'Round length band: 90 to 150 seconds'"
       ],
-      "evidence_count": 10,
-      "wall_s": 2.7826067078858614
+      "evidence_count": 14,
+      "wall_s": 3.7861385829746723,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.7737826253287494
     },
     {
       "id": "fabricated_05",
@@ -1905,8 +2081,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: 'answer duration 29 seconds'"
       ],
-      "evidence_count": 11,
-      "wall_s": 2.981554416939616
+      "evidence_count": 9,
+      "wall_s": 3.582575083244592,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.572142125107348
     },
     {
       "id": "fabricated_06",
@@ -1915,18 +2093,20 @@
       "word_count": 89,
       "status": "success",
       "dimensions": {
-        "structure": "NeedsWork",
-        "specificity": "NeedsWork",
+        "structure": "Solid",
+        "specificity": "Solid",
         "i_vs_we": "Solid",
-        "quantification": "NeedsWork",
+        "quantification": "Solid",
         "length": "Gap",
         "reflection": "NeedsWork"
       },
       "evidence_violations": [
-        "quantification: non-verbatim quote dropped: '[ 11.0s] CANDIDATE: as a result, I collected feedback that increased our stock price by 800 percent, even though we were a private company with no stock.'"
+        "length: non-verbatim quote dropped: '36 seconds'"
       ],
-      "evidence_count": 7,
-      "wall_s": 2.3971918332390487
+      "evidence_count": 12,
+      "wall_s": 3.176067083142698,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.1663142503239214
     },
     {
       "id": "fabricated_07",
@@ -1937,18 +2117,18 @@
       "dimensions": {
         "structure": "Solid",
         "specificity": "NeedsWork",
-        "i_vs_we": "Gap",
+        "i_vs_we": "Solid",
         "quantification": "Solid",
         "length": "Gap",
         "reflection": "NeedsWork"
       },
       "evidence_violations": [
-        "specificity: non-verbatim quote dropped: '[ 14.0s] CANDIDATE: as a result, our project won a Nobel Prize, and we signed a deal worth more than the GDP of a mid-size country.'",
-        "i_vs_we: non-verbatim quote dropped: '[ 14.0s] CANDIDATE: as a result, our project won a Nobel Prize, and we signed a deal worth more than the GDP of a mid-size country.'",
-        "quantification: non-verbatim quote dropped: '[ 14.0s] CANDIDATE: as a result, our project won a Nobel Prize, and we signed a deal worth more than the GDP of a mid-size country.'"
+        "length: non-verbatim quote dropped: 'answer duration 33 seconds'"
       ],
-      "evidence_count": 7,
-      "wall_s": 2.674777749925852
+      "evidence_count": 9,
+      "wall_s": 3.788120749872178,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.773452416062355
     },
     {
       "id": "fabricated_08",
@@ -1957,16 +2137,20 @@
       "word_count": 76,
       "status": "success",
       "dimensions": {
-        "structure": "NeedsWork",
-        "specificity": "NeedsWork",
+        "structure": "Solid",
+        "specificity": "Solid",
         "i_vs_we": "Solid",
-        "quantification": "NeedsWork",
+        "quantification": "Solid",
         "length": "Gap",
         "reflection": "NeedsWork"
       },
-      "evidence_violations": [],
-      "evidence_count": 7,
-      "wall_s": 2.3642120002768934
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: 'answer duration 30 seconds. Round length band: 90 to 150 seconds.'"
+      ],
+      "evidence_count": 15,
+      "wall_s": 3.5675971251912415,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.555036542005837
     },
     {
       "id": "fabricated_09",
@@ -1976,17 +2160,17 @@
       "status": "success",
       "dimensions": {
         "structure": "Solid",
-        "specificity": "NeedsWork",
-        "i_vs_we": "Gap",
+        "specificity": "Solid",
+        "i_vs_we": "Solid",
         "quantification": "Solid",
         "length": "Gap",
         "reflection": "NeedsWork"
       },
-      "evidence_violations": [
-        "length: non-verbatim quote dropped: 'answer duration 31 seconds'"
-      ],
+      "evidence_violations": [],
       "evidence_count": 8,
-      "wall_s": 2.306153832934797
+      "wall_s": 3.282721749972552,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.2719853748567402
     },
     {
       "id": "fabricated_10",
@@ -1996,15 +2180,19 @@
       "status": "success",
       "dimensions": {
         "structure": "Solid",
-        "specificity": "Solid",
+        "specificity": "Gap",
         "i_vs_we": "Solid",
-        "quantification": "NeedsWork",
+        "quantification": "Solid",
         "length": "Gap",
-        "reflection": "NeedsWork"
+        "reflection": "Gap"
       },
-      "evidence_violations": [],
-      "evidence_count": 8,
-      "wall_s": 2.3220428340137005
+      "evidence_violations": [
+        "length: non-verbatim quote dropped: '31 seconds'"
+      ],
+      "evidence_count": 11,
+      "wall_s": 3.5813076249323785,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.5667651249095798
     },
     {
       "id": "fabricated_11",
@@ -2023,8 +2211,10 @@
       "evidence_violations": [
         "length: non-verbatim quote dropped: '33 seconds'"
       ],
-      "evidence_count": 15,
-      "wall_s": 3.880887624807656
+      "evidence_count": 14,
+      "wall_s": 3.5851640002802014,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.5736886668018997
     },
     {
       "id": "fabricated_12",
@@ -2045,7 +2235,9 @@
         "length: non-verbatim quote dropped: 'answer duration 31 seconds'"
       ],
       "evidence_count": 8,
-      "wall_s": 2.9155385829508305
+      "wall_s": 3.595190292224288,
+      "provider": "gemini-lite",
+      "call_latency_s": 3.5846373750828207
     }
   ],
   "consistency_results": {
@@ -2055,7 +2247,7 @@
         {
           "structure": "Solid",
           "specificity": "Solid",
-          "i_vs_we": "NeedsWork",
+          "i_vs_we": "Solid",
           "quantification": "Solid",
           "length": "Solid",
           "reflection": "Solid"
@@ -2084,14 +2276,6 @@
         {
           "structure": "Solid",
           "specificity": "Solid",
-          "i_vs_we": "Solid",
-          "quantification": "Solid",
-          "length": "Solid",
-          "reflection": "Solid"
-        },
-        {
-          "structure": "Solid",
-          "specificity": "Solid",
           "i_vs_we": "NeedsWork",
           "quantification": "Solid",
           "length": "Solid",
@@ -2101,6 +2285,14 @@
           "structure": "Solid",
           "specificity": "Solid",
           "i_vs_we": "Solid",
+          "quantification": "Solid",
+          "length": "Solid",
+          "reflection": "Solid"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "Solid",
+          "i_vs_we": "NeedsWork",
           "quantification": "Solid",
           "length": "Solid",
           "reflection": "Solid"
@@ -2149,7 +2341,7 @@
         },
         {
           "structure": "NeedsWork",
-          "specificity": "Gap",
+          "specificity": "NeedsWork",
           "i_vs_we": "Gap",
           "quantification": "Gap",
           "length": "Gap",
@@ -2157,9 +2349,9 @@
         },
         {
           "structure": "NeedsWork",
-          "specificity": "Gap",
+          "specificity": "NeedsWork",
           "i_vs_we": "Gap",
-          "quantification": "Gap",
+          "quantification": "NeedsWork",
           "length": "Gap",
           "reflection": "Gap"
         }
@@ -2172,23 +2364,23 @@
           "structure": "Solid",
           "specificity": "NeedsWork",
           "i_vs_we": "NeedsWork",
+          "quantification": "Gap",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
+          "quantification": "Gap",
+          "length": "NeedsWork",
+          "reflection": "NeedsWork"
+        },
+        {
+          "structure": "Solid",
+          "specificity": "NeedsWork",
+          "i_vs_we": "Solid",
           "quantification": "NeedsWork",
-          "length": "NeedsWork",
-          "reflection": "NeedsWork"
-        },
-        {
-          "structure": "Solid",
-          "specificity": "NeedsWork",
-          "i_vs_we": "NeedsWork",
-          "quantification": "Gap",
-          "length": "NeedsWork",
-          "reflection": "NeedsWork"
-        },
-        {
-          "structure": "Solid",
-          "specificity": "NeedsWork",
-          "i_vs_we": "NeedsWork",
-          "quantification": "Gap",
           "length": "NeedsWork",
           "reflection": "NeedsWork"
         }
@@ -2257,7 +2449,15 @@
       "runs": [
         {
           "structure": "Gap",
-          "specificity": "Solid",
+          "specificity": "Gap",
+          "i_vs_we": "Solid",
+          "quantification": "Gap",
+          "length": "Gap",
+          "reflection": "Gap"
+        },
+        {
+          "structure": "Gap",
+          "specificity": "Gap",
           "i_vs_we": "Solid",
           "quantification": "Gap",
           "length": "Gap",
@@ -2268,14 +2468,6 @@
           "specificity": "Gap",
           "i_vs_we": "Solid",
           "quantification": "Solid",
-          "length": "Gap",
-          "reflection": "Gap"
-        },
-        {
-          "structure": "Gap",
-          "specificity": "Gap",
-          "i_vs_we": "Solid",
-          "quantification": "Gap",
           "length": "Gap",
           "reflection": "Gap"
         }
@@ -2409,7 +2601,7 @@
           "reflection": "Gap"
         },
         {
-          "structure": "NeedsWork",
+          "structure": "Gap",
           "specificity": "Solid",
           "i_vs_we": "Solid",
           "quantification": "Solid",
@@ -2440,7 +2632,7 @@
         {
           "structure": "Gap",
           "specificity": "Gap",
-          "i_vs_we": "Solid",
+          "i_vs_we": "NeedsWork",
           "quantification": "Gap",
           "length": "Gap",
           "reflection": "Gap"
@@ -2448,7 +2640,7 @@
         {
           "structure": "Gap",
           "specificity": "NeedsWork",
-          "i_vs_we": "NeedsWork",
+          "i_vs_we": "Solid",
           "quantification": "Gap",
           "length": "Gap",
           "reflection": "Gap"
@@ -2460,7 +2652,7 @@
       "runs": [
         {
           "structure": "Solid",
-          "specificity": "Gap",
+          "specificity": "Solid",
           "i_vs_we": "Solid",
           "quantification": "Solid",
           "length": "Gap",
@@ -2469,7 +2661,7 @@
         {
           "structure": "Solid",
           "specificity": "Solid",
-          "i_vs_we": "Gap",
+          "i_vs_we": "Solid",
           "quantification": "Solid",
           "length": "Gap",
           "reflection": "NeedsWork"
@@ -2493,7 +2685,7 @@
           "i_vs_we": "Solid",
           "quantification": "Solid",
           "length": "Gap",
-          "reflection": "Gap"
+          "reflection": "NeedsWork"
         },
         {
           "structure": "Solid",
@@ -2505,7 +2697,7 @@
         },
         {
           "structure": "Solid",
-          "specificity": "NeedsWork",
+          "specificity": "Solid",
           "i_vs_we": "Solid",
           "quantification": "Solid",
           "length": "Gap",
@@ -2517,808 +2709,808 @@
   "call_log": [
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.869220667053014,
-      "provider": "gemini-lite",
-      "failovers": 1,
+      "latency_s": 16.727355459239334,
+      "provider": "gemini",
+      "failovers": 0,
       "success": true,
       "schema_strict_valid": true,
       "gemini_attempts": 1
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.441260250285268,
+      "latency_s": 4.479405625257641,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.9570502089336514,
-      "provider": "gemini-lite",
-      "failovers": 1,
+      "latency_s": 18.290631209034473,
+      "provider": "gemini",
+      "failovers": 0,
       "success": true,
       "schema_strict_valid": true,
       "gemini_attempts": 1
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.7576250000856817,
-      "provider": "gemini-lite",
-      "failovers": 1,
+      "latency_s": 20.843939583282918,
+      "provider": "gemini",
+      "failovers": 0,
       "success": true,
       "schema_strict_valid": true,
       "gemini_attempts": 1
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.946510958019644,
+      "latency_s": 4.418820667080581,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.9396625831723213,
+      "latency_s": 4.364581124857068,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.668919290881604,
+      "latency_s": 4.696804333012551,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.1481425003148615,
+      "latency_s": 4.62959499983117,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.749434542376548,
+      "latency_s": 4.496468792203814,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 4.436634708195925,
+      "latency_s": 4.811844790820032,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.9531902079470456,
+      "latency_s": 4.672216041013598,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 4.839436291251332,
+      "latency_s": 4.268870333675295,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.064520750194788,
+      "latency_s": 4.600379416253418,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.2367907920852304,
+      "latency_s": 4.097400458995253,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.757593708112836,
+      "latency_s": 4.290187040809542,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.5843163332901895,
+      "latency_s": 4.391672540921718,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.305304166395217,
-      "provider": "groq",
+      "latency_s": 4.2849334590137005,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.2369985417462885,
+      "latency_s": 4.275793334003538,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 1.81737224990502,
-      "provider": "groq",
+      "latency_s": 4.606734000146389,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.5343495002016425,
-      "provider": "groq",
+      "latency_s": 4.381676208227873,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.5662699579261243,
+      "latency_s": 4.263008958194405,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.955561541952193,
+      "latency_s": 6.858748542144895,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 3
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 4.660014207940549,
+      "latency_s": 3.884522832930088,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.952743750065565,
+      "latency_s": 4.583709500264376,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.468757291790098,
+      "latency_s": 3.5297180409543216,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.454215249978006,
+      "latency_s": 4.457939333282411,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.9656911669299006,
+      "latency_s": 4.428448416292667,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.872671957593411,
+      "latency_s": 4.706614833790809,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.6550177917815745,
+      "latency_s": 4.196898499969393,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.061767667066306,
+      "latency_s": 3.76703195925802,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.9694555001333356,
+      "latency_s": 4.510630750097334,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.0066920001991093,
+      "latency_s": 4.021600499749184,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.5548529997467995,
+      "latency_s": 4.057386875152588,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.957785749807954,
+      "latency_s": 4.367215209174901,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.1484767086803913,
+      "latency_s": 4.451547208242118,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.586066166870296,
+      "latency_s": 3.9410305828787386,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.079186665825546,
-      "provider": "groq",
+      "latency_s": 4.771382791921496,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 1.7958272499963641,
-      "provider": "groq",
+      "latency_s": 4.676634541712701,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.556760124862194,
+      "latency_s": 3.388981082942337,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.3921469165943563,
-      "provider": "groq",
+      "latency_s": 3.6725792922079563,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 1.8507871660403907,
-      "provider": "groq",
+      "latency_s": 4.040758041199297,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.976394792087376,
+      "latency_s": 4.026089208200574,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.67114174971357,
+      "latency_s": 3.401694041211158,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.8700668327510357,
+      "latency_s": 3.4067903328686953,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.1622644998133183,
+      "latency_s": 3.8555589159950614,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.4678201251663268,
+      "latency_s": 3.909382499754429,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.0755068748258054,
+      "latency_s": 4.068141540978104,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.6598410001024604,
+      "latency_s": 4.057185041718185,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.789326125290245,
+      "latency_s": 3.7296418747864664,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.761630999855697,
+      "latency_s": 4.071893500164151,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.4774164999835193,
+      "latency_s": 4.046745541971177,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.7515478748828173,
+      "latency_s": 4.283229417167604,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.4681840422563255,
+      "latency_s": 3.715235833078623,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.75688408408314,
+      "latency_s": 4.2347100409679115,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.167821167036891,
+      "latency_s": 4.448402207810432,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.064322458114475,
+      "latency_s": 4.3487703343853354,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.5596400829963386,
+      "latency_s": 6.621824624948204,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 3
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.819486292079091,
-      "provider": "groq",
+      "latency_s": 4.078656374942511,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.6271102079190314,
+      "latency_s": 4.210934292059392,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.8299424587748945,
-      "provider": "groq",
+      "latency_s": 4.180742332711816,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.3791111656464636,
-      "provider": "groq",
+      "latency_s": 4.16285766614601,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.7838586661964655,
+      "latency_s": 4.128224499989301,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 7.309539666865021,
-      "provider": "groq",
+      "latency_s": 4.397731292061508,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 4.1675851247273386,
+      "latency_s": 4.406491624657065,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 4.168481125030667,
+      "latency_s": 4.436339458916336,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.1200696667656302,
+      "latency_s": 4.455427750013769,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 6.054376957938075,
+      "latency_s": 4.081161959096789,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.4485088330693543,
+      "latency_s": 4.395346750039607,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.7748288330622017,
+      "latency_s": 3.8140568751841784,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.9631428327411413,
+      "latency_s": 4.265699999872595,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.0747198746539652,
+      "latency_s": 4.603820541407913,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.869619832839817,
+      "latency_s": 4.397474874742329,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.567052375059575,
+      "latency_s": 4.6059101251885295,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.0261859581805766,
+      "latency_s": 4.757475333288312,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.670936292037368,
+      "latency_s": 4.651227333117276,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.0898469160310924,
+      "latency_s": 4.162130166310817,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.5763357090763748,
+      "latency_s": 3.6041411668993533,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.472249499987811,
+      "latency_s": 4.266393666155636,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.471284749917686,
+      "latency_s": 3.7776488750241697,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.6880673333071172,
+      "latency_s": 4.1367264171130955,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.879467333201319,
+      "latency_s": 3.7277397918514907,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.0710991667583585,
+      "latency_s": 4.134806499816477,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.504059874918312,
+      "latency_s": 3.8380683748982847,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.298560833092779,
+      "latency_s": 3.67935570795089,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.906370500102639,
+      "latency_s": 4.188700249884278,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.7858011671341956,
+      "latency_s": 4.191438542213291,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.873937000054866,
+      "latency_s": 4.097586249932647,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 4.9551797499880195,
+      "latency_s": 3.941604415886104,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.6779245832003653,
+      "latency_s": 4.031858957838267,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
-      "gemini_attempts": 1
+      "gemini_attempts": 2
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.177761583123356,
+      "latency_s": 3.817714249715209,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3327,7 +3519,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.4795152079313993,
+      "latency_s": 3.572237541899085,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3336,7 +3528,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.1637200829572976,
+      "latency_s": 3.509807042311877,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3345,7 +3537,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.773507250007242,
+      "latency_s": 3.7737826253287494,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3354,7 +3546,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.96854987507686,
+      "latency_s": 3.572142125107348,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3363,8 +3555,8 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.3880946249701083,
-      "provider": "groq",
+      "latency_s": 3.1663142503239214,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
@@ -3372,8 +3564,8 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.6640824996866286,
-      "provider": "groq",
+      "latency_s": 3.773452416062355,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
@@ -3381,8 +3573,8 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.3495435831137,
-      "provider": "groq",
+      "latency_s": 3.555036542005837,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
@@ -3390,8 +3582,8 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.2945597087964416,
-      "provider": "groq",
+      "latency_s": 3.2719853748567402,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
@@ -3399,8 +3591,8 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.3080129576846957,
-      "provider": "groq",
+      "latency_s": 3.5667651249095798,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
@@ -3408,7 +3600,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.867833707947284,
+      "latency_s": 3.5736886668018997,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3417,7 +3609,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.9063583337701857,
+      "latency_s": 3.5846373750828207,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3426,7 +3618,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.117111415602267,
+      "latency_s": 3.947666250169277,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3435,7 +3627,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.042547458317131,
+      "latency_s": 3.826633042190224,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3444,7 +3636,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.3128697499632835,
+      "latency_s": 4.064230250194669,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3453,7 +3645,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.7834553751163185,
+      "latency_s": 3.978547874838114,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3462,7 +3654,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.8123160423710942,
+      "latency_s": 3.871738125104457,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3471,7 +3663,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.127835084218532,
+      "latency_s": 3.7710631252266467,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3480,7 +3672,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 5.730616791639477,
+      "latency_s": 3.501539499964565,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3489,7 +3681,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.5835105828009546,
+      "latency_s": 3.7565081249922514,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3498,7 +3690,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.09992445865646,
+      "latency_s": 4.086994958110154,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3507,7 +3699,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 4.4073901660740376,
+      "latency_s": 3.825540042016655,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3516,7 +3708,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 5.5523110828362405,
+      "latency_s": 3.7259054169990122,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3525,7 +3717,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 6.73308925004676,
+      "latency_s": 3.8635933748446405,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3534,7 +3726,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 7.994198916014284,
+      "latency_s": 3.159373499918729,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3543,7 +3735,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 6.216211541090161,
+      "latency_s": 3.1689483341760933,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3552,7 +3744,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 5.098156082909554,
+      "latency_s": 3.5415167501196265,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3561,7 +3753,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 11.604759125038981,
+      "latency_s": 3.5750108752399683,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3570,7 +3762,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 8.902460082899779,
+      "latency_s": 3.7190340841189027,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3579,7 +3771,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 4.251563458237797,
+      "latency_s": 3.7458928753621876,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3588,7 +3780,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 8.673447582870722,
+      "latency_s": 3.845434417016804,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3597,7 +3789,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.784459833987057,
+      "latency_s": 4.11229412490502,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3606,7 +3798,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 2.6260364577174187,
+      "latency_s": 3.8263730416074395,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3615,7 +3807,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.1504660001955926,
+      "latency_s": 3.748794083017856,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3624,7 +3816,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.4890866661444306,
+      "latency_s": 3.939706957899034,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3633,7 +3825,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.473591917194426,
+      "latency_s": 3.9245951250195503,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3642,8 +3834,8 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 12.36913829203695,
-      "provider": "groq",
+      "latency_s": 3.2269674162380397,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
@@ -3651,7 +3843,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 8.124932083766907,
+      "latency_s": 3.1393669173121452,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3660,7 +3852,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 8.48553525004536,
+      "latency_s": 3.7258669999428093,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3669,7 +3861,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 7.087219334207475,
+      "latency_s": 3.0543278749100864,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3678,8 +3870,8 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 10.099760625045747,
-      "provider": "groq",
+      "latency_s": 3.5891878749243915,
+      "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
       "schema_strict_valid": true,
@@ -3687,7 +3879,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 13.717008582782,
+      "latency_s": 3.2556555406190455,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3696,7 +3888,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 3.155031958129257,
+      "latency_s": 3.45083933416754,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,
@@ -3705,7 +3897,7 @@
     },
     {
       "prompt_id": "grading_system",
-      "latency_s": 5.117217083927244,
+      "latency_s": 3.200070499908179,
       "provider": "gemini-lite",
       "failovers": 1,
       "success": true,

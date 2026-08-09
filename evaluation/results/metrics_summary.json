@@ -18,43 +18,44 @@
     "valid": 133
   },
   "fallback_invocation_rate": {
-    "value": 1.0,
+    "value": 0.9774436090225563,
     "n": 133,
-    "non_primary_calls": 133,
+    "non_primary_calls": 130,
     "provider_distribution": {
-      "gemini-lite": 115,
-      "groq": 18
+      "gemini": 3,
+      "gemini-lite": 130
     }
   },
   "retry_rate": {
-    "value": 0.0,
+    "value": 0.6466165413533834,
     "n": 133,
-    "calls_with_gt1_gemini_attempt": 0,
-    "mean_gemini_attempts_per_call": 1,
+    "calls_with_gt1_gemini_attempt": 86,
+    "mean_gemini_attempts_per_call": 1.6616541353383458,
     "note": "counts total src.llm.client._call_gemini invocations per complete() call -- this spans both same-tier retry-on-transient-error AND the primary-then-lite two-step, since both call _call_gemini; see report for exact methodology"
   },
   "grading_latency_s": {
     "n": 133,
-    "mean": 3.6797325460037174,
-    "median": 2.9694555001333356,
-    "min": 1.7958272499963641,
-    "max": 13.717008582782,
-    "p50": 2.9694555001333356,
-    "p95": 8.269173350278285,
-    "stdev": 2.030168461266556,
-    "note": "text-in/JSON-out grading call latency; NOT voice round-trip"
+    "mean": 4.377034213358915,
+    "median": 4.057386875152588,
+    "min": 3.0543278749100864,
+    "max": 20.843939583282918,
+    "p50": 4.057386875152588,
+    "p95": 4.763038316741586,
+    "p99": 17.79038296910004,
+    "stdev": 2.250019298790766,
+    "note": "text-in/JSON-out grading call latency; NOT voice round-trip. p99 on a 133-call sample is really just the 2nd-highest value (interpolated) -- treat it as a rough tail indicator, not a statistically stable estimate; it gets more meaningful as n grows on future runs."
   },
   "ttft": {
     "value": null,
     "note": "Not applicable: src/llm/client.py uses non-streaming generate_content / chat.completions.create calls throughout (complete() in src/llm/client.py). No token-level streaming exists in this codebase's LLM path to measure TTFT from."
   },
   "hallucination_rate": {
-    "items_with_violation": 88,
+    "items_with_violation": 89,
     "n_items": 101,
-    "items_with_violation_pct": 0.8712871287128713,
-    "evidence_quotes_kept": 1034,
-    "evidence_quotes_dropped": 140,
-    "per_attempt_violation_rate": 0.11925042589437819
+    "items_with_violation_pct": 0.8811881188118812,
+    "evidence_quotes_kept": 1114,
+    "evidence_quotes_dropped": 129,
+    "per_attempt_violation_rate": 0.10378117457763475
   },
   "rubric_by_category": {
     "excellent": {
@@ -67,8 +68,8 @@
           "Solid": 13
         },
         "i_vs_we": {
-          "NeedsWork": 5,
-          "Solid": 8
+          "Solid": 9,
+          "NeedsWork": 4
         },
         "quantification": {
           "Solid": 13
@@ -80,14 +81,13 @@
           "Solid": 13
         }
       },
-      "solid_rate": 0.9358974358974359
+      "solid_rate": 0.9487179487179487
     },
     "weak": {
       "n": 12,
       "dimensions": {
         "structure": {
-          "NeedsWork": 9,
-          "Solid": 3
+          "NeedsWork": 12
         },
         "specificity": {
           "Gap": 7,
@@ -103,11 +103,11 @@
           "Gap": 12
         },
         "reflection": {
-          "Gap": 9,
-          "NeedsWork": 3
+          "Gap": 11,
+          "NeedsWork": 1
         }
       },
-      "solid_rate": 0.041666666666666664
+      "solid_rate": 0.0
     },
     "average": {
       "n": 13,
@@ -123,9 +123,9 @@
           "Solid": 11
         },
         "quantification": {
-          "NeedsWork": 9,
-          "Solid": 3,
-          "Gap": 1
+          "Gap": 1,
+          "NeedsWork": 7,
+          "Solid": 5
         },
         "length": {
           "NeedsWork": 13
@@ -134,26 +134,25 @@
           "NeedsWork": 13
         }
       },
-      "solid_rate": 0.34615384615384615
+      "solid_rate": 0.3717948717948718
     },
     "off_topic": {
       "n": 12,
       "dimensions": {
         "structure": {
-          "Gap": 11,
-          "NeedsWork": 1
+          "Gap": 12
         },
         "specificity": {
-          "Gap": 10,
-          "Solid": 2
+          "Gap": 11,
+          "Solid": 1
         },
         "i_vs_we": {
-          "Solid": 8,
-          "Gap": 4
+          "Solid": 9,
+          "Gap": 3
         },
         "quantification": {
-          "Solid": 2,
-          "Gap": 10
+          "Solid": 5,
+          "Gap": 7
         },
         "length": {
           "Gap": 12
@@ -162,7 +161,7 @@
           "Gap": 12
         }
       },
-      "solid_rate": 0.16666666666666666
+      "solid_rate": 0.20833333333333334
     },
     "star_explicit": {
       "n": 13,
@@ -174,9 +173,8 @@
           "Solid": 13
         },
         "i_vs_we": {
-          "NeedsWork": 5,
-          "Solid": 5,
-          "Gap": 3
+          "NeedsWork": 7,
+          "Solid": 6
         },
         "quantification": {
           "Solid": 13
@@ -188,7 +186,7 @@
           "Solid": 13
         }
       },
-      "solid_rate": 0.8974358974358975
+      "solid_rate": 0.9102564102564102
     },
     "non_star": {
       "n": 13,
@@ -201,8 +199,8 @@
           "Solid": 13
         },
         "i_vs_we": {
-          "NeedsWork": 5,
-          "Solid": 8
+          "NeedsWork": 6,
+          "Solid": 7
         },
         "quantification": {
           "Solid": 13
@@ -215,7 +213,7 @@
           "Solid": 13
         }
       },
-      "solid_rate": 0.8333333333333334
+      "solid_rate": 0.8205128205128205
     },
     "incomplete": {
       "n": 13,
@@ -224,19 +222,19 @@
           "Gap": 13
         },
         "specificity": {
-          "NeedsWork": 8,
+          "NeedsWork": 9,
           "Gap": 3,
-          "Solid": 2
+          "Solid": 1
         },
         "i_vs_we": {
           "Solid": 7,
-          "NeedsWork": 1,
-          "Gap": 5
+          "NeedsWork": 2,
+          "Gap": 4
         },
         "quantification": {
           "Solid": 3,
-          "Gap": 8,
-          "NeedsWork": 2
+          "Gap": 7,
+          "NeedsWork": 3
         },
         "length": {
           "Gap": 13
@@ -245,27 +243,24 @@
           "Gap": 13
         }
       },
-      "solid_rate": 0.15384615384615385
+      "solid_rate": 0.14102564102564102
     },
     "fabricated": {
       "n": 12,
       "dimensions": {
         "structure": {
-          "Solid": 10,
-          "NeedsWork": 2
+          "Solid": 12
         },
         "specificity": {
+          "Solid": 8,
           "Gap": 3,
-          "Solid": 5,
-          "NeedsWork": 4
+          "NeedsWork": 1
         },
         "i_vs_we": {
-          "Solid": 10,
-          "Gap": 2
+          "Solid": 12
         },
         "quantification": {
-          "Solid": 9,
-          "NeedsWork": 3
+          "Solid": 12
         },
         "length": {
           "Gap": 12
@@ -275,38 +270,104 @@
           "Gap": 2
         }
       },
-      "solid_rate": 0.4722222222222222
+      "solid_rate": 0.6111111111111112
     }
+  },
+  "accuracy_vs_latency_by_provider": {
+    "by_provider": {
+      "gemini": {
+        "n": 3,
+        "solid_rate": 1.0,
+        "latency_s_mean": 18.620642083852243,
+        "latency_s_p50": 18.290631209034473,
+        "latency_s_p95": 20.588608745858075,
+        "latency_s_p99": 20.79287341579795
+      },
+      "gemini-lite": {
+        "n": 98,
+        "solid_rate": 0.4931972789115646,
+        "latency_s_mean": 4.174636810348008,
+        "latency_s_p50": 4.171799999428913,
+        "latency_s_p95": 4.714243908715434,
+        "latency_s_p99": 6.628932342464105
+      }
+    },
+    "by_provider_and_category": {
+      "gemini": {
+        "excellent": {
+          "n": 3,
+          "solid_rate": 1.0
+        }
+      },
+      "gemini-lite": {
+        "excellent": {
+          "n": 10,
+          "solid_rate": 0.9333333333333333
+        },
+        "weak": {
+          "n": 12,
+          "solid_rate": 0.0
+        },
+        "average": {
+          "n": 13,
+          "solid_rate": 0.3717948717948718
+        },
+        "off_topic": {
+          "n": 12,
+          "solid_rate": 0.20833333333333334
+        },
+        "star_explicit": {
+          "n": 13,
+          "solid_rate": 0.9102564102564102
+        },
+        "non_star": {
+          "n": 13,
+          "solid_rate": 0.8205128205128205
+        },
+        "incomplete": {
+          "n": 13,
+          "solid_rate": 0.14102564102564102
+        },
+        "fabricated": {
+          "n": 12,
+          "solid_rate": 0.6111111111111112
+        }
+      }
+    },
+    "categories_covered_by_every_provider": [
+      "excellent"
+    ],
+    "note": "solid_rate uses the same definition as rubric_by_category (fraction of the 6 rubric dimensions graded Solid); the same construct-validity caveat applies -- this measures agreement with author-intended category, not independent human-verified correctness. latency_s is the single grading complete() call for that item, not wall_s (which would include retries counted separately elsewhere). IMPORTANT: by_provider's solid_rate is confounded whenever providers don't cover the same category mix -- which categories in by_provider_and_category to trust as a fair comparison is in categories_covered_by_every_provider; a provider with a smaller n here got fewer categories (usually because real API quota routed most calls elsewhere mid-run), not necessarily because it's more reliable."
   },
   "quality_rank_correlation": {
     "n": 38,
-    "pearson_r": 0.9681451381308678,
+    "pearson_r": 0.9744265324305051,
     "note": "Pearson r between author-intended quality rank (weak=1, average=2, excellent=3) and mean dimension score (Gap=0, NeedsWork=1, Solid=2) per item. This is a construct-validity check against authoring intent, NOT a human-rater correlation."
   },
   "star_order_invariance": {
     "excellent": {
       "n": 13,
       "structure_solid_rate": 1.0,
-      "overall_solid_rate": 0.9358974358974359
+      "overall_solid_rate": 0.9487179487179487
     },
     "star_explicit": {
       "n": 13,
       "structure_solid_rate": 1.0,
-      "overall_solid_rate": 0.8974358974358975
+      "overall_solid_rate": 0.9102564102564102
     },
     "non_star": {
       "n": 13,
       "structure_solid_rate": 0.7692307692307693,
-      "overall_solid_rate": 0.8333333333333334
+      "overall_solid_rate": 0.8205128205128205
     }
   },
   "consistency": {
     "n_items": 16,
     "n_dimension_slots": 96,
     "modal_stable_pct": 1.0,
-    "span_violation_pct": 0.041666666666666664,
-    "cohens_kappa_inter_run": 0.8590573708778799,
-    "mae_inter_run": 0.11805555555555555,
+    "span_violation_pct": 0.020833333333333332,
+    "cohens_kappa_inter_run": 0.8690065572527763,
+    "mae_inter_run": 0.09722222222222222,
     "n_pairwise_comparisons": 288,
     "note": "Kappa/MAE computed between repeated grade() calls on the SAME transcript (inter-run self-consistency), not model-vs-human agreement -- no independent human ratings exist in this repo (see report)."
   },

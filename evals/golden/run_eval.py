@@ -50,11 +50,12 @@ def _strict_schema_ok(raw) -> bool:
     return isinstance(raw.get("spoken_summary"), list)
 
 
-def _instrumented_complete(prompt_id, vars, json_schema=None):
+def _instrumented_complete(prompt_id, vars, json_schema=None, **kwargs):
     t0 = time.perf_counter()
     entry = {"prompt_id": prompt_id}
     try:
-        result = _original_complete(prompt_id, vars, json_schema=json_schema)
+        result = _original_complete(prompt_id, vars, json_schema=json_schema,
+                                    **kwargs)
         entry["latency_s"] = time.perf_counter() - t0
         entry["provider"] = result.provider
         entry["failovers"] = result.failovers

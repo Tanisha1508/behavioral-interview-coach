@@ -120,8 +120,13 @@ def main() -> None:
         "n": len(lat), "mean": statistics.mean(lat), "median": statistics.median(lat),
         "min": min(lat), "max": max(lat),
         "p50": pctile(lat_sorted, 0.50), "p95": pctile(lat_sorted, 0.95),
+        "p99": pctile(lat_sorted, 0.99),
         "stdev": statistics.stdev(lat) if len(lat) > 1 else 0.0,
-        "note": "text-in/JSON-out grading call latency; NOT voice round-trip",
+        "note": ("text-in/JSON-out grading call latency; NOT voice "
+                "round-trip. p99 on a 133-call sample is really just the "
+                "2nd-highest value (interpolated) -- treat it as a rough "
+                "tail indicator, not a statistically stable estimate; it "
+                "gets more meaningful as n grows on future runs."),
     }
     summary["ttft"] = {
         "value": None,
@@ -154,6 +159,75 @@ def main() -> None:
         solid_rate = sum(sum(1 for d in DIMS if it[d] == "Solid") for it in items) / (len(items) * 6)
         cat_summary[cat] = {"n": len(items), "dimensions": dims_dist, "solid_rate": solid_rate}
     summary["rubric_by_category"] = cat_summary
+
+    # ---- accuracy vs latency, by provider ----
+    # Uses provider/call_latency_s attached directly to each grading_results
+    # item by run_llm_eval.py's grade_item() (not call_log, which mixes in
+    # the later consistency-repeat calls and isn't item-addressable).
+    by_provider = defaultdict(list)
+    for g in success_items:
+        if g.get("provider"):
+            by_provider[g["provider"]].append(g)
+    provider_summary = {}
+    for prov, prov_items in by_provider.items():
+        solid_rate = sum(
+            sum(1 for d in DIMS if it["dimensions"][d] == "Solid")
+            for it in prov_items) / (len(prov_items) * 6)
+        lats = sorted(it["call_latency_s"] for it in prov_items
+                      if it.get("call_latency_s") is not None)
+        provider_summary[prov] = {
+            "n": len(prov_items), "solid_rate": solid_rate,
+            "latency_s_mean": statistics.mean(lats) if lats else None,
+            "latency_s_p50": pctile(lats, 0.50) if lats else None,
+            "latency_s_p95": pctile(lats, 0.95) if lats else None,
+            "latency_s_p99": pctile(lats, 0.99) if lats else None,
+        }
+    # Category-controlled crosstab: raw by_provider solid_rate is confounded
+    # whenever providers don't cover the same category mix (observed live
+    # 2026-08-09: primary Gemini's free-tier quota exhausted after 3 calls,
+    # all "excellent"; Gemini-lite absorbed the rest of the run including
+    # every intentionally-low-quality category (weak, fabricated, etc.),
+    # making its raw solid_rate look far worse than Gemini's for reasons
+    # that have nothing to do with grading quality). Only compare providers
+    # within a category both actually covered.
+    by_provider_cat = defaultdict(lambda: defaultdict(list))
+    for g in success_items:
+        if g.get("provider"):
+            by_provider_cat[g["provider"]][g["category"]].append(g)
+    provider_category_summary = {}
+    for prov, cats in by_provider_cat.items():
+        provider_category_summary[prov] = {}
+        for cat, cat_items in cats.items():
+            solid = sum(sum(1 for d in DIMS if it["dimensions"][d] == "Solid")
+                       for it in cat_items) / (len(cat_items) * 6)
+            provider_category_summary[prov][cat] = {"n": len(cat_items),
+                                                     "solid_rate": solid}
+    comparable_categories = None
+    for prov_cats in by_provider_cat.values():
+        cats_here = set(prov_cats.keys())
+        comparable_categories = (cats_here if comparable_categories is None
+                                 else comparable_categories & cats_here)
+
+    summary["accuracy_vs_latency_by_provider"] = {
+        "by_provider": provider_summary,
+        "by_provider_and_category": provider_category_summary,
+        "categories_covered_by_every_provider": sorted(comparable_categories or []),
+        "note": ("solid_rate uses the same definition as rubric_by_category "
+                "(fraction of the 6 rubric dimensions graded Solid); the "
+                "same construct-validity caveat applies -- this measures "
+                "agreement with author-intended category, not independent "
+                "human-verified correctness. latency_s is the single "
+                "grading complete() call for that item, not wall_s (which "
+                "would include retries counted separately elsewhere). "
+                "IMPORTANT: by_provider's solid_rate is confounded whenever "
+                "providers don't cover the same category mix -- which "
+                "categories in by_provider_and_category to trust as a fair "
+                "comparison is in categories_covered_by_every_provider; a "
+                "provider with a smaller n here got fewer categories "
+                "(usually because real API quota routed most calls "
+                "elsewhere mid-run), not necessarily because it's more "
+                "reliable."),
+    }
 
     # ---- construct validity: quality-rank vs measured score (Pearson) ----
     xs, ys = [], []
@@ -293,6 +367,7 @@ async def track_eval_run(summary: dict) -> None:
                 summary["hallucination_rate"]["per_attempt_violation_rate"],
             "grading_latency_p50_s": summary["grading_latency_s"]["p50"],
             "grading_latency_p95_s": summary["grading_latency_s"]["p95"],
+            "grading_latency_p99_s": summary["grading_latency_s"]["p99"],
             "consistency_modal_stable_pct": consistency["modal_stable_pct"],
             "consistency_span_violation_pct": consistency["span_violation_pct"],
             "consistency_cohens_kappa": consistency["cohens_kappa_inter_run"],
