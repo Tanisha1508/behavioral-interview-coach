@@ -102,8 +102,7 @@ flowchart TD
 
 ## Not built yet
 
-Corrected 2026-08-09 — this section previously listed Simulation and Hosting as not built; both shipped 2026-07-13 (Simulation: workflow 7c above; hosting: `docs/PROGRESS.md` item 12, live at behavioral-interview-coach-psi.vercel.app) and this section was never updated. Actually still not built, as of the same date:
+Corrected 2026-08-09 — this section previously listed Simulation and Hosting as not built; both shipped 2026-07-13 (Simulation: workflow 7c above; hosting: `docs/PROGRESS.md` item 12, live at behavioral-interview-coach-psi.vercel.app) and this section was never updated. Turn-level cost per query shipped later the same day (`docs/PROGRESS.md`, "cost-per-query built") — removed from this list. Actually still not built, as of the same date:
 
-- **Turn-level cost per query**: no token usage or dollar cost is captured anywhere in the pipeline (`src/llm/client.py`'s `_call_gemini`/`_call_groq` return text only, no usage data).
 - **True end-to-end turn latency**: LLM, TTS, and STT latency are each tracked separately in production (Amplitude); nothing stitches mic-stop-to-audio-start into one number yet.
 - **Human-vs-model grading agreement**: every consistency/construct-validity number in `evaluation/EVALUATION_REPORT.md` is self-consistency or agreement against authoring intent; no independent human rater has ever scored this dataset.

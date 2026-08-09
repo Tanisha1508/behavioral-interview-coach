@@ -163,7 +163,9 @@ class TestLedger:
         monkeypatch.setattr(client, "LEDGER_PATH", tmp_path / "ledger.json")
         monkeypatch.setattr(client, "_settings", None)
         monkeypatch.setenv("GROQ_API_KEY", "gsk_test")
-        monkeypatch.setattr(client, "_call_groq", lambda p, s: "groq says hi")
+        monkeypatch.setattr(client, "_call_groq",
+                            lambda p, s: ("groq says hi",
+                                         {"input_tokens": 10, "output_tokens": 5}))
         models_tried = []
 
         def gemini_429(prompt, schema, model=None):
@@ -188,7 +190,7 @@ class TestLedger:
         def gemini_lite_only(prompt, schema, model=None):
             assert model == client.settings().lite_model, \
                 "flash attempted past the ledger cap"
-            return "lite says hi"
+            return "lite says hi", {"input_tokens": 20, "output_tokens": 8}
 
         monkeypatch.setattr(client, "_call_gemini", gemini_lite_only)
         client.settings().daily_call_cap = 1
@@ -218,7 +220,7 @@ class TestLLMCallTracking:
         def gemini_ok(prompt, schema, model=None):
             if latency_s:
                 time.sleep(latency_s)
-            return "gemini says hi"
+            return "gemini says hi", {"input_tokens": 42, "output_tokens": 17}
 
         monkeypatch.setattr(client, "_call_gemini", gemini_ok)
         calls = []
@@ -291,3 +293,63 @@ class TestLLMCallTracking:
                 "seed": "x", "probe_type": "SPECIFICITY",
                 "offending_phrase": "", "recent_context": "", "intensity": "3"})
         assert calls == []
+
+    def test_token_usage_propagates_to_result_and_tracking(
+            self, tmp_path, monkeypatch):
+        client, calls = self._setup(tmp_path, monkeypatch)
+        result = client.complete("probe_rewrite", {
+            "seed": "x", "probe_type": "SPECIFICITY",
+            "offending_phrase": "", "recent_context": "", "intensity": "3"})
+        assert result.input_tokens == 42
+        assert result.output_tokens == 17
+        assert calls[0][1]["event_properties"]["input_tokens"] == 42
+        assert calls[0][1]["event_properties"]["output_tokens"] == 17
+
+    def test_cost_usd_computed_from_real_token_counts(self, tmp_path, monkeypatch):
+        # gemini_ok (in _setup) returns input_tokens=42, output_tokens=17.
+        # Rate: $0.30/M in, $2.50/M out -> (42/1e6)*0.30 + (17/1e6)*2.50
+        client, calls = self._setup(tmp_path, monkeypatch)
+        result = client.complete("probe_rewrite", {
+            "seed": "x", "probe_type": "SPECIFICITY",
+            "offending_phrase": "", "recent_context": "", "intensity": "3"})
+        expected = (42 / 1_000_000) * 0.30 + (17 / 1_000_000) * 2.50
+        assert result.cost_usd == pytest.approx(expected)
+        assert calls[0][1]["event_properties"]["cost_usd"] == pytest.approx(
+            expected, abs=1e-8)
+
+    def test_cost_usd_none_when_tokens_unavailable(self, tmp_path, monkeypatch):
+        from src.llm import client
+        monkeypatch.setattr(client, "LEDGER_PATH", tmp_path / "ledger.json")
+        monkeypatch.setattr(client, "_settings", None)
+        monkeypatch.setattr(
+            client, "_call_gemini",
+            lambda p, s, model=None: ("no usage", {"input_tokens": None,
+                                                    "output_tokens": None}))
+        result = client.complete("probe_rewrite", {
+            "seed": "x", "probe_type": "SPECIFICITY",
+            "offending_phrase": "", "recent_context": "", "intensity": "3"})
+        assert result.cost_usd is None
+
+    def test_estimate_cost_usd_unknown_provider_returns_none(self):
+        from src.llm.client import _estimate_cost_usd
+        assert _estimate_cost_usd("some-future-provider", 100, 50) is None
+
+    def test_missing_usage_metadata_does_not_crash(self, tmp_path, monkeypatch):
+        # Real providers can omit usage data (observed: not every response
+        # carries usage_metadata); complete() must degrade to None, not raise.
+        from src.llm import client
+        monkeypatch.setattr(client, "LEDGER_PATH", tmp_path / "ledger.json")
+        monkeypatch.setattr(client, "_settings", None)
+        monkeypatch.setattr(
+            client, "_call_gemini",
+            lambda p, s, model=None: ("no usage data", {"input_tokens": None,
+                                                         "output_tokens": None}))
+        calls = []
+        monkeypatch.setattr(client.amplitude, "track_sync",
+                            lambda *a, **kw: calls.append((a, kw)))
+        result = client.complete("probe_rewrite", {
+            "seed": "x", "probe_type": "SPECIFICITY",
+            "offending_phrase": "", "recent_context": "", "intensity": "3"})
+        assert result.input_tokens is None
+        assert result.output_tokens is None
+        assert calls[0][1]["event_properties"]["input_tokens"] is None

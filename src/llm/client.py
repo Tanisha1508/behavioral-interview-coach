@@ -41,6 +41,41 @@ class LLMResult:
     provider: str = "gemini"
     failovers: int = 0
     latency_ms: float = 0.0
+    input_tokens: Optional[int] = None
+    output_tokens: Optional[int] = None
+    cost_usd: Optional[float] = None
+
+
+# Paid-tier per-million-token rates, keyed by this module's own provider
+# strings ("gemini" = gemini-2.5-flash, "gemini-lite" = gemini-3.1-flash-lite,
+# "groq" = llama-3.3-70b-versatile). Every call this project actually makes
+# runs on each provider's FREE tier (docs/CONSTRAINTS.md: free-tier only,
+# no paid APIs ever), so cost_usd is a "what this would cost at standard
+# paid rates" estimate for cost-modeling, never real spend. Sourced directly
+# from each provider's own pricing page, not memory or a third party:
+#   gemini-2.5-flash:      $0.30 / $2.50 per 1M in/out tokens
+#                           (ai.google.dev/gemini-api/docs/pricing, fetched 2026-08-09)
+#   gemini-3.1-flash-lite:  $0.25 / $1.50 per 1M in/out tokens
+#                           (ai.google.dev/gemini-api/docs/pricing, fetched 2026-08-09)
+#   llama-3.3-70b-versatile: $0.59/1.7M in ($0.3471/M), $0.79/1.3M out ($0.6077/M)
+#                           (console.groq.com/docs/model/llama-3.3-70b-versatile, fetched 2026-08-09)
+# These will drift out of date; re-verify against the live pricing pages
+# before trusting cost_usd for anything beyond a rough order-of-magnitude.
+_PRICING_USD_PER_M_TOKENS: dict[str, tuple[float, float]] = {
+    "gemini": (0.30, 2.50),
+    "gemini-lite": (0.25, 1.50),
+    "groq": (0.59 / 1.7, 0.79 / 1.3),
+}
+
+
+def _estimate_cost_usd(provider: str, input_tokens: int | None,
+                       output_tokens: int | None) -> float | None:
+    rates = _PRICING_USD_PER_M_TOKENS.get(provider)
+    if rates is None or input_tokens is None or output_tokens is None:
+        return None
+    input_rate, output_rate = rates
+    return (input_tokens / 1_000_000) * input_rate + \
+        (output_tokens / 1_000_000) * output_rate
 
 
 @dataclass
@@ -118,7 +153,7 @@ def _is_transient(exc: Exception) -> bool:
 
 
 def _call_gemini(prompt: str, json_schema: dict | None,
-                 model: str | None = None) -> str:
+                 model: str | None = None) -> tuple[str, dict[str, int | None]]:
     from google import genai
     from google.genai import types
 
@@ -133,10 +168,14 @@ def _call_gemini(prompt: str, json_schema: dict | None,
         contents=prompt,
         config=types.GenerateContentConfig(**config),
     )
-    return response.text or ""
+    usage = response.usage_metadata
+    return response.text or "", {
+        "input_tokens": usage.prompt_token_count if usage else None,
+        "output_tokens": usage.candidates_token_count if usage else None,
+    }
 
 
-def _call_groq(prompt: str, json_schema: dict | None) -> str:
+def _call_groq(prompt: str, json_schema: dict | None) -> tuple[str, dict[str, int | None]]:
     from groq import Groq
 
     client = Groq(api_key=os.environ["GROQ_API_KEY"])
@@ -150,7 +189,11 @@ def _call_groq(prompt: str, json_schema: dict | None) -> str:
         messages=[{"role": "user", "content": prompt}],
         **kwargs,
     )
-    return response.choices[0].message.content or ""
+    usage = response.usage
+    return response.choices[0].message.content or "", {
+        "input_tokens": usage.prompt_tokens if usage else None,
+        "output_tokens": usage.completion_tokens if usage else None,
+    }
 
 
 # ---------- public API ----------
@@ -166,6 +209,7 @@ def complete(prompt_id: str, vars: dict[str, str],
     _started_at = time.monotonic()
 
     text = None
+    usage: dict[str, int | None] = {"input_tokens": None, "output_tokens": None}
     provider, failovers = "gemini", 0
     last_exc: Exception | None = None
 
@@ -176,7 +220,7 @@ def complete(prompt_id: str, vars: dict[str, str],
         _ledger_bump()
         for attempt in range(3):
             try:
-                text = _call_gemini(prompt, json_schema)
+                text, usage = _call_gemini(prompt, json_schema)
                 break
             except Exception as gemini_exc:
                 last_exc = gemini_exc
@@ -201,7 +245,7 @@ def complete(prompt_id: str, vars: dict[str, str],
         # while Groq was empty, killing scoring for no reason).
         _failover_log.append(f"{time.time()}: gemini failed on {prompt_id}: {last_exc}")
         try:
-            text = _call_gemini(prompt, json_schema, model=settings().lite_model)
+            text, usage = _call_gemini(prompt, json_schema, model=settings().lite_model)
             provider, failovers = "gemini-lite", 1
         except Exception as lite_exc:
             _failover_log.append(
@@ -222,7 +266,7 @@ def complete(prompt_id: str, vars: dict[str, str],
             raise LLMUnavailable(
                 f"gemini failed ({last_exc}) and no GROQ_API_KEY is set")
         try:
-            text = _call_groq(prompt, json_schema)
+            text, usage = _call_groq(prompt, json_schema)
             provider, failovers = "groq", 1
         except Exception as groq_exc:
             if isinstance(last_exc, DailyCapReached):
@@ -246,6 +290,8 @@ def complete(prompt_id: str, vars: dict[str, str],
     # there is no running event loop to await track() into. track_sync()
     # swallows its own errors, same contract as track() elsewhere in this
     # codebase: analytics can never take down a live session.
+    cost_usd = _estimate_cost_usd(provider, usage.get("input_tokens"),
+                                  usage.get("output_tokens"))
     amplitude.track_sync(
         "llm_call_completed", device_id=device_id or "llm-client-unlinked",
         user_id=user_id,
@@ -255,6 +301,12 @@ def complete(prompt_id: str, vars: dict[str, str],
             "failovers": failovers,
             "latency_ms": round(latency_ms, 1),
             "session_type": session_type,
+            "input_tokens": usage.get("input_tokens"),
+            "output_tokens": usage.get("output_tokens"),
+            "cost_usd": round(cost_usd, 8) if cost_usd is not None else None,
         })
     return LLMResult(text=text, parsed=parsed, provider=provider,
-                     failovers=failovers, latency_ms=latency_ms)
+                     failovers=failovers, latency_ms=latency_ms,
+                     input_tokens=usage.get("input_tokens"),
+                     output_tokens=usage.get("output_tokens"),
+                     cost_usd=cost_usd)

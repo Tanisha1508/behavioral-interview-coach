@@ -1704,3 +1704,73 @@ latency) — both real feature work, not verification, sized for their
 own checkpoints rather than folded into this doc-fix pass.
 `pytest tests/` reconfirmed clean (149 passing) before committing items
 1-2 (docs-only); item 3 required no code changes, only a live click.
+
+**Getting more primary-Gemini data, attempted then correctly stopped**:
+checked the ledger before re-running — `data/llm_ledger.json` was
+already at exactly 100/100 for 2026-08-09 from this morning's full run.
+Re-running immediately would have made the sample *worse*, not
+better: `calls_today() >= cap` triggers before any attempt, so every
+one of the 133 calls would skip primary Gemini entirely (n=0, not the
+current n=3). This is exactly the scenario `docs/FALLBACKS.md`
+prescribes stopping and asking about rather than routing around
+silently ("Gemini free-tier daily cap is hit → Stop... ask before
+continuing"). Asked; user chose to wait for a real calendar-day
+ledger reset rather than manually resetting the local ledger file
+(the honest option — the ledger is our own internal throttle, not
+Google's real limit, but the user preferred not to intervene in it).
+**Deferred, not abandoned**: re-run `python -u -m evaluation.scripts.run_llm_eval`
+(no `--limit`) on a fresh day, then `analyze_results.py` +
+`make_charts.py` to fold the new provider data in.
+
+## 2026-08-09 (later still): cost-per-query built (item 6, first half)
+
+First of the two genuinely-unbuilt features from `docs/WORKFLOWS.md`'s
+"Not built yet" list. Previously `_call_gemini`/`_call_groq` returned
+text only — no token counts existed anywhere in the pipeline.
+
+1. **Real token-usage capture**: verified the actual field names by
+   inspecting the installed SDKs directly (`inspect.getsource`), not
+   from memory — `google.genai.types.GenerateContentResponse
+   .usage_metadata.prompt_token_count`/`.candidates_token_count` for
+   Gemini, `response.usage.prompt_tokens`/`.completion_tokens`
+   (`groq.types.completion_usage.CompletionUsage`) for Groq. Changed
+   `_call_gemini`/`_call_groq`'s return contract from `str` to
+   `tuple[str, dict[str, int | None]]`; `complete()`'s three call
+   sites and all mocks in `tests/test_session.py` updated to match
+   (6 mocks were broken by this and fixed).
+2. **Live-verified against the real Gemini API** (scratchpad
+   `verify_token_usage.py`): got back `input_tokens: 203,
+   output_tokens: 42`, confirmed as an exact match in the Amplitude
+   `llm_call_completed` event.
+3. **Dollar-cost estimate added**, not left as a stub. Pricing sourced
+   live via WebSearch/WebFetch against each provider's own pricing
+   page (not memorized), dated in-code: gemini-2.5-flash $0.30/$2.50
+   per 1M in/out tokens, gemini-3.1-flash-lite $0.25/$1.50,
+   llama-3.3-70b-versatile $0.3471/$0.6077 per 1M
+   (`ai.google.dev/gemini-api/docs/pricing`,
+   `console.groq.com/docs/model/llama-3.3-70b-versatile`, fetched
+   2026-08-09). This is a paid-tier-equivalent estimate for cost
+   modeling, never real spend — `docs/CONSTRAINTS.md` mandates
+   free-tier only, no paid APIs. `_estimate_cost_usd()` added to
+   `src/llm/client.py`; `cost_usd` wired into both `LLMResult` and the
+   `llm_call_completed` Amplitude event property.
+4. **5 new tests** added (token propagation, missing-usage-metadata
+   doesn't crash, cost computed from real token counts, cost is
+   `None` when tokens are unavailable, unknown provider returns
+   `None`). Suite went 149 → 154 passing.
+5. **Live-verified end to end** a second time after the pricing wiring
+   landed: re-ran the scratchpad script (fresh real Gemini-lite call,
+   `input_tokens: 203, output_tokens: 42`), opened Amplitude Live
+   Events, drilled into the actual event, and confirmed
+   `cost_usd: 0.00011375` — an exact match to
+   `(203/1_000_000)*0.25 + (42/1_000_000)*1.50`.
+
+`docs/WORKFLOWS.md`'s "Not built yet" section updated in the same
+pass to drop the now-shipped cost-per-query line. `pytest tests/`
+reconfirmed at 154 passing before committing.
+
+Remaining from the "one by one" list: end-to-end turn latency
+(mic-stop to audio-start) — not yet started, is the second half of
+item 6. Bigger than cost-per-query: needs a shared turn-boundary
+marker stitched across STT-finalize, LLM think-time, and TTS-first-byte,
+none of which currently share one.
