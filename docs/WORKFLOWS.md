@@ -102,7 +102,6 @@ flowchart TD
 
 ## Not built yet
 
-Corrected 2026-08-09 — this section previously listed Simulation and Hosting as not built; both shipped 2026-07-13 (Simulation: workflow 7c above; hosting: `docs/PROGRESS.md` item 12, live at behavioral-interview-coach-psi.vercel.app) and this section was never updated. Turn-level cost per query shipped later the same day (`docs/PROGRESS.md`, "cost-per-query built") — removed from this list. Actually still not built, as of the same date:
+Corrected 2026-08-09 — this section previously listed Simulation and Hosting as not built; both shipped 2026-07-13 (Simulation: workflow 7c above; hosting: `docs/PROGRESS.md` item 12, live at behavioral-interview-coach-psi.vercel.app) and this section was never updated. Turn-level cost per query and true end-to-end turn latency both shipped later the same day (`docs/PROGRESS.md`, "cost-per-query built" and "end-to-end turn latency built") — removed from this list; turn latency's real-Amplitude live verification is still pending a real spoken turn (nothing autonomous can produce one), noted in `docs/PROGRESS.md` rather than claimed done. Actually still not built, as of the same date:
 
-- **True end-to-end turn latency**: LLM, TTS, and STT latency are each tracked separately in production (Amplitude); nothing stitches mic-stop-to-audio-start into one number yet.
 - **Human-vs-model grading agreement**: every consistency/construct-validity number in `evaluation/EVALUATION_REPORT.md` is self-consistency or agreement against authoring intent; no independent human rater has ever scored this dataset.

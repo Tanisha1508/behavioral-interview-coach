@@ -834,3 +834,96 @@ def test_tts_fallback_tracking_fires_triggered_and_recovered(monkeypatch):
         assert len(recovered) == 1
         assert recovered[0][1]["provider"] == "elevenlabs.TTS"
     asyncio.run(run())
+
+
+class FakeEouMetrics:
+    type = "eou_metrics"
+
+    def __init__(self, speech_id, timestamp, end_of_utterance_delay):
+        self.speech_id = speech_id
+        self.timestamp = timestamp
+        self.end_of_utterance_delay = end_of_utterance_delay
+
+
+class FakeTtsMetrics:
+    type = "tts_metrics"
+
+    def __init__(self, speech_id, timestamp, duration, ttfb,
+                 cancelled=False, label="deepgram.TTS"):
+        self.speech_id = speech_id
+        self.timestamp = timestamp
+        self.duration = duration
+        self.ttfb = ttfb
+        self.cancelled = cancelled
+        self.label = label
+
+
+class FakeMetricsEvent:
+    def __init__(self, metrics):
+        self.metrics = metrics
+
+
+def test_turn_latency_correlates_eou_and_tts_by_speech_id(monkeypatch):
+    async def run():
+        calls = []
+        monkeypatch.setattr(agent_mod.amplitude, "track", _fake_track(calls))
+
+        session = FakeEmitter()
+        agent_mod.register_turn_latency_tracking(session, None, "interview")
+
+        session.emit("metrics_collected", FakeMetricsEvent(
+            FakeEouMetrics(speech_id="sp1", timestamp=100.3,
+                           end_of_utterance_delay=0.3)))
+        session.emit("metrics_collected", FakeMetricsEvent(
+            FakeTtsMetrics(speech_id="sp1", timestamp=101.5,
+                           duration=1.0, ttfb=0.2)))
+        await asyncio.sleep(0)
+
+        events = [c for c in calls if c[0] == "turn_latency"]
+        assert len(events) == 1
+        props = events[0][1]
+        # mic-stop = 100.3 - 0.3 = 100.0; audio-start = 101.5 - 1.0 + 0.2 = 100.7
+        assert props["turn_latency_ms"] == 700.0
+        assert props["session_type"] == "interview"
+        assert props["tts_provider"] == "deepgram.TTS"
+    asyncio.run(run())
+
+
+def test_turn_latency_skips_cancelled_tts(monkeypatch):
+    async def run():
+        calls = []
+        monkeypatch.setattr(agent_mod.amplitude, "track", _fake_track(calls))
+
+        session = FakeEmitter()
+        agent_mod.register_turn_latency_tracking(session, None, "interview")
+
+        session.emit("metrics_collected", FakeMetricsEvent(
+            FakeEouMetrics(speech_id="sp1", timestamp=100.3,
+                           end_of_utterance_delay=0.3)))
+        session.emit("metrics_collected", FakeMetricsEvent(
+            FakeTtsMetrics(speech_id="sp1", timestamp=101.5,
+                           duration=1.0, ttfb=0.2, cancelled=True)))
+        await asyncio.sleep(0)
+
+        assert not [c for c in calls if c[0] == "turn_latency"]
+    asyncio.run(run())
+
+
+def test_turn_latency_ignores_tts_with_no_matching_eou(monkeypatch):
+    async def run():
+        calls = []
+        monkeypatch.setattr(agent_mod.amplitude, "track", _fake_track(calls))
+
+        session = FakeEmitter()
+        agent_mod.register_turn_latency_tracking(session, None, "interview")
+
+        # A tts_metrics for a speech_id with no prior eou_metrics (e.g. a
+        # coach's spontaneous remark, not a reply to a user turn) must not
+        # crash or fire a bogus event.
+        session.emit("metrics_collected", FakeMetricsEvent(
+            FakeTtsMetrics(speech_id="sp-orphan", timestamp=101.5,
+                           duration=1.0, ttfb=0.2)))
+        await asyncio.sleep(0)
+
+        assert not [c for c in calls if c[0] == "turn_latency"]
+    asyncio.run(run())

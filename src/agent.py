@@ -137,6 +137,46 @@ def register_voice_metrics(session: AgentSession, room, session_type: str) -> No
                 }))
 
 
+def register_turn_latency_tracking(session: AgentSession, room, session_type: str) -> None:
+    """turn_latency (item 6, second half): true mic-stop-to-audio-start,
+    stitched from LiveKit's own eou_metrics and tts_metrics via the
+    speech_id they share — not a hand-rolled timer. Verified in the
+    installed SDK (agent_activity.py's _on_metrics_collected): every
+    TTSMetrics for a reply gets ev.speech_id stamped to that reply's
+    SpeechHandle.id, the same id EOUMetrics carries for the user turn
+    that triggered it. mic-stop = eou.timestamp - eou.end_of_utterance_delay
+    (EOUMetrics' own docstring: that delay is measured from VAD end-of-speech
+    to the turn-end decision, so subtracting it recovers the VAD instant).
+    audio-start = tts.timestamp - tts.duration + tts.ttfb (TTSMetrics.timestamp
+    is stamped when synthesis finishes, not starts, per tts.py's
+    _metrics_monitor_task; duration recovers the start instant, ttfb lands
+    on the first audio byte from there)."""
+    device_id = amplitude.device_id_from_room(room)
+    user_id = user_id_from_room(room)
+    pending_mic_stop: dict[str, float] = {}
+
+    @session.on("metrics_collected")
+    def _on_metrics(ev) -> None:
+        m = ev.metrics
+        if m.type == "eou_metrics" and m.speech_id:
+            pending_mic_stop[m.speech_id] = m.timestamp - m.end_of_utterance_delay
+        elif m.type == "tts_metrics" and m.speech_id in pending_mic_stop:
+            mic_stop_wall = pending_mic_stop.pop(m.speech_id)
+            if m.cancelled:
+                return
+            audio_start_wall = m.timestamp - m.duration + m.ttfb
+            turn_latency_ms = (audio_start_wall - mic_stop_wall) * 1000
+            if turn_latency_ms < 0:
+                return
+            asyncio.create_task(amplitude.track(
+                "turn_latency", device_id=device_id, user_id=user_id,
+                event_properties={
+                    "session_type": session_type,
+                    "turn_latency_ms": round(turn_latency_ms, 1),
+                    "tts_provider": m.label,
+                }))
+
+
 def register_tts_fallback_tracking(tts_adapter: FallbackAdapter, room,
                                    session_type: str) -> None:
     """tts_fallback_triggered / tts_fallback_recovered (scope item 16,
@@ -1223,6 +1263,7 @@ async def entrypoint(ctx: agents.JobContext) -> None:
             min_endpointing_delay=2.0,
         )
         register_voice_metrics(session, ctx.room, "coach")
+        register_turn_latency_tracking(session, ctx.room, "coach")
         register_tts_fallback_tracking(coach_tts, ctx.room, "coach")
         bind_abandonment = register_abandonment_tracking(session)
         runner = CoachRunner(
@@ -1289,6 +1330,7 @@ async def entrypoint(ctx: agents.JobContext) -> None:
         min_endpointing_delay=manager.round.patience_ms / 1000,
     )
     register_voice_metrics(session, ctx.room, "interview")
+    register_turn_latency_tracking(session, ctx.room, "interview")
     register_tts_fallback_tracking(interview_tts, ctx.room, "interview")
     bind_abandonment = register_abandonment_tracking(session)
 

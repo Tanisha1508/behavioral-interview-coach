@@ -1774,3 +1774,70 @@ Remaining from the "one by one" list: end-to-end turn latency
 item 6. Bigger than cost-per-query: needs a shared turn-boundary
 marker stitched across STT-finalize, LLM think-time, and TTS-first-byte,
 none of which currently share one.
+
+## 2026-08-09 (later still): end-to-end turn latency built (item 6, second half)
+
+Second and final item from the "one by one" list. Turned out not to
+need a hand-rolled turn-boundary marker after all: LiveKit's own
+`eou_metrics` and `tts_metrics` already share a `speech_id` — verified
+by reading the installed SDK source directly
+(`.venv/.../livekit/agents/voice/agent_activity.py`'s
+`_on_metrics_collected`, which stamps `ev.speech_id = speech_handle.id`
+on every `TTSMetrics`, the same id `EOUMetrics` carries for the user
+turn that triggered that reply), so stitching is pure correlation, not
+new instrumentation of the pipeline itself.
+
+1. **`register_turn_latency_tracking(session, room, session_type)`**
+   added to `src/agent.py`, wired at both `AgentSession` construction
+   sites (coach and interview/drill/simulation) alongside the existing
+   `register_voice_metrics` call. Confirmed multiple listeners on the
+   same `"metrics_collected"` event coexist safely by reading
+   `livekit.rtc.event_emitter.EventEmitter.on`/`.emit` directly — it
+   backs each event with a `set()` of callbacks and catches+logs any
+   handler exception per-callback, so this can't break the existing
+   STT/TTS metrics tracking even if something in the new handler were
+   wrong.
+2. **The math, derived from the SDK's own field semantics** (each
+   piece confirmed against source, not assumed):
+   `mic_stop = eou.timestamp - eou.end_of_utterance_delay` (that delay
+   is documented as VAD-end-of-speech to turn-end-decision, so
+   subtracting it recovers the VAD instant — genuinely "mic stop").
+   `audio_start = tts.timestamp - tts.duration + tts.ttfb` (confirmed
+   in `tts.py`'s `_metrics_monitor_task` that `timestamp` is stamped
+   when synthesis *finishes*, not starts, so `duration` has to be
+   subtracted back out first; `ttfb` then lands on the actual first
+   audio byte). `turn_latency_ms = (audio_start - mic_stop) * 1000`.
+3. Correlation logic: an in-memory `speech_id -> mic_stop_wall` dict,
+   populated on `eou_metrics`, consumed (popped) on the first
+   `tts_metrics` for that `speech_id`; cancelled TTS (barge-in) is
+   skipped, not tracked as a bogus turn.
+4. **3 new tests** in `tests/test_agent_runner.py` using the existing
+   `FakeEmitter`/`_fake_track` doubles from the tts-fallback tests:
+   correct correlation math end to end (asserted the exact
+   `turn_latency_ms` from hand-computed inputs), cancelled TTS produces
+   no event, and an orphan `tts_metrics` with no matching `eou_metrics`
+   (e.g. the coach's spontaneous remarks, not replies to a user turn)
+   is silently ignored rather than crashing. Suite: 154 → 157 passing.
+5. **Live verification status: partially done, honestly.** The
+   correlation formula is verified against the real installed SDK
+   source (not memory, not guesswork) and the unit tests pin the exact
+   arithmetic. What is *not* yet confirmed is a real `turn_latency`
+   event landing in Amplitude from an actual spoken turn — that needs
+   real microphone audio through a live Drill/Coach session (browser
+   or `python -m src.agent console` in audio mode), which nothing I
+   can drive autonomously produces; console mode's text-input toggle
+   bypasses STT/VAD entirely and would prove nothing (no real
+   `eou_metrics` fires from typed input). This is the same category of
+   gap as `tts_fallback_triggered`/`_recovered`'s live-verification
+   status above: correctly left open pending a real live session,
+   not routed around. `pytest tests/` at 157 passing before
+   committing.
+
+Both halves of item 6 (cost-per-query, end-to-end turn latency) are
+now built. The "one by one" open-items list from the portfolio
+investigation is fully worked through except: the underpowered n=3
+Gemini sample in `accuracy_vs_latency_by_provider` (deferred to a
+fresh calendar day, above), `tts_fallback` live verification (blocked
+on a real provider outage), and now this `turn_latency` live
+verification (blocked on a real spoken turn) — all three correctly
+left open rather than faked.
